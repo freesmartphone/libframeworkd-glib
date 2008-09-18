@@ -120,14 +120,17 @@ void device_get_info_callback(DBusGProxy* bus, GHashTable *info, GError *dbus_er
     if(data->callback != NULL) {
         if(dbus_error != NULL)
             error = dbus_handle_errors(dbus_error);
+        else
 
         data->callback (error, info, data->userdata);
         if(error != NULL) g_error_free(error);
     } 
 
-    if(dbus_error != NULL) g_error_free(dbus_error);
+    if(dbus_error != NULL)
+        g_error_free(dbus_error);
+    else
+        g_hash_table_destroy(info);
     g_free(data);
-    g_hash_table_destroy(info);
 }
 
 void device_get_info(void (*callback)(GError *, GHashTable *info, gpointer), gpointer userdata) {

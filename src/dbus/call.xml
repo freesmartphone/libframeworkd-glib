@@ -46,7 +46,7 @@
             [li]"outgoing" = The call is outgoing (but not yet established),[/li]
             [li]"active" = The call is the active call (you can talk),[/li]
             [li]"held" = The call is being held,[/li]
-            [li]"released" = The call is being released.[/li]
+            [li]"release" = The call is being released.[/li]
          [/ul]
           Further information can be part of the properties.
         </doc:summary>

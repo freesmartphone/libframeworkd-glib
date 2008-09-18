@@ -74,16 +74,17 @@ void sim_get_auth_status_callback(DBusGProxy *bus, char* status, GError* dbus_er
 
 
     if(data->callback != NULL) {
-        if(dbus_error != NULL)
-            error = dbus_handle_errors(dbus_error);
-        else
+        if(dbus_error == NULL) {
             st = sim_handle_authentication_state(status);
+            free(status);
+        } else {
+            error = dbus_handle_errors(dbus_error);
+        }
 
         data->callback (error, st, data->userdata);
         if(error != NULL) g_error_free(error);
     } 
 
-    free(status);
     g_free(data);
     if(dbus_error != NULL) g_error_free(dbus_error);
 }

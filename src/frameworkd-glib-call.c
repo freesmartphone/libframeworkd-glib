@@ -58,9 +58,9 @@ void call_status_handler (DBusGProxy *proxy, const int id, const char *status, G
     } else if(!strcmp(status, DBUS_CALL_STATUS_ACTIVE)) {
         // TODO
         st = CALL_STATUS_ACTIVE;
-    } else if(!strcmp(status, DBUS_CALL_STATUS_RELEASED)) {
+    } else if(!strcmp(status, DBUS_CALL_STATUS_RELEASE)) {
         // Close UI
-        st = CALL_STATUS_RELEASED;
+        st = CALL_STATUS_RELEASE;
     } else { // HELD
         st = CALL_STATUS_HELD;
     }

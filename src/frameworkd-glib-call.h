@@ -29,7 +29,7 @@
 #define DBUS_CALL_STATUS_OUTGOING "outgoing"
 #define DBUS_CALL_STATUS_ACTIVE "active"
 #define DBUS_CALL_STATUS_HELD "held"
-#define DBUS_CALL_STATUS_RELEASED "released"
+#define DBUS_CALL_STATUS_RELEASE "release"
 
 #define DBUS_CALL_PROPERTIES_REASON "reason"
 #define DBUS_CALL_PROPERTIES_NUMBER "number"
@@ -49,7 +49,7 @@ typedef enum {
     CALL_STATUS_OUTGOING,
     CALL_STATUS_ACTIVE,
     CALL_STATUS_HELD,
-    CALL_STATUS_RELEASED
+    CALL_STATUS_RELEASE
 } CallStatus;
 
 typedef enum {
