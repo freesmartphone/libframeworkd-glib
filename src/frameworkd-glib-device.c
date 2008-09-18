@@ -120,7 +120,6 @@ void device_get_info_callback(DBusGProxy* bus, GHashTable *info, GError *dbus_er
     if(data->callback != NULL) {
         if(dbus_error != NULL)
             error = dbus_handle_errors(dbus_error);
-        else
 
         data->callback (error, info, data->userdata);
         if(error != NULL) g_error_free(error);
