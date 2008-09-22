@@ -16,6 +16,7 @@
 
 #ifndef _FRAMEWORKD_GLIB_DBUS_H
 #define _FRAMEWORKD_GLIB_DBUS_H
+
 #define DEBUG
 #define NETWORKD_BUS		"org.freesmartphone.onetworkd"
 #define GSMD_BUS		"org.freesmartphone.ogsmd"
@@ -25,6 +26,13 @@
 #define NETWORK_INTERFACE 	"org.freesmartphone.GSM.Network"
 #define	DEVICE_INTERFACE	"org.freesmartphone.GSM.Device"
 #define	SMS_INTERFACE		"org.freesmartphone.GSM.SMS"
+
+#define DBUS_ERROR g_quark_from_static_string("dbus")
+#define IS_DBUS_ERROR(error, code) g_error_matches(error, DBUS_ERROR, code)
+
+typedef enum {
+    DBUS_ERROR_SERVICE_NOT_AVAILABLE = -1
+} DbusErrors;
 
 typedef struct {
     void (*networkStatus)(GHashTable *);
@@ -38,6 +46,7 @@ typedef struct {
 void lose (const char *str, ...);
 void lose_gerror (const char *prefix, GError *error);
 GError* dbus_handle_errors(GError *dbus_error); 
+GError* dbus_handle_internal_errors(GError *error);
 GError* device_handle_errors(GError *dbus_error);
 GError* network_handle_errors(GError *dbus_error);
 GError* call_handle_errors(GError *dbus_error);

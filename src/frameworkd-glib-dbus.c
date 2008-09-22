@@ -55,23 +55,43 @@ DBusGProxy *dbus_connect_to_interface(char *bus_name, char *path, char *interfac
 GError* dbus_handle_errors(GError *dbus_error) {
     const char *error_name;
     GError *error = NULL;
-    if ((dbus_error->domain==DBUS_GERROR)&&(dbus_error->code==DBUS_GERROR_REMOTE_EXCEPTION))
-        error_name = dbus_g_error_get_name(dbus_error);
-    else
-        error_name = "";
-    if(!strncmp(error_name, SIM_INTERFACE, strlen(SIM_INTERFACE))) {
-        error = sim_handle_errors(dbus_error);
-    } else if(!strncmp(error_name, CALL_INTERFACE, strlen(CALL_INTERFACE))) {
-        error = call_handle_errors(dbus_error);
-    } else if(!strncmp(error_name, NETWORK_INTERFACE, strlen(NETWORK_INTERFACE))) {
-        error =  network_handle_errors(dbus_error);
-    } else if(!strncmp(error_name, DEVICE_INTERFACE, strlen(DEVICE_INTERFACE))) {
-        error = device_handle_errors(dbus_error);
+    if(dbus_error->domain == DBUS_GERROR) {
+        if(dbus_error->code == DBUS_GERROR_REMOTE_EXCEPTION) {
+            error_name = dbus_g_error_get_name(dbus_error);
+
+            if(!strncmp(error_name, SIM_INTERFACE, strlen(SIM_INTERFACE))) {
+                error = sim_handle_errors(dbus_error);
+            } else if(!strncmp(error_name, CALL_INTERFACE, strlen(CALL_INTERFACE))) {
+                error = call_handle_errors(dbus_error);
+            } else if(!strncmp(error_name, NETWORK_INTERFACE, strlen(NETWORK_INTERFACE))) {
+                error =  network_handle_errors(dbus_error);
+            } else if(!strncmp(error_name, DEVICE_INTERFACE, strlen(DEVICE_INTERFACE))) {
+                error = device_handle_errors(dbus_error);
+            } else {
+                lose_gerror ("Failed to handle error", dbus_error);
+            }
+        } else {
+            error = dbus_handle_internal_errors(dbus_error);
+        }
     } else {
-        lose_gerror ("Failed to handle device error", dbus_error);
+        lose_gerror("Unknown error", dbus_error);
     }
+    
     return error;
 }
+
+
+GError* dbus_handle_internal_errors(GError *error) {
+    int dbusError;
+
+    if(error->code == DBUS_GERROR_SERVICE_UNKNOWN) {
+        dbusError = DBUS_ERROR_SERVICE_NOT_AVAILABLE;
+    } else {
+        lose_gerror("Unknown SIM error", error);
+    }
+    return g_error_new (DBUS_ERROR, dbusError, "TODO");
+}
+
 
 void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
 
