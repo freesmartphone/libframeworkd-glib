@@ -14,8 +14,8 @@
  *  GNU Lesser Public License for more details.
  */
 
-#ifndef _FRAMEWORKD_GLIB_CALL_H
-#define _FRAMEWORKD_GLIB_CALL_H
+#ifndef FRAMEWORKD_GLIB_OGSMD_CALL_H
+#define FRAMEWORKD_GLIB_OGSMD_CALL_H
 
 #define CALL_ERROR g_quark_from_static_string(CALL_INTERFACE)
 #define DBUS_CALL_ERROR_NO_CARRIER "org.freesmartphone.GSM.Call.NoCarrier"
@@ -61,11 +61,11 @@ void call_status_handler (DBusGProxy *proxy, const int id, const char *status, G
 
 void call_initiate(const char *number, const char* call_type, void (*callback)(GError *, int id_call, gpointer), gpointer userdata);
 
-void call_release(const char *message, const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
+void call_release(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_release_held(const char *message, void (*callback)(GError *, gpointer), gpointer userdata);
+void call_release_held(void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_release_all(const char *message, void (*callback)(GError *, gpointer), gpointer userdata);
+void call_release_all(void (*callback)(GError *, gpointer), gpointer userdata);
 
 void call_activate(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
 

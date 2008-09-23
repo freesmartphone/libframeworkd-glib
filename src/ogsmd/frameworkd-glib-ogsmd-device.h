@@ -14,8 +14,8 @@
  *  GNU Lesser Public License for more details.
  */
 
-#ifndef _FRAMEWORKD_GLIB_DEVICE_H
-#define _FRAMEWORKD_GLIB_DEVICE_H
+#ifndef FRAMEWORKD_GLIB_OGSMD_DEVICE_H
+#define FRAMEWORKD_GLIB_OGSMD_DEVICE_H
 
 #define DBUS_DEVICE_ERROR_NOT_PRESENT "org.freesmartphone.GSM.Device.NotPresent"
 #define DBUS_DEVICE_ERROR_TIMEOUT "org.freesmartphone.GSM.Device.Timeout"

@@ -21,8 +21,8 @@
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-#include "frameworkd-glib-call.h"
-#include "frameworkd-glib-dbus.h"
+#include "frameworkd-glib-ogsmd-call.h"
+#include "frameworkd-glib-ogsmd-dbus.h"
 #include "dbus/call.h"
 
 DBusGProxy *callBus = NULL;
@@ -125,12 +125,13 @@ static void call_release_callback(DBusGProxy* proxy, GError *dbus_error, gpointe
     g_free (data);
 }
 
-void call_release(const char *message, const int id_call, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
+void call_release(const int id_call, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
     dbus_connect_to_gsm_call();
     call_release_data_t *data = g_malloc (sizeof (call_release_data_t));
     data->callback = callback;
     data->userdata = userdata;
-    org_freesmartphone_GSM_Call_release_async(callBus, message, id_call, call_release_callback, data);
+    
+    org_freesmartphone_GSM_Call_release_async(callBus, id_call, call_release_callback, data);
 }
 
 static void call_activate_callback(DBusGProxy* proxy, GError *dbus_error, gpointer userdata) {
@@ -181,12 +182,12 @@ static void call_release_held_callback(DBusGProxy* proxy, GError *dbus_error, gp
     g_free (data);
 }
 
-void call_release_held(const char *message, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
+void call_release_held(void (*callback)(GError *, gpointer userdata), gpointer userdata) {
     dbus_connect_to_gsm_call();
     call_release_held_data_t *data = g_malloc (sizeof (call_release_held_data_t));
     data->callback = callback;
     data->userdata = userdata;
-    org_freesmartphone_GSM_Call_release_held_async(callBus, message, call_release_held_callback, data);
+    org_freesmartphone_GSM_Call_release_held_async(callBus, call_release_held_callback, data);
 }
 
 typedef struct
@@ -212,12 +213,12 @@ static void call_release_all_callback(DBusGProxy* proxy, GError *dbus_error, gpo
     g_free (data);
 }
 
-void call_release_all(const char *message, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
+void call_release_all(void (*callback)(GError *, gpointer userdata), gpointer userdata) {
     dbus_connect_to_gsm_call();
     call_release_all_data_t *data = g_malloc (sizeof (call_release_all_data_t));
     data->callback = callback;
     data->userdata = userdata;
-    org_freesmartphone_GSM_Call_release_all_async(callBus, message, call_release_all_callback, data);
+    org_freesmartphone_GSM_Call_release_all_async(callBus, call_release_all_callback, data);
 }
 
 typedef struct

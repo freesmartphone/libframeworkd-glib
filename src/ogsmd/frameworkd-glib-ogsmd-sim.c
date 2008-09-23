@@ -22,9 +22,9 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include "frameworkd-glib-dbus.h"
+#include "frameworkd-glib-ogsmd-dbus.h"
 #include "dbus/sim.h"
-#include "frameworkd-glib-sim.h"
+#include "frameworkd-glib-ogsmd-sim.h"
 
 DBusGProxy *simBus = NULL;
 

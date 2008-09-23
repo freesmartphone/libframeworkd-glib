@@ -14,8 +14,8 @@
  *  GNU Lesser Public License for more details.
  */
 
-#ifndef _FRAMEWORKD_GLIB_DBUS_H
-#define _FRAMEWORKD_GLIB_DBUS_H
+#ifndef FRAMEWORKD_GLIB_OGSMD_DBUS_H
+#define FRAMEWORKD_GLIB_OGSMD_DBUS_H
 
 #define DEBUG
 #define NETWORKD_BUS		"org.freesmartphone.onetworkd"
@@ -52,11 +52,11 @@ GError* network_handle_errors(GError *dbus_error);
 GError* call_handle_errors(GError *dbus_error);
 GError* sim_handle_errors(GError *dbus_error);
 void dbus_connect_to_bus(FrameworkdHandlers* fwHandler);
-void dbus_connect_to_gsm_call();
-void dbus_connect_to_gsm_network();
-void dbus_connect_to_gsm_sim();
-void dbus_connect_to_gsm_device();
-void dbus_connect_to_gsm_sms();
+void dbus_connect_to_ogsmd_call();
+void dbus_connect_to_ogsmd_network();
+void dbus_connect_to_ogsmd_sim();
+void dbus_connect_to_ogsmd_device();
+void dbus_connect_to_ogsmd_sms();
 GType dbus_get_type_g_string_variant_hashtable();
 GType dbus_get_type_g_string_int_int_int_array();
 GType dbus_get_type_int_g_string_g_string_variant_hashtable_array();

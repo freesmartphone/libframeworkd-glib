@@ -21,12 +21,12 @@
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-#include "frameworkd-glib-dbus.h"
-#include "frameworkd-glib-call.h"
-#include "frameworkd-glib-sim.h"
-#include "frameworkd-glib-network.h"
-#include "frameworkd-glib-device.h"
-#include "frameworkd-glib-sms.h"
+#include "frameworkd-glib-ogsmd-dbus.h"
+#include "frameworkd-glib-ogsmd-call.h"
+#include "frameworkd-glib-ogsmd-sim.h"
+#include "frameworkd-glib-ogsmd-network.h"
+#include "frameworkd-glib-ogsmd-device.h"
+#include "frameworkd-glib-ogsmd-sms.h"
 #include "dialer-marshal.h"
 
 DBusGConnection* bus;
@@ -76,7 +76,7 @@ GError* dbus_handle_errors(GError *dbus_error) {
     } else {
         lose_gerror("Unknown error", dbus_error);
     }
-    
+
     return error;
 }
 
@@ -122,7 +122,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         printf("Adding signals.\n");
 #endif
         if(fwHandler->networkStatus != NULL) {
-            dbus_connect_to_gsm_network();
+            dbus_connect_to_ogsmd_network();
             dbus_g_proxy_add_signal (networkBus, "Status", dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (networkBus, "Status", G_CALLBACK (network_status_handler),
                     fwHandler->networkStatus, NULL);
@@ -132,7 +132,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
 #endif
         }
         if(fwHandler->networkSignalStrength != NULL) {
-            dbus_connect_to_gsm_network();
+            dbus_connect_to_ogsmd_network();
             dbus_g_proxy_add_signal (networkBus, "SignalStrength", G_TYPE_UINT , G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (networkBus, "SignalStrength", G_CALLBACK (network_signal_strength_handler),
                     fwHandler->networkSignalStrength, NULL);
@@ -141,7 +141,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
 #endif
         }
         if(fwHandler->simAuthStatus != NULL) {
-            dbus_connect_to_gsm_sim();
+            dbus_connect_to_ogsmd_sim();
             dbus_g_proxy_add_signal (simBus, "AuthStatus", G_TYPE_STRING, G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (simBus, "AuthStatus", G_CALLBACK (sim_auth_status_handler),
                     fwHandler->simAuthStatus, NULL);
@@ -150,7 +150,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
 #endif
         }
         if(fwHandler->callCallStatus != NULL) {
-            dbus_connect_to_gsm_call();
+            dbus_connect_to_ogsmd_call();
             dbus_g_proxy_add_signal (callBus, "CallStatus", G_TYPE_UINT, G_TYPE_STRING, dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (callBus, "CallStatus", G_CALLBACK (call_status_handler),
                     fwHandler->callCallStatus, NULL);
@@ -160,7 +160,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         }
 
         if(fwHandler->smsMessageSent != NULL) {
-            dbus_connect_to_gsm_sms();
+            dbus_connect_to_ogsmd_sms();
             dbus_g_proxy_add_signal (smsBus, "MessageSent", G_TYPE_UINT, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (smsBus, "MessageSent", G_CALLBACK (sms_message_sent_handler),
                     fwHandler->smsMessageSent, NULL);
@@ -169,7 +169,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
 #endif
         }
         if(fwHandler->smsIncomingMessage != NULL) {
-            dbus_connect_to_gsm_sms();
+            dbus_connect_to_ogsmd_sms();
             dbus_g_proxy_add_signal (smsBus, "IncomingMessage", G_TYPE_UINT, G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (smsBus, "IncomingMessage", G_CALLBACK (sms_incoming_message_handler),
                     fwHandler->smsIncomingMessage, NULL);
@@ -180,28 +180,30 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
     }
 }
 
-    void dbus_connect_to_gsm_call() {
-        if(callBus == NULL)
-            callBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, CALL_INTERFACE, "GSM.Call");
-    }
+void dbus_connect_to_ogsmd_call() {
+    if(callBus == NULL)
+        callBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, CALL_INTERFACE, "GSM.Call");
+}
 
-    void dbus_connect_to_gsm_network() {
-        if(networkBus == NULL)
-            networkBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, NETWORK_INTERFACE, "GSM.Network");
-    }
+void dbus_connect_to_ogsmd_network() {
+    if(networkBus == NULL)
+        networkBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, NETWORK_INTERFACE, "GSM.Network");
+}
 
-    void dbus_connect_to_gsm_sim() {
-        if(simBus == NULL)
-            simBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, SIM_INTERFACE, "GSM.SIM");
-    }
-    void dbus_connect_to_gsm_device() {
-        if(deviceBus == NULL)
-            deviceBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, DEVICE_INTERFACE, "GSM.Device"); 
-    }
-    void dbus_connect_to_gsm_sms() {
-        if(smsBus == NULL)
-            smsBus = dbus_connect_to_interface(GSMD_BUS, BUS_PATH, SMS_INTERFACE, "GSM.SMS");
-    }
+void dbus_connect_to_ogsmd_sim() {
+    if(simBus == NULL)
+        simBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, SIM_INTERFACE, "GSM.SIM");
+}
+
+void dbus_connect_to_ogsmd_device() {
+    if(deviceBus == NULL)
+        deviceBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, DEVICE_INTERFACE, "GSM.Device"); 
+}
+
+void dbus_connect_to_ogsmd_sms() {
+    if(smsBus == NULL)
+        smsBus = dbus_connect_to_interface(GSMD_BUS, BUS_PATH, SMS_INTERFACE, "GSM.SMS");
+}
 
 DBusGProxy *dbus_connect_to_interface(char *bus_name, char *path, char *interface, char *interface_name) {
     DBusGProxy *itf = NULL;

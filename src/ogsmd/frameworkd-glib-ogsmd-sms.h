@@ -14,8 +14,8 @@
  *  GNU Lesser Public License for more details.
  */
 
-#ifndef _FRAMEWORKD_GLIB_SMS_H
-#define _FRAMEWORKD_GLIB_SMS_H
+#ifndef FRAMEWORKD_GLIB_OGSMD_SMS_H
+#define FRAMEWORKD_GLIB_OGSMD_SMS_H
 
 //#define SMS_ERROR g_quark_from_static_string(CALL_INTERFACE
 

@@ -14,8 +14,8 @@
  *  GNU Lesser Public License for more details.
  */
 
-#ifndef _FRAMEWORKD_GLIB_SIM_H
-#define _FRAMEWORKD_GLIB_SIM_H
+#ifndef FRAMEWORKD_GLIB_OGSMD_SIM_H
+#define FRAMEWORKD_GLIB_OGSMD_SIM_H
 
 #include <dbus/dbus-glib.h>
 

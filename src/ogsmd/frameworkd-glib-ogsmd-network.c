@@ -21,8 +21,8 @@
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-#include "frameworkd-glib-network.h"
-#include "frameworkd-glib-dbus.h"
+#include "frameworkd-glib-ogsmd-network.h"
+#include "frameworkd-glib-ogsmd-dbus.h"
 #include "dbus/network.h"
 
 DBusGProxy *networkBus = NULL;
