@@ -27,7 +27,7 @@
 
 DBusGProxy *smsBus = NULL;
 
-void sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboolean success, const char* reason, gpointer userdata) {
+void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboolean success, const char* reason, gpointer userdata) {
     void (*callback)(const int, const gboolean, const char*) = NULL;
 
     callback = userdata;
@@ -37,7 +37,7 @@ void sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboolean s
 
 }
 
-void sms_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata) {
+void ogsmd_sms_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata) {
     void (*callback)(const int) = NULL;
 
     callback = userdata;
@@ -51,10 +51,10 @@ typedef struct
 {
     void (*callback)(GError *, int, gpointer);
     gpointer userdata;
-} sms_send_message_data_t;
+} ogsmd_sms_send_message_data_t;
 
-void sms_send_message_callback(DBusGProxy* bus, int transaction_index, GError *dbus_error, gpointer userdata) {
-    sms_send_message_data_t *data = userdata;
+void ogsmd_sms_send_message_callback(DBusGProxy* bus, int transaction_index, GError *dbus_error, gpointer userdata) {
+    ogsmd_sms_send_message_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -69,25 +69,25 @@ void sms_send_message_callback(DBusGProxy* bus, int transaction_index, GError *d
     g_free(data);
 }
 
-void sms_send_message(const char*number, const char* content, gboolean report, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata) {
+void ogsmd_sms_send_message(const char*number, const char* content, gboolean report, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_sms();
 
-    sms_send_message_data_t *data = g_malloc (sizeof (sms_send_message_data_t));
+    ogsmd_sms_send_message_data_t *data = g_malloc (sizeof (ogsmd_sms_send_message_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
     if(number != NULL && content != NULL)
-        org_freesmartphone_GSM_SMS_send_message_async(smsBus, number, content, report, sms_send_message_callback, data);
+        org_freesmartphone_GSM_SMS_send_message_async(smsBus, number, content, report, ogsmd_sms_send_message_callback, data);
 }
 
 typedef struct
 {
     void (*callback)(GError *, char *mode, gpointer);
     gpointer userdata;
-} sms_get_service_bearer_data_t;
+} ogsmd_sms_get_service_bearer_data_t;
 
-void sms_get_service_bearer_callback(DBusGProxy* bus, char* mode, GError *dbus_error, gpointer userdata) {
-    sms_get_service_bearer_data_t *data = userdata;
+void ogsmd_sms_get_service_bearer_callback(DBusGProxy* bus, char* mode, GError *dbus_error, gpointer userdata) {
+    ogsmd_sms_get_service_bearer_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -103,24 +103,24 @@ void sms_get_service_bearer_callback(DBusGProxy* bus, char* mode, GError *dbus_e
     free(mode);
 }
 
-void sms_get_service_bearer(void (*callback)(GError*, char* mode, gpointer), gpointer userdata) {
+void ogsmd_sms_get_service_bearer(void (*callback)(GError*, char* mode, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_sms();
 
-    sms_get_service_bearer_data_t *data = g_malloc (sizeof (sms_get_service_bearer_data_t));
+    ogsmd_sms_get_service_bearer_data_t *data = g_malloc (sizeof (ogsmd_sms_get_service_bearer_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_SMS_get_service_bearer_async(smsBus, sms_get_service_bearer_callback, data);
+    org_freesmartphone_GSM_SMS_get_service_bearer_async(smsBus, ogsmd_sms_get_service_bearer_callback, data);
 }
 
 typedef struct
 {
     void (*callback)(GError *, gpointer);
     gpointer userdata;
-} sms_set_service_bearer_data_t;
+} ogsmd_sms_set_service_bearer_data_t;
 
-void sms_set_service_bearer_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
-    sms_set_service_bearer_data_t *data = userdata;
+void ogsmd_sms_set_service_bearer_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
+    ogsmd_sms_set_service_bearer_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -135,13 +135,13 @@ void sms_set_service_bearer_callback(DBusGProxy* bus, GError *dbus_error, gpoint
     g_free(data);
 }
 
-void sms_set_service_bearer(const char* mode, void (*callback)(GError*, gpointer), gpointer userdata) {
+void ogsmd_sms_set_service_bearer(const char* mode, void (*callback)(GError*, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_sms();
 
-    sms_set_service_bearer_data_t *data = g_malloc (sizeof (sms_set_service_bearer_data_t));
+    ogsmd_sms_set_service_bearer_data_t *data = g_malloc (sizeof (ogsmd_sms_set_service_bearer_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
     if(mode != NULL)
-        org_freesmartphone_GSM_SMS_set_service_bearer_async(smsBus, mode, sms_set_service_bearer_callback, data);
+        org_freesmartphone_GSM_SMS_set_service_bearer_async(smsBus, mode, ogsmd_sms_set_service_bearer_callback, data);
 }

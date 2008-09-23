@@ -60,13 +60,13 @@ GError* dbus_handle_errors(GError *dbus_error) {
             error_name = dbus_g_error_get_name(dbus_error);
 
             if(!strncmp(error_name, SIM_INTERFACE, strlen(SIM_INTERFACE))) {
-                error = sim_handle_errors(dbus_error);
+                error = ogsmd_sim_handle_errors(dbus_error);
             } else if(!strncmp(error_name, CALL_INTERFACE, strlen(CALL_INTERFACE))) {
-                error = call_handle_errors(dbus_error);
+                error = ogsmd_call_handle_errors(dbus_error);
             } else if(!strncmp(error_name, NETWORK_INTERFACE, strlen(NETWORK_INTERFACE))) {
-                error =  network_handle_errors(dbus_error);
+                error =  ogsmd_network_handle_errors(dbus_error);
             } else if(!strncmp(error_name, DEVICE_INTERFACE, strlen(DEVICE_INTERFACE))) {
-                error = device_handle_errors(dbus_error);
+                error = ogsmd_device_handle_errors(dbus_error);
             } else {
                 lose_gerror ("Failed to handle error", dbus_error);
             }
@@ -124,7 +124,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         if(fwHandler->networkStatus != NULL) {
             dbus_connect_to_ogsmd_network();
             dbus_g_proxy_add_signal (networkBus, "Status", dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
-            dbus_g_proxy_connect_signal (networkBus, "Status", G_CALLBACK (network_status_handler),
+            dbus_g_proxy_connect_signal (networkBus, "Status", G_CALLBACK (ogsmd_network_status_handler),
                     fwHandler->networkStatus, NULL);
 
 #ifdef DEBUG
@@ -134,7 +134,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         if(fwHandler->networkSignalStrength != NULL) {
             dbus_connect_to_ogsmd_network();
             dbus_g_proxy_add_signal (networkBus, "SignalStrength", G_TYPE_UINT , G_TYPE_INVALID);
-            dbus_g_proxy_connect_signal (networkBus, "SignalStrength", G_CALLBACK (network_signal_strength_handler),
+            dbus_g_proxy_connect_signal (networkBus, "SignalStrength", G_CALLBACK (ogsmd_network_signal_strength_handler),
                     fwHandler->networkSignalStrength, NULL);
 #ifdef DEBUG
             printf("Added network SignalStrength.\n");
@@ -143,7 +143,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         if(fwHandler->simAuthStatus != NULL) {
             dbus_connect_to_ogsmd_sim();
             dbus_g_proxy_add_signal (simBus, "AuthStatus", G_TYPE_STRING, G_TYPE_INVALID);
-            dbus_g_proxy_connect_signal (simBus, "AuthStatus", G_CALLBACK (sim_auth_status_handler),
+            dbus_g_proxy_connect_signal (simBus, "AuthStatus", G_CALLBACK (ogsmd_sim_auth_status_handler),
                     fwHandler->simAuthStatus, NULL);
 #ifdef DEBUG
             printf("Added sim AuthStatus.\n");
@@ -152,7 +152,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         if(fwHandler->callCallStatus != NULL) {
             dbus_connect_to_ogsmd_call();
             dbus_g_proxy_add_signal (callBus, "CallStatus", G_TYPE_UINT, G_TYPE_STRING, dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
-            dbus_g_proxy_connect_signal (callBus, "CallStatus", G_CALLBACK (call_status_handler),
+            dbus_g_proxy_connect_signal (callBus, "CallStatus", G_CALLBACK (ogsmd_call_status_handler),
                     fwHandler->callCallStatus, NULL);
 #ifdef DEBUG
             printf("Added call CallStatus.\n");
@@ -162,7 +162,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         if(fwHandler->smsMessageSent != NULL) {
             dbus_connect_to_ogsmd_sms();
             dbus_g_proxy_add_signal (smsBus, "MessageSent", G_TYPE_UINT, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_INVALID);
-            dbus_g_proxy_connect_signal (smsBus, "MessageSent", G_CALLBACK (sms_message_sent_handler),
+            dbus_g_proxy_connect_signal (smsBus, "MessageSent", G_CALLBACK (ogsmd_sms_message_sent_handler),
                     fwHandler->smsMessageSent, NULL);
 #ifdef DEBUG
             printf("Added sms MessageSent.\n");
@@ -171,7 +171,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         if(fwHandler->smsIncomingMessage != NULL) {
             dbus_connect_to_ogsmd_sms();
             dbus_g_proxy_add_signal (smsBus, "IncomingMessage", G_TYPE_UINT, G_TYPE_INVALID);
-            dbus_g_proxy_connect_signal (smsBus, "IncomingMessage", G_CALLBACK (sms_incoming_message_handler),
+            dbus_g_proxy_connect_signal (smsBus, "IncomingMessage", G_CALLBACK (ogsmd_sms_incoming_message_handler),
                     fwHandler->smsIncomingMessage, NULL);
 #ifdef DEBUG
             printf("Added sms IncomingMessage.\n");

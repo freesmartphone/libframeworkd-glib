@@ -27,7 +27,7 @@
 
 DBusGProxy *deviceBus = NULL;
 
-GError* device_handle_errors(GError *dbus_error) {
+GError* ogsmd_device_handle_errors(GError *dbus_error) {
     const char *error_name = dbus_g_error_get_name(dbus_error);
     int deviceError = 0;
 
@@ -47,10 +47,10 @@ typedef struct
 {
     void (*callback)(GError *, gpointer);
     gpointer userdata;
-} device_set_antenna_power_data_t;
+} ogsmd_device_set_antenna_power_data_t;
 
-void device_set_antenna_power_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
-    device_set_antenna_power_data_t *data = userdata;
+void ogsmd_device_set_antenna_power_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
+    ogsmd_device_set_antenna_power_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -65,24 +65,24 @@ void device_set_antenna_power_callback(DBusGProxy* bus, GError *dbus_error, gpoi
     g_free(data);
 }
 
-void device_set_antenna_power(gboolean power, void (*callback)(GError *, gpointer), gpointer userdata) {
+void ogsmd_device_set_antenna_power(gboolean power, void (*callback)(GError *, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_device();
 
-    device_set_antenna_power_data_t *data = g_malloc (sizeof (device_set_antenna_power_data_t));
+    ogsmd_device_set_antenna_power_data_t *data = g_malloc (sizeof (ogsmd_device_set_antenna_power_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Device_set_antenna_power_async (deviceBus, power, device_set_antenna_power_callback, data);
+    org_freesmartphone_GSM_Device_set_antenna_power_async (deviceBus, power, ogsmd_device_set_antenna_power_callback, data);
 }
 
 typedef struct
 {
     void (*callback)(GError *, gboolean power, gpointer);
     gpointer userdata;
-} device_get_antenna_power_data_t;
+} ogsmd_device_get_antenna_power_data_t;
 
-void device_get_antenna_power_callback(DBusGProxy* bus, gboolean power, GError *dbus_error, gpointer userdata) {
-    device_get_antenna_power_data_t *data = userdata;
+void ogsmd_device_get_antenna_power_callback(DBusGProxy* bus, gboolean power, GError *dbus_error, gpointer userdata) {
+    ogsmd_device_get_antenna_power_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -97,24 +97,24 @@ void device_get_antenna_power_callback(DBusGProxy* bus, gboolean power, GError *
     g_free(data);
 }
 
-void device_get_antenna_power(void (*callback)(GError *, gboolean power, gpointer), gpointer userdata) {
+void ogsmd_device_get_antenna_power(void (*callback)(GError *, gboolean power, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_device();
 
-    device_get_antenna_power_data_t *data = g_malloc (sizeof (device_get_antenna_power_data_t));
+    ogsmd_device_get_antenna_power_data_t *data = g_malloc (sizeof (ogsmd_device_get_antenna_power_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Device_get_antenna_power_async(deviceBus, device_get_antenna_power_callback, data);
+    org_freesmartphone_GSM_Device_get_antenna_power_async(deviceBus, ogsmd_device_get_antenna_power_callback, data);
 }
 
 typedef struct
 {
     void (*callback)(GError *, GHashTable* info, gpointer);
     gpointer userdata;
-} device_get_info_data_t;
+} ogsmd_device_get_info_data_t;
 
-void device_get_info_callback(DBusGProxy* bus, GHashTable *info, GError *dbus_error, gpointer userdata) {
-    device_get_info_data_t *data = userdata;
+void ogsmd_device_get_info_callback(DBusGProxy* bus, GHashTable *info, GError *dbus_error, gpointer userdata) {
+    ogsmd_device_get_info_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -132,24 +132,24 @@ void device_get_info_callback(DBusGProxy* bus, GHashTable *info, GError *dbus_er
     g_free(data);
 }
 
-void device_get_info(void (*callback)(GError *, GHashTable *info, gpointer), gpointer userdata) {
+void ogsmd_device_get_info(void (*callback)(GError *, GHashTable *info, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_device();
 
-    device_get_info_data_t *data = g_malloc (sizeof (device_get_info_data_t));
+    ogsmd_device_get_info_data_t *data = g_malloc (sizeof (ogsmd_device_get_info_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Device_get_info_async(deviceBus, device_get_info_callback, data);
+    org_freesmartphone_GSM_Device_get_info_async(deviceBus, ogsmd_device_get_info_callback, data);
 }
 
 typedef struct
 {
     void (*callback)(GError *, GHashTable* features, gpointer);
     gpointer userdata;
-} device_get_features_data_t;
+} ogsmd_device_get_features_data_t;
 
-void device_get_features_callback(DBusGProxy* bus, GHashTable *features, GError *dbus_error, gpointer userdata) {
-    device_get_features_data_t *data = userdata;
+void ogsmd_device_get_features_callback(DBusGProxy* bus, GHashTable *features, GError *dbus_error, gpointer userdata) {
+    ogsmd_device_get_features_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -165,24 +165,24 @@ void device_get_features_callback(DBusGProxy* bus, GHashTable *features, GError 
     g_hash_table_destroy(features);
 }
 
-void device_get_features(void (*callback)(GError *, GHashTable *features, gpointer), gpointer userdata) {
+void ogsmd_device_get_features(void (*callback)(GError *, GHashTable *features, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_device();
 
-    device_get_features_data_t *data = g_malloc (sizeof (device_get_features_data_t));
+    ogsmd_device_get_features_data_t *data = g_malloc (sizeof (ogsmd_device_get_features_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Device_get_features_async(deviceBus, device_get_features_callback, data);
+    org_freesmartphone_GSM_Device_get_features_async(deviceBus, ogsmd_device_get_features_callback, data);
 }
 
 typedef struct
 {
     void (*callback)(GError *, gpointer);
     gpointer userdata;
-} device_prepare_to_suspend_data_t;
+} ogsmd_device_prepare_to_suspend_data_t;
 
-void device_prepare_to_suspend_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
-    device_prepare_to_suspend_data_t *data = userdata;
+void ogsmd_device_prepare_to_suspend_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
+    ogsmd_device_prepare_to_suspend_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -197,24 +197,24 @@ void device_prepare_to_suspend_callback(DBusGProxy* bus, GError *dbus_error, gpo
     g_free(data);
 }
 
-void device_prepare_to_suspend(void (*callback)(GError *, gpointer), gpointer userdata) {
+void ogsmd_device_prepare_to_suspend(void (*callback)(GError *, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_device();
 
-    device_prepare_to_suspend_data_t *data = g_malloc (sizeof (device_prepare_to_suspend_data_t));
+    ogsmd_device_prepare_to_suspend_data_t *data = g_malloc (sizeof (ogsmd_device_prepare_to_suspend_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Device_prepare_to_suspend_async(deviceBus, device_prepare_to_suspend_callback, data);
+    org_freesmartphone_GSM_Device_prepare_to_suspend_async(deviceBus, ogsmd_device_prepare_to_suspend_callback, data);
 }
 
 typedef struct
 {
     void (*callback)(GError *, gpointer);
     gpointer userdata;
-} device_recover_from_suspend_data_t;
+} ogsmd_device_recover_from_suspend_data_t;
 
-void device_recover_from_suspend_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
-    device_recover_from_suspend_data_t *data = userdata;
+void ogsmd_device_recover_from_suspend_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
+    ogsmd_device_recover_from_suspend_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -229,14 +229,14 @@ void device_recover_from_suspend_callback(DBusGProxy* bus, GError *dbus_error, g
     g_free(data);
 }
 
-void device_recover_from_suspend(void (*callback)(GError *, gpointer), gpointer userdata) {
+void ogsmd_device_recover_from_suspend(void (*callback)(GError *, gpointer), gpointer userdata) {
     dbus_connect_to_gsm_device();
 
-    device_recover_from_suspend_data_t *data = g_malloc (sizeof (device_recover_from_suspend_data_t));
+    ogsmd_device_recover_from_suspend_data_t *data = g_malloc (sizeof (ogsmd_device_recover_from_suspend_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Device_recover_from_suspend_async(deviceBus, device_recover_from_suspend_callback, data);
+    org_freesmartphone_GSM_Device_recover_from_suspend_async(deviceBus, ogsmd_device_recover_from_suspend_callback, data);
 }
 
 

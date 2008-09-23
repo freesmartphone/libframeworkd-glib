@@ -29,18 +29,18 @@ typedef enum {
     DEVICE_ERROR_FAILED = -3
 } DeviceErrors;
 
-GError* device_handle_errors(GError *dbus_error);
-void device_set_antenna_power(gboolean power, void (*callback)(GError *, gpointer), gpointer userdata);
+GError* ogsmd_device_handle_errors(GError *dbus_error);
+void ogsmd_device_set_antenna_power(gboolean power, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void device_get_antenna_power(void (*callback)(GError *, gboolean power, gpointer), gpointer userdata);
+void ogsmd_device_get_antenna_power(void (*callback)(GError *, gboolean power, gpointer), gpointer userdata);
 
-void device_get_info(void (*callback)(GError *, GHashTable *info, gpointer), gpointer userdata);
+void ogsmd_device_get_info(void (*callback)(GError *, GHashTable *info, gpointer), gpointer userdata);
 
-void device_get_features(void (*callback)(GError *, GHashTable *features, gpointer), gpointer userdata);
+void ogsmd_device_get_features(void (*callback)(GError *, GHashTable *features, gpointer), gpointer userdata);
 
-void device_prepare_to_suspend(void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_device_prepare_to_suspend(void (*callback)(GError *, gpointer), gpointer userdata);
 
-void device_recover_from_suspend(void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_device_recover_from_suspend(void (*callback)(GError *, gpointer), gpointer userdata);
 
 extern DBusGProxy *deviceBus ;
 

@@ -57,29 +57,29 @@ typedef enum {
     CALL_PROPERTIES_NUMBER
 } CallProperties;
 
-void call_status_handler (DBusGProxy *proxy, const int id, const char *status, GHashTable * properties, gpointer user_data);
+void ogsmd_call_status_handler (DBusGProxy *proxy, const int id, const char *status, GHashTable * properties, gpointer user_data);
 
-void call_initiate(const char *number, const char* call_type, void (*callback)(GError *, int id_call, gpointer), gpointer userdata);
+void ogsmd_call_initiate(const char *number, const char* ogsmd_call_type, void (*callback)(GError *, int id_call, gpointer), gpointer userdata);
 
-void call_release(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_release(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_release_held(void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_release_held(void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_release_all(void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_release_all(void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_activate(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_activate(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_activate_conference(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_activate_conference(const int id_call, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_hold_active(void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_hold_active(void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_join(void(*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_join(void(*callback)(GError *, gpointer), gpointer userdata);
 
-void call_transfer(const char *number, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_transfer(const char *number, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void call_list_calls(void (*callback)(GError *, GPtrArray* calls, gpointer), gpointer userdata);
+void ogsmd_call_list_calls(void (*callback)(GError *, GPtrArray* calls, gpointer), gpointer userdata);
 
-void call_send_dtmf(const char *tones, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_call_send_dtmf(const char *tones, void (*callback)(GError *, gpointer), gpointer userdata);
 
 extern DBusGProxy *callBus;
 

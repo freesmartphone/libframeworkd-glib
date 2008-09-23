@@ -116,43 +116,43 @@ typedef enum {
 
 extern DBusGProxy *networkBus;
 
-void network_status_handler (DBusGProxy *proxy, const  GHashTable * status, gpointer user_data);
-void network_signal_strength_handler (DBusGProxy *proxy, const int signal_strength, gpointer user_data);
+void ogsmd_network_status_handler (DBusGProxy *proxy, const  GHashTable * status, gpointer user_data);
+void ogsmd_network_signal_strength_handler (DBusGProxy *proxy, const int signal_strength, gpointer user_data);
 
-void network_register(void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_network_register(void (*callback)(GError *, gpointer), gpointer userdata);
 
-void network_register_with_provider(int provider_id, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_network_register_with_provider(int provider_id, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void network_unregister(void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_network_unregister(void (*callback)(GError *, gpointer), gpointer userdata);
 
-void network_get_status(void (*callback)(GError *, GHashTable* status, gpointer), gpointer userdata);
+void ogsmd_network_get_status(void (*callback)(GError *, GHashTable* status, gpointer), gpointer userdata);
 
-void network_get_signal_strength(void (*callback)(GError *, int strength, gpointer), gpointer userdata);
+void ogsmd_network_get_signal_strength(void (*callback)(GError *, int strength, gpointer), gpointer userdata);
 
-void network_list_providers(void (*callback)(GError *, GPtrArray* providers, gpointer), gpointer userdata);
+void ogsmd_network_list_providers(void (*callback)(GError *, GPtrArray* providers, gpointer), gpointer userdata);
 
-void network_get_country_code(void (*callback)(GError *, char* country_code, gpointer), gpointer userdata);
+void ogsmd_network_get_country_code(void (*callback)(GError *, char* country_code, gpointer), gpointer userdata);
 
-void network_get_call_forwarding(void (*callback)(GError *, GHashTable* forwards, gpointer), gpointer userdata);
+void ogsmd_network_get_call_forwarding(void (*callback)(GError *, GHashTable* forwards, gpointer), gpointer userdata);
 
-void network_enable_call_forwarding(int reason, int forward_class, char *number, int timeout, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_network_enable_call_forwarding(int reason, int forward_class, char *number, int timeout, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void network_disable_call_forwarding(int reason, int forward_class, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_network_disable_call_forwarding(int reason, int forward_class, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void network_set_calling_identification(int visible, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_network_set_calling_identification(int visible, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void network_get_calling_identification(void (*callback)(GError *, int visible, gpointer), gpointer userdata);
+void ogsmd_network_get_calling_identification(void (*callback)(GError *, int visible, gpointer), gpointer userdata);
 
-int network_get_registration_status_from_dbus(GHashTable *properties);
-const char* network_get_location_area_from_dbus(GHashTable *properties);
-const char* network_get_provider_from_dbus(GHashTable *properties);
-const char* network_get_cell_id_from_dbus(GHashTable *properties);
-int network_get_signal_strength_from_dbus(GHashTable *properties);
+int ogsmd_network_get_registration_status_from_dbus(GHashTable *properties);
+const char* ogsmd_network_get_location_area_from_dbus(GHashTable *properties);
+const char* ogsmd_network_get_provider_from_dbus(GHashTable *properties);
+const char* ogsmd_network_get_cell_id_from_dbus(GHashTable *properties);
+int ogsmd_network_get_signal_strength_from_dbus(GHashTable *properties);
 
-char* network_get_reason_for_dbus(int reason);
-int network_get_reason_from_dbus(char *reason);
-char * network_get_forward_class_for_dbus(int forward_class);
-int network_get_forward_class_from_dbus(char *forward_class);
-char * network_get_visible_for_dbus(int visible);
-int network_get_visible_from_dbus(char *);
+char* ogsmd_network_get_reason_for_dbus(int reason);
+int ogsmd_network_get_reason_from_dbus(char *reason);
+char * ogsmd_network_get_forward_class_for_dbus(int forward_class);
+int ogsmd_network_get_forward_class_from_dbus(char *forward_class);
+char * ogsmd_network_get_visible_for_dbus(int visible);
+int ogsmd_network_get_visible_from_dbus(char *);
 #endif
