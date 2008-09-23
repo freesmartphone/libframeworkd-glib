@@ -102,7 +102,7 @@ static void ogsmd_call_initiate_callback(DBusGProxy* proxy, int id_call, GError 
 }
 
 void ogsmd_call_initiate(const char *number, const char* ogsmd_call_type, void (*callback)(GError *, int id_call, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_initiate_data_t *data = g_malloc (sizeof (ogsmd_call_initiate_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -126,7 +126,7 @@ static void ogsmd_call_release_callback(DBusGProxy* proxy, GError *dbus_error, g
 }
 
 void ogsmd_call_release(const int id_call, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_release_data_t *data = g_malloc (sizeof (ogsmd_call_release_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -152,7 +152,7 @@ static void ogsmd_call_activate_callback(DBusGProxy* proxy, GError *dbus_error, 
 }
 
 void ogsmd_call_activate(const int id_call, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_activate_data_t *data = g_malloc (sizeof (ogsmd_call_activate_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -183,7 +183,7 @@ static void ogsmd_call_release_held_callback(DBusGProxy* proxy, GError *dbus_err
 }
 
 void ogsmd_call_release_held(void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_release_held_data_t *data = g_malloc (sizeof (ogsmd_call_release_held_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -214,7 +214,7 @@ static void ogsmd_call_release_all_callback(DBusGProxy* proxy, GError *dbus_erro
 }
 
 void ogsmd_call_release_all(void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_release_all_data_t *data = g_malloc (sizeof (ogsmd_call_release_all_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -245,7 +245,7 @@ static void ogsmd_call_activate_conference_callback(DBusGProxy* proxy, GError *d
 }
 
 void ogsmd_call_activate_conference(const int id_call, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_activate_conference_data_t *data = g_malloc (sizeof (ogsmd_call_activate_conference_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -276,7 +276,7 @@ static void ogsmd_call_hold_active_callback(DBusGProxy* proxy, GError *dbus_erro
 }
 
 void ogsmd_call_hold_active(void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_hold_active_data_t *data = g_malloc (sizeof (ogsmd_call_hold_active_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -308,7 +308,7 @@ static void ogsmd_call_join_callback(DBusGProxy* proxy, GError *dbus_error, gpoi
 }
 
 void ogsmd_call_join(void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_join_data_t *data = g_malloc (sizeof (ogsmd_call_join_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -340,7 +340,7 @@ static void ogsmd_call_transfer_callback(DBusGProxy* proxy, GError *dbus_error, 
 }
 
 void ogsmd_call_transfer(const char* number, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_transfer_data_t *data = g_malloc (sizeof (ogsmd_call_transfer_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -372,7 +372,7 @@ static void ogsmd_call_send_dtmf_callback(DBusGProxy* proxy, GError *dbus_error,
 }
 
 void ogsmd_call_send_dtmf(const char* tones, void (*callback)(GError *, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_send_dtmf_data_t *data = g_malloc (sizeof (ogsmd_call_send_dtmf_data_t));
     data->callback = callback;
     data->userdata = userdata;
@@ -403,7 +403,7 @@ static void ogsmd_call_list_calls_callback(DBusGProxy* proxy, GPtrArray * calls,
 }
 
 void ogsmd_call_list_calls(void (*callback)(GError *, GPtrArray* calls, gpointer userdata), gpointer userdata) {
-    dbus_connect_to_gsm_call();
+    dbus_connect_to_ogsmd_call();
     ogsmd_call_list_calls_data_t *data = g_malloc (sizeof (ogsmd_call_list_calls_data_t));
     data->callback = callback;
     data->userdata = userdata;

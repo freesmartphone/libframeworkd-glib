@@ -70,7 +70,7 @@ void ogsmd_sms_send_message_callback(DBusGProxy* bus, int transaction_index, GEr
 }
 
 void ogsmd_sms_send_message(const char*number, const char* content, gboolean report, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sms();
+    dbus_connect_to_ogsmd_sms();
 
     ogsmd_sms_send_message_data_t *data = g_malloc (sizeof (ogsmd_sms_send_message_data_t));
     data->callback = callback;
@@ -104,7 +104,7 @@ void ogsmd_sms_get_service_bearer_callback(DBusGProxy* bus, char* mode, GError *
 }
 
 void ogsmd_sms_get_service_bearer(void (*callback)(GError*, char* mode, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sms();
+    dbus_connect_to_ogsmd_sms();
 
     ogsmd_sms_get_service_bearer_data_t *data = g_malloc (sizeof (ogsmd_sms_get_service_bearer_data_t));
     data->callback = callback;
@@ -136,7 +136,7 @@ void ogsmd_sms_set_service_bearer_callback(DBusGProxy* bus, GError *dbus_error, 
 }
 
 void ogsmd_sms_set_service_bearer(const char* mode, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sms();
+    dbus_connect_to_ogsmd_sms();
 
     ogsmd_sms_set_service_bearer_data_t *data = g_malloc (sizeof (ogsmd_sms_set_service_bearer_data_t));
     data->callback = callback;

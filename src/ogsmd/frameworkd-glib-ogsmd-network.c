@@ -79,7 +79,7 @@ void ogsmd_network_register_callback(DBusGProxy *bus, GError *dbus_error, gpoint
 }
 
 void ogsmd_network_register(void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_register_data_t *data = g_malloc (sizeof (ogsmd_network_register_data_t));
     data->callback = callback;
@@ -112,7 +112,7 @@ void ogsmd_network_register_with_provider_callback(DBusGProxy *bus, GError *dbus
 }
 
 void ogsmd_network_register_with_provider(int provider_id, void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_register_with_provider_data_t *data = g_malloc (sizeof (ogsmd_network_register_with_provider_data_t));
     data->callback = callback;
@@ -145,7 +145,7 @@ void ogsmd_network_unregister_callback(DBusGProxy *bus, GError *dbus_error, gpoi
 }
 
 void ogsmd_network_unregister(void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_unregister_data_t *data = g_malloc (sizeof (ogsmd_network_unregister_data_t));
     data->callback = callback;
@@ -178,7 +178,7 @@ void ogsmd_network_get_status_callback(DBusGProxy *bus, GHashTable *status, GErr
 }
 
 void ogsmd_network_get_status(void (*callback)(GError *, GHashTable* status, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_get_status_data_t *data = g_malloc (sizeof (ogsmd_network_get_status_data_t));
     data->callback = callback;
@@ -211,7 +211,7 @@ void ogsmd_network_get_signal_strength_callback(DBusGProxy *bus, int strength, G
 }
 
 void ogsmd_network_get_signal_strength(void (*callback)(GError *, int strength, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_get_signal_strength_data_t *data = g_malloc (sizeof (ogsmd_network_get_signal_strength_data_t));
     data->callback = callback;
@@ -244,7 +244,7 @@ void ogsmd_network_list_providers_callback(DBusGProxy *bus, GPtrArray* providers
 }
 
 void ogsmd_network_list_providers(void (*callback)(GError *, GPtrArray* providers, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_list_providers_data_t *data = g_malloc (sizeof (ogsmd_network_list_providers_data_t));
     data->callback = callback;
@@ -277,7 +277,7 @@ void ogsmd_network_get_country_code_callback(DBusGProxy *bus, char * country_cod
 }
 
 void ogsmd_network_get_country_code(void (*callback)(GError *, char* country_code, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_get_country_code_data_t *data = g_malloc (sizeof (ogsmd_network_get_country_code_data_t));
     data->callback = callback;
@@ -310,7 +310,7 @@ void ogsmd_network_get_call_forwarding_callback(DBusGProxy *bus, GHashTable* for
 }
 
 void ogsmd_network_get_call_forwarding(void (*callback)(GError *, GHashTable* forwards, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_get_call_forwarding_data_t *data = g_malloc (sizeof (ogsmd_network_get_call_forwarding_data_t));
     data->callback = callback;
@@ -343,7 +343,7 @@ void ogsmd_network_enable_call_forwarding_callback(DBusGProxy *bus, GError *dbus
 }
 
 void ogsmd_network_enable_call_forwarding(int reason, int forward_class, char* number, int timeout, void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_enable_call_forwarding_data_t *data = g_malloc (sizeof (ogsmd_network_enable_call_forwarding_data_t));
     data->callback = callback;
@@ -376,7 +376,7 @@ void ogsmd_network_disable_call_forwarding_callback(DBusGProxy *bus, GError *dbu
 }
 
 void ogsmd_network_disable_call_forwarding(int reason, int forward_class, void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_disable_call_forwarding_data_t *data = g_malloc (sizeof (ogsmd_network_disable_call_forwarding_data_t));
     data->callback = callback;
@@ -409,7 +409,7 @@ void ogsmd_network_set_calling_identification_callback(DBusGProxy *bus, GError *
 }
 
 void ogsmd_network_set_calling_identification(int visible, void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_set_calling_identification_data_t *data = g_malloc (sizeof (ogsmd_network_set_calling_identification_data_t));
     data->callback = callback;
@@ -442,7 +442,7 @@ void ogsmd_network_get_calling_identification_callback(DBusGProxy *bus, char * v
 }
 
 void ogsmd_network_get_calling_identification(void (*callback)(GError *, int visible, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_network();
+    dbus_connect_to_ogsmd_network();
 
     ogsmd_network_get_calling_identification_data_t *data = g_malloc (sizeof (ogsmd_network_get_calling_identification_data_t));
     data->callback = callback;

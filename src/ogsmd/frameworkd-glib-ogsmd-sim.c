@@ -90,7 +90,7 @@ void ogsmd_sim_get_auth_status_callback(DBusGProxy *bus, char* status, GError* d
 }
 
 void ogsmd_sim_get_auth_status(void (*callback)(GError*, int status, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_auth_status_data_t *data = g_malloc (sizeof (ogsmd_sim_get_auth_status_data_t));
     data->callback = callback;
@@ -123,7 +123,7 @@ void ogsmd_sim_send_auth_code_callback(DBusGProxy* bus, GError *dbus_error, gpoi
 }
 
 void ogsmd_sim_send_auth_code(const char* pin, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_send_auth_code_data_t *data = g_malloc (sizeof (ogsmd_sim_send_auth_code_data_t));
     data->callback = callback;
@@ -156,7 +156,7 @@ void ogsmd_sim_unlock_callback(DBusGProxy* bus, GError *dbus_error, gpointer use
 }
 
 void ogsmd_sim_unlock(const char* puk, const char* pin, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_unlock_data_t *data = g_malloc (sizeof (ogsmd_sim_unlock_data_t));
     data->callback = callback;
@@ -190,7 +190,7 @@ void ogsmd_sim_change_auth_code_callback(DBusGProxy* bus, GError *dbus_error, gp
 }
 
 void ogsmd_sim_change_auth_code(const char* old, const char* new, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_change_auth_code_data_t *data = g_malloc (sizeof (ogsmd_sim_change_auth_code_data_t));
     data->callback = callback;
@@ -229,7 +229,7 @@ void ogsmd_sim_retrieve_entry_callback(DBusGProxy* bus, char*name, char* number,
 }
 
 void ogsmd_sim_retrieve_entry(const int index, void (*callback)(GError*, char* name, char*number, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_retrieve_entry_data_t *data = g_malloc (sizeof (ogsmd_sim_retrieve_entry_data_t));
     data->callback = callback;
@@ -267,7 +267,7 @@ void ogsmd_sim_retrieve_message_callback(DBusGProxy* bus, char*number, char* con
 }
 
 void ogsmd_sim_retrieve_message(const int index, void (*callback)(GError*, char*number, char*content, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_retrieve_message_data_t *data = g_malloc (sizeof (ogsmd_sim_retrieve_message_data_t));
     data->callback = callback;
@@ -300,7 +300,7 @@ void ogsmd_sim_set_auth_code_required_callback(DBusGProxy* bus, GError *dbus_err
 }
 
 void ogsmd_sim_set_auth_code_required(gboolean check, const char* pin, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_set_auth_code_required_data_t *data = g_malloc (sizeof (ogsmd_sim_set_auth_code_required_data_t));
     data->callback = callback;
@@ -334,7 +334,7 @@ void ogsmd_sim_get_auth_code_required_callback(DBusGProxy* bus, gboolean check, 
 }
 
 void ogsmd_sim_get_auth_code_required(void (*callback)(GError*, gboolean check, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_auth_code_required_data_t *data = g_malloc (sizeof (ogsmd_sim_get_auth_code_required_data_t));
     data->callback = callback;
@@ -368,7 +368,7 @@ void ogsmd_sim_get_sim_info_callback(DBusGProxy* bus, GHashTable* ogsmd_sim_info
 }
 
 void ogsmd_sim_get_sim_info(void (*callback)(GError*, GHashTable*sim_info, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_sim_info_data_t *data = g_malloc (sizeof (ogsmd_sim_get_sim_info_data_t));
     data->callback = callback;
@@ -402,7 +402,7 @@ void ogsmd_sim_send_generic_sim_command_callback(DBusGProxy* bus, char* result, 
 }
 
 void ogsmd_sim_send_generic_sim_command(char * command, void (*callback)(GError*, char*result, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_send_generic_sim_command_data_t *data = g_malloc (sizeof (ogsmd_sim_send_generic_sim_command_data_t));
     data->callback = callback;
@@ -436,7 +436,7 @@ void ogsmd_sim_send_restricted_sim_command_callback(DBusGProxy* bus, char* resul
 }
 
 void ogsmd_sim_send_restricted_sim_command(const int command, const int fileid, const int p1, const int p2, const int p3, char * ogsmd_sim_data, void (*callback)(GError*, char* result, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_send_restricted_sim_command_data_t *data = g_malloc (sizeof (ogsmd_sim_send_restricted_sim_command_data_t));
     data->callback = callback;
@@ -471,7 +471,7 @@ void ogsmd_sim_get_home_zones_callback(DBusGProxy* bus, GPtrArray* home_zones, G
 }
 
 void ogsmd_sim_get_home_zones(void (*callback)(GError*, GPtrArray*home_zones, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_home_zones_data_t *data = g_malloc (sizeof (ogsmd_sim_get_home_zones_data_t));
     data->callback = callback;
@@ -505,7 +505,7 @@ void ogsmd_sim_get_phonebook_info_callback(DBusGProxy* bus, GHashTable* phoneboo
 }
 
 void ogsmd_sim_get_phonebook_info(void (*callback)(GError*, GHashTable*phonebook_info, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_phonebook_info_data_t *data = g_malloc (sizeof (ogsmd_sim_get_phonebook_info_data_t));
     data->callback = callback;
@@ -538,7 +538,7 @@ void ogsmd_sim_delete_entry_callback(DBusGProxy* bus, GError *dbus_error, gpoint
 }
 
 void ogsmd_sim_delete_entry(const int index, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_delete_entry_data_t *data = g_malloc (sizeof (ogsmd_sim_delete_entry_data_t));
     data->callback = callback;
@@ -571,7 +571,7 @@ void ogsmd_sim_store_entry_callback(DBusGProxy* bus, GError *dbus_error, gpointe
 }
 
 void ogsmd_sim_store_entry(const int index, char *name, char * number, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_store_entry_data_t *data = g_malloc (sizeof (ogsmd_sim_store_entry_data_t));
     data->callback = callback;
@@ -605,7 +605,7 @@ void ogsmd_sim_get_messagebook_info_callback(DBusGProxy* bus, GHashTable* messag
 }
 
 void ogsmd_sim_get_messagebook_info(void (*callback)(GError*, GHashTable*messagebook_info, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_messagebook_info_data_t *data = g_malloc (sizeof (ogsmd_sim_get_messagebook_info_data_t));
     data->callback = callback;
@@ -639,7 +639,7 @@ void ogsmd_sim_get_service_center_number_callback(DBusGProxy* bus, char* number,
 }
 
 void ogsmd_sim_get_service_center_number(void (*callback)(GError*, char*number, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_service_center_number_data_t *data = g_malloc (sizeof (ogsmd_sim_get_service_center_number_data_t));
     data->callback = callback;
@@ -672,7 +672,7 @@ void ogsmd_sim_set_service_center_number_callback(DBusGProxy* bus, GError *dbus_
 }
 
 void ogsmd_sim_set_service_center_number(char * number, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_set_service_center_number_data_t *data = g_malloc (sizeof (ogsmd_sim_set_service_center_number_data_t));
     data->callback = callback;
@@ -705,7 +705,7 @@ void ogsmd_sim_delete_message_callback(DBusGProxy* bus, GError *dbus_error, gpoi
 }
 
 void ogsmd_sim_delete_message(int index, void (*callback)(GError*, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_delete_message_data_t *data = g_malloc (sizeof (ogsmd_sim_delete_message_data_t));
     data->callback = callback;
@@ -738,7 +738,7 @@ void ogsmd_sim_store_message_callback(DBusGProxy* bus, int index, GError *dbus_e
 }
 
 void ogsmd_sim_store_message(char * number, char* content, void (*callback)(GError*, int index, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_store_message_data_t *data = g_malloc (sizeof (ogsmd_sim_store_message_data_t));
     data->callback = callback;
@@ -771,7 +771,7 @@ void ogsmd_sim_send_stored_message_callback(DBusGProxy* bus, int transaction_ind
 }
 
 void ogsmd_sim_send_stored_message(const int index, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_sim();
+    dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_send_stored_message_data_t *data = g_malloc (sizeof (ogsmd_sim_send_stored_message_data_t));
     data->callback = callback;

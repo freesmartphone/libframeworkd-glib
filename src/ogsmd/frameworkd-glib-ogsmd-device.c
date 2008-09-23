@@ -66,7 +66,7 @@ void ogsmd_device_set_antenna_power_callback(DBusGProxy* bus, GError *dbus_error
 }
 
 void ogsmd_device_set_antenna_power(gboolean power, void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_device();
+    dbus_connect_to_ogsmd_device();
 
     ogsmd_device_set_antenna_power_data_t *data = g_malloc (sizeof (ogsmd_device_set_antenna_power_data_t));
     data->callback = callback;
@@ -98,7 +98,7 @@ void ogsmd_device_get_antenna_power_callback(DBusGProxy* bus, gboolean power, GE
 }
 
 void ogsmd_device_get_antenna_power(void (*callback)(GError *, gboolean power, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_device();
+    dbus_connect_to_ogsmd_device();
 
     ogsmd_device_get_antenna_power_data_t *data = g_malloc (sizeof (ogsmd_device_get_antenna_power_data_t));
     data->callback = callback;
@@ -133,7 +133,7 @@ void ogsmd_device_get_info_callback(DBusGProxy* bus, GHashTable *info, GError *d
 }
 
 void ogsmd_device_get_info(void (*callback)(GError *, GHashTable *info, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_device();
+    dbus_connect_to_ogsmd_device();
 
     ogsmd_device_get_info_data_t *data = g_malloc (sizeof (ogsmd_device_get_info_data_t));
     data->callback = callback;
@@ -166,7 +166,7 @@ void ogsmd_device_get_features_callback(DBusGProxy* bus, GHashTable *features, G
 }
 
 void ogsmd_device_get_features(void (*callback)(GError *, GHashTable *features, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_device();
+    dbus_connect_to_ogsmd_device();
 
     ogsmd_device_get_features_data_t *data = g_malloc (sizeof (ogsmd_device_get_features_data_t));
     data->callback = callback;
@@ -198,7 +198,7 @@ void ogsmd_device_prepare_to_suspend_callback(DBusGProxy* bus, GError *dbus_erro
 }
 
 void ogsmd_device_prepare_to_suspend(void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_device();
+    dbus_connect_to_ogsmd_device();
 
     ogsmd_device_prepare_to_suspend_data_t *data = g_malloc (sizeof (ogsmd_device_prepare_to_suspend_data_t));
     data->callback = callback;
@@ -230,7 +230,7 @@ void ogsmd_device_recover_from_suspend_callback(DBusGProxy* bus, GError *dbus_er
 }
 
 void ogsmd_device_recover_from_suspend(void (*callback)(GError *, gpointer), gpointer userdata) {
-    dbus_connect_to_gsm_device();
+    dbus_connect_to_ogsmd_device();
 
     ogsmd_device_recover_from_suspend_data_t *data = g_malloc (sizeof (ogsmd_device_recover_from_suspend_data_t));
     data->callback = callback;
