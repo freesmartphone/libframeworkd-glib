@@ -37,15 +37,6 @@ void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboo
 
 }
 
-void ogsmd_sms_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata) {
-    void (*callback)(const int) = NULL;
-
-    callback = userdata;
-
-    if(callback != NULL)
-        (*callback)(id);
-
-}
 
 typedef struct
 {

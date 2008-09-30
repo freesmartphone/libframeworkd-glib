@@ -28,6 +28,17 @@
 
 DBusGProxy *simBus = NULL;
 
+
+void ogsmd_sim_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata) {
+    void (*callback)(const int) = NULL;
+
+    callback = userdata;
+
+    if(callback != NULL)
+        (*callback)(id);
+
+}
+
 void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, const char *status, gpointer user_data)
 { 
     int st;
@@ -40,7 +51,6 @@ void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, const char *status, gpoin
         (*callback)(st);
 
 }
-
 
 int ogsmd_sim_handle_authentication_state(const char*status) {
     if(!strcmp(status,DBUS_SIM_READY)) {

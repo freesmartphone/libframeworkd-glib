@@ -20,7 +20,6 @@
 //#define SMS_ERROR g_quark_from_static_string(CALL_INTERFACE
 
 void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboolean success, const char* reason, gpointer userdata);
-void ogsmd_sms_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata);
 
 void ogsmd_sms_send_message(const char* number, const char* content, const gboolean report, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata);
 

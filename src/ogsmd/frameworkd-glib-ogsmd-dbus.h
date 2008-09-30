@@ -31,16 +31,16 @@
 #define IS_DBUS_ERROR(error, code) g_error_matches(error, DBUS_ERROR, code)
 
 typedef enum {
-    DBUS_ERROR_SERVICE_NOT_AVAILABLE = -1
+    DBUS_ERROR_SERVICE_NOT_AVAILABLE = -1,
+    DBUS_ERROR_NO_REPLY = -2
 } DbusErrors;
 
 typedef struct {
     void (*networkStatus)(GHashTable *);
     void (*networkSignalStrength)(const int);
     void (*simAuthStatus)(const int);
+    void (*simIncomingMessage)(const int);
     void (*callCallStatus)(const int, const int, GHashTable *);
-    void (*smsMessageSent)(const int, gboolean, const char*) ;
-    void (*smsIncomingMessage)(const int);
 } FrameworkdHandlers;
 
 void lose (const char *str, ...);

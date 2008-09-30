@@ -51,7 +51,10 @@ typedef enum {
     SIM_ERROR_INVALID_INDEX = -6
 } SimErrors;
 
+void ogsmd_sim_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata);
+
 void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, const char *status, gpointer user_data);
+
 int ogsmd_sim_handle_authentication_state(const char*status);
 
 void ogsmd_sim_get_auth_status(void (*callback)(GError*, int status, gpointer), gpointer userdata);
