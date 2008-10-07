@@ -18,8 +18,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-#include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include "frameworkd-glib-ogsmd-call.h"
 #include "frameworkd-glib-ogsmd-dbus.h"

@@ -51,7 +51,7 @@ typedef enum {
     SIM_ERROR_INVALID_INDEX = -6
 } SimErrors;
 
-void ogsmd_sim_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata);
+void ogsmd_sim_incoming_stored_message_handler (DBusGProxy *proxy, const int id, gpointer userdata);
 
 void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, const char *status, gpointer user_data);
 
@@ -65,9 +65,9 @@ void ogsmd_sim_unlock(const char* puk, const char* pin, void (*callback)(GError*
 
 void ogsmd_sim_change_auth_code(const char* old, const char* new, void (*callback)(GError*, gpointer), gpointer userdata);
 
-void ogsmd_sim_retrieve_message(const int index, void (*callback)(GError*, char* number, char* content, gpointer), gpointer userdata);
+void ogsmd_sim_retrieve_message(const int index, void (*callback)(GError*, char* status, char* number, char* content, GHashTable*properties, gpointer), gpointer userdata);
 
-void ogsmd_sim_retrieve_entry(const int index, void (*callback)(GError*, char* name, char* number, gpointer), gpointer userdata);
+void ogsmd_sim_retrieve_entry(const char* category, const int index, void (*callback)(GError*, char* name, char* number, gpointer), gpointer userdata);
 
 void ogsmd_sim_set_auth_code_required(const gboolean check, const char* pin, void (*callback)(GError*, gpointer), gpointer userdata);
 
@@ -81,13 +81,15 @@ void ogsmd_sim_send_restricted_sim_command(const int command, const int fileid, 
 
 void ogsmd_sim_get_home_zones(void (*callback)(GError*, GPtrArray*home_zones, gpointer), gpointer userdata);
 
-void ogsmd_sim_get_phonebook_info(void (*callback)(GError*, GHashTable*phonebook_info, gpointer), gpointer userdata);
+void ogsmd_sim_get_phonebook_info(const char *category, void (*callback)(GError*, GHashTable*phonebook_info, gpointer), gpointer userdata);
 
-void ogsmd_sim_delete_entry(const int index, void (*callback)(GError*, gpointer), gpointer userdata);
+void ogsmd_sim_delete_entry(const char *category, const int index, void (*callback)(GError*, gpointer), gpointer userdata);
 
-void ogsmd_sim_store_entry(const int index, char *name, char*number, void (*callback)(GError*, gpointer), gpointer userdata);
+void ogsmd_sim_store_entry(const char *category, const int index, char *name, char*number, void (*callback)(GError*, gpointer), gpointer userdata);
 
 void ogsmd_sim_get_messagebook_info( void (*callback)(GError*, GHashTable*messagebook_info, gpointer), gpointer userdata);
+
+void ogsmd_sim_retrieve_messagebook( const char* category, void (*callback)(GError*, GPtrArray*messages, gpointer), gpointer userdata);
 
 void ogsmd_sim_get_service_center_number(void (*callback)(GError*, char*number, gpointer), gpointer userdata);
 
@@ -95,7 +97,7 @@ void ogsmd_sim_set_service_center_number(char *number,  void (*callback)(GError*
 
 void ogsmd_sim_delete_message(const int index, void (*callback)(GError*, gpointer), gpointer userdata);
 
-void ogsmd_sim_store_message(char *number, char* content, void (*callback)(GError*, int index, gpointer), gpointer userdata);
+void ogsmd_sim_store_message(char *number, char* content, GHashTable* properties, void (*callback)(GError*, int index, gpointer), gpointer userdata);
 
 void ogsmd_sim_send_stored_message(const int index, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata);
 

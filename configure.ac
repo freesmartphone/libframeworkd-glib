@@ -9,6 +9,7 @@ AC_ISC_POSIX
 AC_PROG_CC
 AC_STDC_HEADERS
 AC_PROG_LIBTOOL
+AC_LIBTOOL_DLOPEN
 
 dnl glib-genmarshal
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
@@ -25,6 +26,7 @@ AC_CONFIG_FILES([
 Makefile
 src/Makefile
 src/ogsmd/Makefile
+src/ousaged/Makefile
 libframeworkd-glib.pc
 ])
 

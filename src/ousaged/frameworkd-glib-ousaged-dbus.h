@@ -15,25 +15,16 @@
  *  GNU Lesser Public License for more details.
  */
 
-#ifndef FRAMEWORKD_GLIB_OGSMD_DBUS_H
-#define FRAMEWORKD_GLIB_OGSMD_DBUS_H
+#ifndef FRAMEWORKD_GLIB_OUSAGED_DBUS_H
+#define FRAMEWORKD_GLIB_OUSAGED_DBUS_H
 
 #include "../frameworkd-glib-dbus.h"
 
 #define DEBUG
-#define NETWORKD_BUS        "org.freesmartphone.onetworkd"
-#define GSMD_BUS            "org.freesmartphone.ogsmd"
-#define BUS_PATH            "/org/freesmartphone/GSM/Device"
-#define CALL_INTERFACE		"org.freesmartphone.GSM.Call"
-#define SIM_INTERFACE		"org.freesmartphone.GSM.SIM"
-#define NETWORK_INTERFACE 	"org.freesmartphone.GSM.Network"
-#define	DEVICE_INTERFACE	"org.freesmartphone.GSM.Device"
-#define	SMS_INTERFACE		"org.freesmartphone.GSM.SMS"
+#define OUSAGED_BUS         "org.freesmartphone.ousaged"
+#define BUS_PATH            "/org/freesmartphone/Usage"
+#define USAGE_INTERFACE		"org.freesmartphone.Usage"
 
-void dbus_connect_to_ogsmd_call();
-void dbus_connect_to_ogsmd_network();
-void dbus_connect_to_ogsmd_sim();
-void dbus_connect_to_ogsmd_device();
-void dbus_connect_to_ogsmd_sms();
+void dbus_connect_to_ousaged();
 
 #endif

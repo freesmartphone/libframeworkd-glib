@@ -155,4 +155,7 @@ char * ogsmd_network_get_forward_class_for_dbus(int forward_class);
 int ogsmd_network_get_forward_class_from_dbus(char *forward_class);
 char * ogsmd_network_get_visible_for_dbus(int visible);
 int ogsmd_network_get_visible_from_dbus(char *);
+
+GError* ogsmd_network_handle_errors(GError *dbus_error);
+
 #endif

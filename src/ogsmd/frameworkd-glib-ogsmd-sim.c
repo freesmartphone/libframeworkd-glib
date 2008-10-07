@@ -21,15 +21,14 @@
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-
 #include "frameworkd-glib-ogsmd-dbus.h"
-#include "dbus/sim.h"
 #include "frameworkd-glib-ogsmd-sim.h"
+#include "dbus/sim.h"
 
 DBusGProxy *simBus = NULL;
 
 
-void ogsmd_sim_incoming_message_handler (DBusGProxy *proxy, const int id, gpointer userdata) {
+void ogsmd_sim_incoming_stored_message_handler (DBusGProxy *proxy, const int id, gpointer userdata) {
     void (*callback)(const int) = NULL;
 
     callback = userdata;
@@ -238,23 +237,23 @@ void ogsmd_sim_retrieve_entry_callback(DBusGProxy* bus, char*name, char* number,
     g_free(data);
 }
 
-void ogsmd_sim_retrieve_entry(const int index, void (*callback)(GError*, char* name, char*number, gpointer), gpointer userdata) {
+void ogsmd_sim_retrieve_entry(const char *category, const int index, void (*callback)(GError*, char* name, char*number, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_retrieve_entry_data_t *data = g_malloc (sizeof (ogsmd_sim_retrieve_entry_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_SIM_retrieve_entry_async(simBus, index, ogsmd_sim_retrieve_entry_callback, data);
+    org_freesmartphone_GSM_SIM_retrieve_entry_async(simBus, category, index, ogsmd_sim_retrieve_entry_callback, data);
 }
 
 typedef struct
 {
-    void (*callback)(GError *, char*number, char*content, gpointer);
+    void (*callback)(GError *, char*status, char*number, char*content, GHashTable*properties, gpointer);
     gpointer userdata;
 } ogsmd_sim_retrieve_message_data_t;
 
-void ogsmd_sim_retrieve_message_callback(DBusGProxy* bus, char*number, char* content, GError *dbus_error, gpointer userdata) {
+void ogsmd_sim_retrieve_message_callback(DBusGProxy* bus, char*status, char*number, char*content, GHashTable*properties, GError *dbus_error, gpointer userdata) {
     ogsmd_sim_retrieve_message_data_t *data = userdata;
     GError *error = NULL;
 
@@ -262,7 +261,7 @@ void ogsmd_sim_retrieve_message_callback(DBusGProxy* bus, char*number, char* con
         if(dbus_error != NULL)
             error = dbus_handle_errors(dbus_error);
 
-        data->callback (error, number, content, data->userdata);
+        data->callback (error, status, number, content, properties, data->userdata);
         if(error != NULL) g_error_free(error);
     }
 
@@ -276,7 +275,7 @@ void ogsmd_sim_retrieve_message_callback(DBusGProxy* bus, char*number, char* con
     g_free(data);
 }
 
-void ogsmd_sim_retrieve_message(const int index, void (*callback)(GError*, char*number, char*content, gpointer), gpointer userdata) {
+void ogsmd_sim_retrieve_message(const int index, void (*callback)(GError*, char*status, char*number, char*content, GHashTable*properties, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_retrieve_message_data_t *data = g_malloc (sizeof (ogsmd_sim_retrieve_message_data_t));
@@ -514,15 +513,56 @@ void ogsmd_sim_get_phonebook_info_callback(DBusGProxy* bus, GHashTable* phoneboo
     g_hash_table_destroy(phonebook_info);
 }
 
-void ogsmd_sim_get_phonebook_info(void (*callback)(GError*, GHashTable*phonebook_info, gpointer), gpointer userdata) {
+void ogsmd_sim_get_phonebook_info(const char* category, void (*callback)(GError*, GHashTable*phonebook_info, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_get_phonebook_info_data_t *data = g_malloc (sizeof (ogsmd_sim_get_phonebook_info_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_SIM_get_phonebook_info_async(simBus, ogsmd_sim_get_phonebook_info_callback, data);
+    org_freesmartphone_GSM_SIM_get_phonebook_info_async(simBus, category, ogsmd_sim_get_phonebook_info_callback, data);
 }
+
+
+
+
+typedef struct
+{
+    void (*callback)(GError *, GPtrArray *, gpointer);
+    gpointer userdata;
+} ogsmd_sim_retrieve_phonebook_data_t;
+
+
+void ogsmd_sim_retrieve_phonebook_callback(DBusGProxy* bus, GPtrArray*messages, GError *dbus_error, gpointer userdata) {
+    g_debug("ogsmd_sim_retrieve_phonebook_callback()");
+    ogsmd_sim_retrieve_phonebook_data_t *data = userdata;
+    GError *error = NULL;
+
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, messages, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);        
+    g_free(data);
+    // TODO: Free the messages?
+}
+
+void ogsmd_sim_retrieve_phonebook(const char *category, void (*callback)(GError*, GPtrArray*, gpointer), gpointer userdata) {
+    dbus_connect_to_ogsmd_sim();
+
+    ogsmd_sim_retrieve_phonebook_data_t *data = g_malloc (sizeof (ogsmd_sim_retrieve_phonebook_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_GSM_SIM_retrieve_phonebook_async(simBus, category, ogsmd_sim_retrieve_phonebook_callback, data);
+}
+
+
 
 typedef struct
 {
@@ -547,14 +587,14 @@ void ogsmd_sim_delete_entry_callback(DBusGProxy* bus, GError *dbus_error, gpoint
     g_free(data);
 }
 
-void ogsmd_sim_delete_entry(const int index, void (*callback)(GError*, gpointer), gpointer userdata) {
+void ogsmd_sim_delete_entry(const char *category, const int index, void (*callback)(GError*, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_delete_entry_data_t *data = g_malloc (sizeof (ogsmd_sim_delete_entry_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_SIM_delete_entry_async(simBus, index, ogsmd_sim_delete_entry_callback, data);
+    org_freesmartphone_GSM_SIM_delete_entry_async(simBus, category, index, ogsmd_sim_delete_entry_callback, data);
 }
 
 typedef struct
@@ -580,14 +620,14 @@ void ogsmd_sim_store_entry_callback(DBusGProxy* bus, GError *dbus_error, gpointe
     g_free(data);
 }
 
-void ogsmd_sim_store_entry(const int index, char *name, char * number, void (*callback)(GError*, gpointer), gpointer userdata) {
+void ogsmd_sim_store_entry(const char *category, const int index, char *name, char * number, void (*callback)(GError*, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_store_entry_data_t *data = g_malloc (sizeof (ogsmd_sim_store_entry_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_SIM_store_entry_async(simBus, index, name, number, ogsmd_sim_store_entry_callback, data);
+    org_freesmartphone_GSM_SIM_store_entry_async(simBus, category, index, name, number, ogsmd_sim_store_entry_callback, data);
 }
 
 typedef struct
@@ -623,6 +663,44 @@ void ogsmd_sim_get_messagebook_info(void (*callback)(GError*, GHashTable*message
 
     org_freesmartphone_GSM_SIM_get_messagebook_info_async(simBus, ogsmd_sim_get_messagebook_info_callback, data);
 }
+
+
+typedef struct
+{
+    void (*callback)(GError *, GPtrArray *, gpointer);
+    gpointer userdata;
+} ogsmd_sim_retrieve_messagebook_data_t;
+
+
+void ogsmd_sim_retrieve_messagebook_callback(DBusGProxy* bus, GPtrArray*messages, GError *dbus_error, gpointer userdata) {
+    g_debug("ogsmd_sim_retrieve_messagebook_callback()");
+    ogsmd_sim_retrieve_messagebook_data_t *data = userdata;
+    GError *error = NULL;
+
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, messages, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);        
+    g_free(data);
+    // TODO: Free the messages?
+}
+
+void ogsmd_sim_retrieve_messagebook(const char *category, void (*callback)(GError*, GPtrArray*, gpointer), gpointer userdata) {
+    dbus_connect_to_ogsmd_sim();
+
+    ogsmd_sim_retrieve_messagebook_data_t *data = g_malloc (sizeof (ogsmd_sim_retrieve_messagebook_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_GSM_SIM_retrieve_messagebook_async(simBus, category, ogsmd_sim_retrieve_messagebook_callback, data);
+}
+
 
 typedef struct
 {
@@ -747,14 +825,14 @@ void ogsmd_sim_store_message_callback(DBusGProxy* bus, int index, GError *dbus_e
     g_free(data);
 }
 
-void ogsmd_sim_store_message(char * number, char* content, void (*callback)(GError*, int index, gpointer), gpointer userdata) {
+void ogsmd_sim_store_message(char *number, char *content, GHashTable *properties, void (*callback)(GError*, int index, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_store_message_data_t *data = g_malloc (sizeof (ogsmd_sim_store_message_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_SIM_store_message_async(simBus, number, content, ogsmd_sim_store_message_callback, data);
+    org_freesmartphone_GSM_SIM_store_message_async(simBus, number, content, properties, ogsmd_sim_store_message_callback, data);
 }
 
 typedef struct
@@ -811,3 +889,11 @@ GError* ogsmd_sim_handle_errors(GError *error) {
     }
     return g_error_new (SIM_ERROR, simError, "TODO");
 }
+
+
+
+
+
+
+
+

@@ -17,6 +17,8 @@
 #ifndef FRAMEWORKD_GLIB_OGSMD_CALL_H
 #define FRAMEWORKD_GLIB_OGSMD_CALL_H
 
+#include <dbus/dbus-glib.h>
+
 #define CALL_ERROR g_quark_from_static_string(CALL_INTERFACE)
 #define DBUS_CALL_ERROR_NO_CARRIER "org.freesmartphone.GSM.Call.NoCarrier"
 #define DBUS_CALL_ERROR_NOT_FOUND "org.freesmartphone.GSM.Call.NotFound"
@@ -80,6 +82,8 @@ void ogsmd_call_transfer(const char *number, void (*callback)(GError *, gpointer
 void ogsmd_call_list_calls(void (*callback)(GError *, GPtrArray* calls, gpointer), gpointer userdata);
 
 void ogsmd_call_send_dtmf(const char *tones, void (*callback)(GError *, gpointer), gpointer userdata);
+
+GError* ogsmd_call_handle_errors(GError *dbus_error);
 
 extern DBusGProxy *callBus;
 
