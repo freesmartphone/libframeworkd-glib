@@ -28,7 +28,7 @@ libframeworkd_glib_la_SOURCES = frameworkd-glib-dbus.h frameworkd-glib-dbus.c \
 				$(BUILT_SOURCES)
 
 libframeworkd_glib_la_LDFLAGS = $(all_libraries) -version-info 0:0:0 -no-undefined
-# libframeworkd_glib_la_LIBADD = ogsmd/libframeworkd-glib-ogsmd.la ousaged/libframeworkd-glib-ousaged.la
+libframeworkd_glib_la_LIBADD = ogsmd/libframeworkd-glib-ogsmd.la ousaged/libframeworkd-glib-ousaged.la
 
 libframeworkd_glib_HEADERS = frameworkd-glib-dbus.h frameworkd-glib-phonegui.h
 
