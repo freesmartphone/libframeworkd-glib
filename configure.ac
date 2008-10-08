@@ -25,6 +25,8 @@ AC_SUBST(DIALER_LIBS)
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
+src/ogsmd/Makefile
+src/ousaged/Makefile
 libframeworkd-glib.pc
 ])
 

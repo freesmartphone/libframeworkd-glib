@@ -1,3 +1,5 @@
+SUBDIRS = ogsmd ousaged
+
 AM_CPPFLAGS = -DDATADIR=\"$(datadir)\" -DPKGDATADIR=\"$(pkgdatadir)\"
 AM_CFLAGS = -Wall @DIALER_CFLAGS@
 
@@ -33,11 +35,7 @@ libframeworkd_glib_la_SOURCES = \
 	$(BUILT_SOURCES)
 
 libframeworkd_glib_HEADERS = \
-	frameworkd-glib-dbus.h frameworkd-glib-phonegui.h \
-	ogsmd/frameworkd-glib-ogsmd-dbus.h ogsmd/frameworkd-glib-ogsmd-sim.h \
-	ogsmd/frameworkd-glib-ogsmd-network.h ogsmd/frameworkd-glib-ogsmd-call.h \
-	ogsmd/frameworkd-glib-ogsmd-device.h ogsmd/frameworkd-glib-ogsmd-sms.h \
-	ousaged/frameworkd-glib-ousaged-dbus.h ousaged/frameworkd-glib-ousaged.h
+	frameworkd-glib-dbus.h frameworkd-glib-phonegui.h
 
 libframeworkd_glibdir = $(includedir)/frameworkd-glib/
 
