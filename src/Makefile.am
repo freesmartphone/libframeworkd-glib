@@ -23,7 +23,6 @@ dialer-marshal.c: dialer-marshal.list dialer-marshal.h
 
 libframeworkd_glib_la_SOURCES = \
 	frameworkd-glib-dbus.h frameworkd-glib-dbus.c \
-	frameworkd-glib-phonegui.h frameworkd-glib-phonegui.c \
 	ogsmd/frameworkd-glib-ogsmd-dbus.c ogsmd/frameworkd-glib-ogsmd-dbus.h \
 	ogsmd/frameworkd-glib-ogsmd-sim.c ogsmd/frameworkd-glib-ogsmd-sim.h \
 	ogsmd/frameworkd-glib-ogsmd-network.c ogsmd/frameworkd-glib-ogsmd-network.h \
@@ -35,7 +34,7 @@ libframeworkd_glib_la_SOURCES = \
 	$(BUILT_SOURCES)
 
 libframeworkd_glib_HEADERS = \
-	frameworkd-glib-dbus.h frameworkd-glib-phonegui.h
+	frameworkd-glib-dbus.h
 
 libframeworkd_glibdir = $(includedir)/frameworkd-glib/
 
