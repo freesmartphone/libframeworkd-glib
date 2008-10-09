@@ -1,8 +1,6 @@
 /*
  *  Copyright (C) 2008
  *      Authors (alphabetical) :
- *              Marc-Olivier Barre <marco@marcochapeau.org>
- *              Julien Cassignol <ainulindale@gmail.com>
  *              quickdev
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -20,11 +18,21 @@
 
 GError* ousaged_handle_errors(GError *dbus_error);
 
+void ousaged_list_resources(void (*callback)(GError *, char**, gpointer), gpointer userdata);
+
+void ousaged_get_resource_policy(const char *name, void (*callback)(GError *, char*, gpointer), gpointer userdata);
+
+void ousaged_set_resource_policy(const char *name, const char *policy, void (*callback)(GError *, gpointer), gpointer userdata);
+
+void ousaged_get_resource_state(const char *name, void (*callback)(GError *, gboolean, gpointer), gpointer userdata);
+
+void ousaged_get_resource_users(const char *name, void (*callback)(GError *, char **, gpointer), gpointer userdata);
+
 void ousaged_request_resource(const char *name, void (*callback)(GError *, gpointer), gpointer userdata);
 
 void ousaged_release_resource(const char *name, void (*callback)(GError *, gpointer), gpointer userdata);
 
-void ousaged_list_resources(void (*callback)(GError *, char**, gpointer), gpointer userdata);
+void ousaged_suspend(void (*callback)(GError *, gpointer), gpointer userdata);
 
 extern DBusGProxy *ousagedBus ;
 

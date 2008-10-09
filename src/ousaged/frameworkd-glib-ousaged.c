@@ -36,6 +36,182 @@ GError* ousaged_handle_errors(GError *dbus_error) {
 }
 
 
+
+
+typedef struct
+{
+    void (*callback)(GError *, char**, gpointer);
+    gpointer userdata;
+} ousaged_list_resources_data_t;
+
+
+void ousaged_list_resources_callback(DBusGProxy* bus, char** resources, GError *dbus_error, gpointer userdata) {
+    ousaged_list_resources_data_t *data = userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, resources, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);
+    g_free(data);
+}
+
+void ousaged_list_resources(void (*callback)(GError *, char**, gpointer), gpointer userdata) {
+    dbus_connect_to_ousaged();
+
+    ousaged_list_resources_data_t *data = g_malloc (sizeof (ousaged_list_resources_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_Usage_list_resources_async (ousagedBus, ousaged_list_resources_callback, data);
+}
+
+
+
+
+typedef struct
+{
+    void (*callback)(GError *, char*, gpointer);
+    gpointer userdata;
+} ousaged_get_resource_policy_data_t;
+
+void ousaged_get_resource_policy_callback(DBusGProxy* bus, char* policy, GError *dbus_error, gpointer userdata) {
+    ousaged_get_resource_policy_data_t *data = userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, policy, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);
+    g_free(data);
+}
+
+void ousaged_get_resource_policy(const char *name, void (*callback)(GError *, char*, gpointer), gpointer userdata) {
+    dbus_connect_to_ousaged();
+
+    ousaged_get_resource_policy_data_t *data = g_malloc (sizeof (ousaged_get_resource_policy_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_Usage_get_resource_policy_async (ousagedBus, name, ousaged_get_resource_policy_callback, data);
+}
+
+
+
+typedef struct
+{
+    void (*callback)(GError *, gpointer);
+    gpointer userdata;
+} ousaged_set_resource_policy_data_t;
+
+void ousaged_set_resource_policy_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
+    ousaged_set_resource_policy_data_t *data = userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);
+    g_free(data);
+}
+
+void ousaged_set_resource_policy(const char *name, const char *policy, void (*callback)(GError *, gpointer), gpointer userdata) {
+    dbus_connect_to_ousaged();
+
+    ousaged_set_resource_policy_data_t *data = g_malloc (sizeof (ousaged_set_resource_policy_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_Usage_set_resource_policy_async (ousagedBus, name, policy, ousaged_set_resource_policy_callback, data);
+}
+
+
+
+
+typedef struct
+{
+    void (*callback)(GError *, gboolean, gpointer);
+    gpointer userdata;
+} ousaged_get_resource_state_data_t;
+
+void ousaged_get_resource_state_callback(DBusGProxy* bus, gboolean state, GError *dbus_error, gpointer userdata) {
+    ousaged_get_resource_state_data_t *data = userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, state, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);
+    g_free(data);
+}
+
+void ousaged_get_resource_state(const char *name, void (*callback)(GError *, gboolean, gpointer), gpointer userdata) {
+    dbus_connect_to_ousaged();
+
+    ousaged_get_resource_state_data_t *data = g_malloc (sizeof (ousaged_get_resource_state_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_Usage_get_resource_state_async (ousagedBus, name, ousaged_get_resource_state_callback, data);
+}
+
+
+
+
+typedef struct
+{
+    void (*callback)(GError *, char**, gpointer);
+    gpointer userdata;
+} ousaged_get_resource_users_data_t;
+
+void ousaged_get_resource_users_callback(DBusGProxy* bus, char **users, GError *dbus_error, gpointer userdata) {
+    ousaged_get_resource_users_data_t *data = userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, users, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);
+    g_free(data);
+}
+
+void ousaged_get_resource_users(const char *name, void (*callback)(GError *, char**, gpointer), gpointer userdata) {
+    dbus_connect_to_ousaged();
+
+    ousaged_get_resource_users_data_t *data = g_malloc (sizeof (ousaged_get_resource_users_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_Usage_get_resource_users_async (ousagedBus, name, ousaged_get_resource_users_callback, data);
+}
+
+
+
 typedef struct
 {
     void (*callback)(GError *, gpointer);
@@ -69,6 +245,7 @@ void ousaged_request_resource(const char *name, void (*callback)(GError *, gpoin
 }
 
 
+
 typedef struct
 {
     void (*callback)(GError *, gpointer);
@@ -100,38 +277,4 @@ void ousaged_release_resource(const char *name, void (*callback)(GError *, gpoin
 
     org_freesmartphone_Usage_release_resource_async (ousagedBus, name, ousaged_release_resource_callback, data);
 }
-
-
-typedef struct
-{
-    void (*callback)(GError *, char**, gpointer);
-    gpointer userdata;
-} ousaged_list_resources_data_t;
-
-void ousaged_list_resources_callback(DBusGProxy* bus, char** resources, GError *dbus_error, gpointer userdata) {
-    ousaged_list_resources_data_t *data = userdata;
-    GError *error = NULL;
-
-    if(data->callback != NULL) {
-        if(dbus_error != NULL)
-            error = dbus_handle_errors(dbus_error);
-
-        data->callback (error, resources, data->userdata);
-        if(error != NULL) g_error_free(error);
-    } 
-
-    if(dbus_error != NULL) g_error_free(dbus_error);
-    g_free(data);
-}
-
-void ousaged_list_resources(void (*callback)(GError *, char**, gpointer), gpointer userdata) {
-    dbus_connect_to_ousaged();
-
-    ousaged_list_resources_data_t *data = g_malloc (sizeof (ousaged_list_resources_data_t));
-    data->callback = callback;
-    data->userdata = userdata;
-
-    org_freesmartphone_Usage_list_resources_async (ousagedBus, ousaged_list_resources_callback, data);
-}
-
 
