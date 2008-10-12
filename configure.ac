@@ -27,6 +27,7 @@ Makefile
 src/Makefile
 src/ogsmd/Makefile
 src/ousaged/Makefile
+src/odeviced/Makefile
 libframeworkd-glib.pc
 ])
 

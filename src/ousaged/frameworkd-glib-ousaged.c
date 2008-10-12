@@ -278,3 +278,35 @@ void ousaged_release_resource(const char *name, void (*callback)(GError *, gpoin
     org_freesmartphone_Usage_release_resource_async (ousagedBus, name, ousaged_release_resource_callback, data);
 }
 
+typedef struct
+{
+    void (*callback)(GError *, gpointer);
+    gpointer userdata;
+} ousaged_suspend_data_t;
+
+void ousaged_suspend_callback(DBusGProxy* bus, GError *dbus_error, gpointer userdata) {
+    ousaged_suspend_data_t *data = userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, data->userdata);
+        if(error != NULL) g_error_free(error);
+    } 
+
+    if(dbus_error != NULL) g_error_free(dbus_error);
+    g_free(data);
+}
+
+void ousaged_suspend(void (*callback)(GError *, gpointer), gpointer userdata) {
+    dbus_connect_to_ousaged();
+
+    ousaged_suspend_data_t *data = g_malloc (sizeof (ousaged_suspend_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_Usage_suspend_async (ousagedBus, ousaged_suspend_callback, data);
+}
+

@@ -28,6 +28,8 @@
 #include "ogsmd/frameworkd-glib-ogsmd-network.h"
 #include "ogsmd/frameworkd-glib-ogsmd-device.h"
 #include "ogsmd/frameworkd-glib-ogsmd-sms.h"
+#include "odeviced/frameworkd-glib-odeviced-dbus.h"
+#include "odeviced/frameworkd-glib-odeviced-idlenotifier.h"
 #include "dialer-marshal.h"
 
 DBusGConnection* bus;
@@ -170,6 +172,16 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
                     fwHandler->callCallStatus, NULL);
 #ifdef DEBUG
             printf("Added call CallStatus.\n");
+#endif
+        }
+
+        if(fwHandler->deviceIdleNotifierState != NULL) {
+            dbus_connect_to_odeviced_idle_notifier();
+            dbus_g_proxy_add_signal (odevicedIdleNotifierBus, "State", G_TYPE_STRING, G_TYPE_INVALID);
+            dbus_g_proxy_connect_signal (odevicedIdleNotifierBus, "State", G_CALLBACK (odeviced_idle_notifier_state_handler),
+                    fwHandler->deviceIdleNotifierState, NULL);
+#ifdef DEBUG
+            printf("Added device Idle Notifier State.\n");
 #endif
         }
 

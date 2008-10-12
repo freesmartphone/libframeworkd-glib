@@ -36,6 +36,7 @@ typedef struct {
     void (*simAuthStatus)(const int);
     void (*simIncomingStoredMessage)(const int);
     void (*callCallStatus)(const int, const int, GHashTable *);
+    void (*deviceIdleNotifierState)(const int);
 } FrameworkdHandlers;
 
 void lose (const char *str, ...);

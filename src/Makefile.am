@@ -1,4 +1,4 @@
-SUBDIRS = ogsmd ousaged
+SUBDIRS = ogsmd ousaged odeviced
 
 AM_CPPFLAGS = -DDATADIR=\"$(datadir)\" -DPKGDATADIR=\"$(pkgdatadir)\"
 AM_CFLAGS = -Wall @DIALER_CFLAGS@
@@ -31,6 +31,8 @@ libframeworkd_glib_la_SOURCES = \
 	ogsmd/frameworkd-glib-ogsmd-sms.h ogsmd/frameworkd-glib-ogsmd-sms.c \
 	ousaged/frameworkd-glib-ousaged-dbus.c ousaged/frameworkd-glib-ousaged-dbus.h \
 	ousaged/frameworkd-glib-ousaged.c ousaged/frameworkd-glib-ousaged.h \
+	odeviced/frameworkd-glib-odeviced-dbus.c odeviced/frameworkd-glib-odeviced-dbus.h \
+	odeviced/frameworkd-glib-odeviced-idlenotifier.c odeviced/frameworkd-glib-odeviced-idlenotifier.h \
 	$(BUILT_SOURCES)
 
 libframeworkd_glib_HEADERS = \
