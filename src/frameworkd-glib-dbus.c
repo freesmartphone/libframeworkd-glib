@@ -30,6 +30,7 @@
 #include "ogsmd/frameworkd-glib-ogsmd-sms.h"
 #include "odeviced/frameworkd-glib-odeviced-dbus.h"
 #include "odeviced/frameworkd-glib-odeviced-idlenotifier.h"
+#include "odeviced/frameworkd-glib-odeviced-powersupply.h"
 #include "dialer-marshal.h"
 
 DBusGConnection* bus;
