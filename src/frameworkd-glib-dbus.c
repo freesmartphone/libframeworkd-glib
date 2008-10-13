@@ -96,7 +96,6 @@ GError* dbus_handle_internal_errors(GError *error) {
     return g_error_new (DBUS_ERROR, dbusError, error->message);
 }
 
-
 void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
 
     GError *error = NULL;

@@ -23,9 +23,13 @@
 #include <dbus/dbus-glib-bindings.h>
 #include "frameworkd-glib-odeviced-dbus.h"
 #include "frameworkd-glib-odeviced-idlenotifier.h"
+#include "frameworkd-glib-odeviced-powersupply.h"
 
 void dbus_connect_to_odeviced_idle_notifier() {
     if(odevicedIdleNotifierBus == NULL)
         odevicedIdleNotifierBus = dbus_connect_to_interface (ODEVICED_BUS, DEVICE_IDLE_NOTIFIER_BUS_PATH, DEVICE_IDLE_NOTIFIER_INTERFACE, "Device Idle Notifier");
 }
-
+void dbus_connect_to_odeviced_power_supply() {
+    if(odevicedPowerSupplyBus == NULL) 
+        odevicedPowerSupplyBus = dbus_connect_to_interface (ODEVICED_BUS, DEVICE_POWER_SUPPLY_BUS_PATH, DEVICE_POWER_SUPPLY_INTERFACE, "Device Power Supply");
+}

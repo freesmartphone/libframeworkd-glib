@@ -24,7 +24,10 @@
 #define ODEVICED_BUS         "org.freesmartphone.odeviced"
 #define DEVICE_IDLE_NOTIFIER_BUS_PATH            "/org/freesmartphone/Device/IdleNotifier/0"
 #define DEVICE_IDLE_NOTIFIER_INTERFACE		"org.freesmartphone.Device.IdleNotifier"
+#define DEVICE_POWER_SUPPLY_BUS_PATH            "/org/freesmartphone/Device/PowerSupply/bat"
+#define DEVICE_POWER_SUPPLY_INTERFACE		"org.freesmartphone.Device.PowerSupply"
 
 void dbus_connect_to_odeviced_idle_notifier();
 
+void dbus_connect_to_odeviced_power_supply();
 #endif
