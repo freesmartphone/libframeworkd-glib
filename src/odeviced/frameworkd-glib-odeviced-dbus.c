@@ -24,6 +24,7 @@
 #include "frameworkd-glib-odeviced-dbus.h"
 #include "frameworkd-glib-odeviced-idlenotifier.h"
 #include "frameworkd-glib-odeviced-powersupply.h"
+#include "frameworkd-glib-odeviced-audio.h"
 
 void dbus_connect_to_odeviced_idle_notifier() {
     if(odevicedIdleNotifierBus == NULL)
@@ -32,4 +33,9 @@ void dbus_connect_to_odeviced_idle_notifier() {
 void dbus_connect_to_odeviced_power_supply() {
     if(odevicedPowerSupplyBus == NULL) 
         odevicedPowerSupplyBus = dbus_connect_to_interface (ODEVICED_BUS, DEVICE_POWER_SUPPLY_BUS_PATH, DEVICE_POWER_SUPPLY_INTERFACE, "Device Power Supply");
+}
+
+void dbus_connect_to_odeviced_audio() {
+    if(odevicedAudioBus == NULL) 
+        odevicedAudioBus = dbus_connect_to_interface (ODEVICED_BUS, DEVICE_AUDIO_BUS_PATH, DEVICE_AUDIO_INTERFACE, "Device Audio");
 }

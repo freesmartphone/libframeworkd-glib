@@ -34,6 +34,7 @@ libframeworkd_glib_la_SOURCES = \
 	odeviced/frameworkd-glib-odeviced-dbus.c odeviced/frameworkd-glib-odeviced-dbus.h \
 	odeviced/frameworkd-glib-odeviced-idlenotifier.c odeviced/frameworkd-glib-odeviced-idlenotifier.h \
 	odeviced/frameworkd-glib-odeviced-powersupply.c odeviced/frameworkd-glib-odeviced-powersupply.h \
+	odeviced/frameworkd-glib-odeviced-audio.c odeviced/frameworkd-glib-odeviced-audio.h \
 	$(BUILT_SOURCES)
 
 libframeworkd_glib_HEADERS = \
