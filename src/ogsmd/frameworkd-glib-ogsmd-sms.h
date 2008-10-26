@@ -21,11 +21,7 @@
 
 void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboolean success, const char* reason, gpointer userdata);
 
-void ogsmd_sms_send_message(const char* number, const char* content, const gboolean report, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata);
-
-void ogsmd_sms_get_service_bearer(void (*callback)(GError*, char*mode, gpointer), gpointer userdata);
-
-void ogsmd_sms_set_service_bearer(const char* mode, void (*callback)(GError*, gpointer), gpointer userdata);
+void ogsmd_sms_send_message(const char* number, const char* content, const GHashTable *properties, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata);
 
 extern DBusGProxy *smsBus;
 
