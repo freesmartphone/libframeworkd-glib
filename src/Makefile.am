@@ -42,3 +42,5 @@ libframeworkd_glib_HEADERS = \
 
 libframeworkd_glibdir = $(includedir)/frameworkd-glib/
 
+EXTRA_DIST = \
+	dialer-marshal.list
