@@ -651,7 +651,8 @@ void ogsmd_sim_get_messagebook_info_callback(DBusGProxy* bus, GHashTable* messag
 
     if(dbus_error != NULL) g_error_free(dbus_error);        
     g_free(data);
-    g_hash_table_destroy(messagebook_info);
+    if(dbus_error == NULL && messagebook_info != NULL)
+	g_hash_table_destroy(messagebook_info);
 }
 
 void ogsmd_sim_get_messagebook_info(void (*callback)(GError*, GHashTable*messagebook_info, gpointer), gpointer userdata) {
