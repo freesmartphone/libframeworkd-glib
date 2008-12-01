@@ -94,10 +94,13 @@ GError* dbus_handle_internal_errors(GError *error) {
     } else {
         lose_gerror("Unknown internal dbus error", error);
     }
+    //dbus_connect_to_bus(NULL);
     return g_error_new (DBUS_ERROR, dbusError, error->message);
 }
 
-void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
+void dbus_connect_to_bus(FrameworkdHandlers* frameworkdHandler ) {
+    if(frameworkdHandler != NULL)
+        fwdHandlers = frameworkdHandler;
 
     GError *error = NULL;
     g_type_init ();
@@ -109,9 +112,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
         fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
         g_log_set_always_fatal (fatal_mask);
     }
-#ifdef DEBUG
-    printf("Trying to get the system bus\n");
-#endif
+    g_debug("Trying to get the system bus");
     bus = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
 
 
@@ -123,66 +124,52 @@ void dbus_connect_to_bus(FrameworkdHandlers* fwHandler ) {
     dbus_g_object_register_marshaller (g_cclosure_user_marshal_VOID__UINT_BOOLEAN_STRING, G_TYPE_NONE, G_TYPE_UINT, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_INVALID);
     dbus_g_object_register_marshaller (g_cclosure_marshal_VOID__INT, G_TYPE_NONE, G_TYPE_INT, G_TYPE_INVALID);
 
-    if(fwHandler != NULL) {
-#ifdef DEBUG
-        printf("Adding signals.\n");
-#endif
-        if(fwHandler->networkStatus != NULL) {
+    if(frameworkdHandler != NULL) {
+        g_debug("Adding signals.");
+        if(frameworkdHandler->networkStatus != NULL) {
             dbus_connect_to_ogsmd_network();
             dbus_g_proxy_add_signal (networkBus, "Status", dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (networkBus, "Status", G_CALLBACK (ogsmd_network_status_handler),
-                    fwHandler->networkStatus, NULL);
+                    frameworkdHandler->networkStatus, NULL);
 
-#ifdef DEBUG
-            printf("Added network Status.\n");
-#endif
+            g_debug("Added network Status.");
         }
-        if(fwHandler->networkSignalStrength != NULL) {
+        if(frameworkdHandler->networkSignalStrength != NULL) {
             dbus_connect_to_ogsmd_network();
             dbus_g_proxy_add_signal (networkBus, "SignalStrength", G_TYPE_UINT , G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (networkBus, "SignalStrength", G_CALLBACK (ogsmd_network_signal_strength_handler),
-                    fwHandler->networkSignalStrength, NULL);
-#ifdef DEBUG
-            printf("Added network SignalStrength.\n");
-#endif
+                    frameworkdHandler->networkSignalStrength, NULL);
+            g_debug("Added network SignalStrength.");
         }
-        if(fwHandler->simAuthStatus != NULL) {
+        if(frameworkdHandler->simAuthStatus != NULL) {
             dbus_connect_to_ogsmd_sim();
             dbus_g_proxy_add_signal (simBus, "AuthStatus", G_TYPE_STRING, G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (simBus, "AuthStatus", G_CALLBACK (ogsmd_sim_auth_status_handler),
-                    fwHandler->simAuthStatus, NULL);
-#ifdef DEBUG
-            printf("Added sim AuthStatus.\n");
-#endif
+                    frameworkdHandler->simAuthStatus, NULL);
+            g_debug("Added sim AuthStatus.");
         }
-        if(fwHandler->simIncomingStoredMessage != NULL) {
+        if(frameworkdHandler->simIncomingStoredMessage != NULL) {
             dbus_connect_to_ogsmd_sim();
             dbus_g_proxy_add_signal (simBus, "IncomingStoredMessage", G_TYPE_INT, G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (simBus, "IncomingStoredMessage", G_CALLBACK (ogsmd_sim_incoming_stored_message_handler),
-                    fwHandler->simIncomingStoredMessage, NULL);
-#ifdef DEBUG
-            printf("Added sim IncomingStoredMessage.\n");
-#endif
+                    frameworkdHandler->simIncomingStoredMessage, NULL);
+            g_debug("Added sim IncomingStoredMessage.");
         }
 
-        if(fwHandler->callCallStatus != NULL) {
+        if(frameworkdHandler->callCallStatus != NULL) {
             dbus_connect_to_ogsmd_call();
             dbus_g_proxy_add_signal (callBus, "CallStatus", G_TYPE_INT, G_TYPE_STRING, dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (callBus, "CallStatus", G_CALLBACK (ogsmd_call_status_handler),
-                    fwHandler->callCallStatus, NULL);
-#ifdef DEBUG
-            printf("Added call CallStatus.\n");
-#endif
+                    frameworkdHandler->callCallStatus, NULL);
+            g_debug("Added call CallStatus.");
         }
 
-        if(fwHandler->deviceIdleNotifierState != NULL) {
+        if(frameworkdHandler->deviceIdleNotifierState != NULL) {
             dbus_connect_to_odeviced_idle_notifier();
             dbus_g_proxy_add_signal (odevicedIdleNotifierBus, "State", G_TYPE_STRING, G_TYPE_INVALID);
             dbus_g_proxy_connect_signal (odevicedIdleNotifierBus, "State", G_CALLBACK (odeviced_idle_notifier_state_handler),
-                    fwHandler->deviceIdleNotifierState, NULL);
-#ifdef DEBUG
-            printf("Added device Idle Notifier State.\n");
-#endif
+                    frameworkdHandler->deviceIdleNotifierState, NULL);
+            g_debug("Added device Idle Notifier State.");
         }
 
     }
@@ -232,3 +219,22 @@ GType dbus_get_type_int_g_string_g_string_g_string_array() {
         foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INVALID));
     return foo;
 }
+
+FrameworkdHandlers *new_frameworkd_handler() {
+        FrameworkdHandlers *frameworkdHandler= NULL;
+        frameworkdHandler = malloc(sizeof(FrameworkdHandlers));
+        if(frameworkdHandler == NULL) {
+                g_debug("Couldn't alloc frameworkdHandler.");
+                return NULL;
+        }
+        
+        frameworkdHandler->networkStatus = NULL;
+        frameworkdHandler->networkSignalStrength = NULL;
+        frameworkdHandler->simAuthStatus = NULL;
+        frameworkdHandler->simIncomingStoredMessage = NULL;
+        frameworkdHandler->callCallStatus = NULL;
+        frameworkdHandler->deviceIdleNotifierState = NULL;
+
+        return frameworkdHandler;
+}
+

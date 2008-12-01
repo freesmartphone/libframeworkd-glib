@@ -63,7 +63,7 @@ void ogsmd_sim_send_auth_code(const char* pin, void (*callback)(GError*, gpointe
 
 void ogsmd_sim_unlock(const char* puk, const char* pin, void (*callback)(GError*, gpointer), gpointer userdata);
 
-void ogsmd_sim_change_auth_code(const char* old, const char* new, void (*callback)(GError*, gpointer), gpointer userdata);
+void ogsmd_sim_change_auth_code(const char* old_code, const char* new_code, void (*callback)(GError*, gpointer), gpointer userdata);
 
 void ogsmd_sim_retrieve_message(const int index, void (*callback)(GError*, char* status, char* number, char* content, GHashTable*properties, gpointer), gpointer userdata);
 

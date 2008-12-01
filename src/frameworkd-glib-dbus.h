@@ -50,5 +50,7 @@ GType dbus_get_type_int_g_string_g_string_g_string_array();
 void dbus_free_data(GType type, gpointer data);
 GError* dbus_handle_errors(GError *dbus_error);
 GError* dbus_handle_internal_errors(GError *error);
+FrameworkdHandlers *new_frameworkd_handler();
+FrameworkdHandlers *fwdHandlers;
 
 #endif

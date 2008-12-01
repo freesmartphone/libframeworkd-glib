@@ -198,15 +198,15 @@ void ogsmd_sim_change_auth_code_callback(DBusGProxy* bus, GError *dbus_error, gp
     g_free(data);
 }
 
-void ogsmd_sim_change_auth_code(const char* old, const char* new, void (*callback)(GError*, gpointer), gpointer userdata) {
+void ogsmd_sim_change_auth_code(const char* old_code, const char* new_code, void (*callback)(GError*, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sim();
 
     ogsmd_sim_change_auth_code_data_t *data = g_malloc (sizeof (ogsmd_sim_change_auth_code_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    if(old != NULL && new != NULL)
-        org_freesmartphone_GSM_SIM_change_auth_code_async(simBus, old, new, ogsmd_sim_change_auth_code_callback, data);
+    if(old_code != NULL && new_code != NULL)
+        org_freesmartphone_GSM_SIM_change_auth_code_async(simBus, old_code, new_code, ogsmd_sim_change_auth_code_callback, data);
 }
 
 typedef struct
