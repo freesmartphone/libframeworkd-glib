@@ -22,13 +22,13 @@
 
 #define DEBUG
 
-#define DBUS_ERROR g_quark_from_static_string("dbus")
-#define IS_DBUS_ERROR(error, code) g_error_matches(error, DBUS_ERROR, code)
+#define FRAMEWORKD_GLIB_DBUS_ERROR g_quark_from_static_string("dbus")
+#define IS_FRAMEWORKD_GLIB_DBUS_ERROR(error, code) g_error_matches(error, FRAMEWORKD_GLIB_DBUS_ERROR, code)
 
 typedef enum {
-    DBUS_ERROR_SERVICE_NOT_AVAILABLE = -1,
-    DBUS_ERROR_NO_REPLY = -2
-} DbusErrors;
+    FRAMEWORKD_GLIB_DBUS_ERROR_SERVICE_NOT_AVAILABLE = -1,
+    FRAMEWORKD_GLIB_DBUS_ERROR_NO_REPLY = -2
+} FramewordGlibDbusErrors;
 
 typedef struct {
     void (*networkStatus)(GHashTable *);

@@ -88,14 +88,14 @@ GError* dbus_handle_internal_errors(GError *error) {
     int dbusError = 0;
 
     if(error->code == DBUS_GERROR_SERVICE_UNKNOWN) {
-        dbusError = DBUS_ERROR_SERVICE_NOT_AVAILABLE;
+        dbusError = FRAMEWORKD_GLIB_DBUS_ERROR_SERVICE_NOT_AVAILABLE;
     } else if(error->code == DBUS_GERROR_NO_REPLY) {
-        dbusError = DBUS_ERROR_NO_REPLY;
+        dbusError = FRAMEWORKD_GLIB_DBUS_ERROR_NO_REPLY;
     } else {
         lose_gerror("Unknown internal dbus error", error);
     }
     //dbus_connect_to_bus(NULL);
-    return g_error_new (DBUS_ERROR, dbusError, error->message);
+    return g_error_new (FRAMEWORKD_GLIB_DBUS_ERROR, dbusError, error->message);
 }
 
 void dbus_connect_to_bus(FrameworkdHandlers* frameworkdHandler ) {
