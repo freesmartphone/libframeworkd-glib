@@ -16,6 +16,27 @@
 #ifndef FRAMEWORKD_GLIB_OUSAGED_H
 #define FRAMEWORKD_GLIB_OUSAGED_H
 
+
+#define USAGE_ERROR g_quark_from_static_string(USAGE_INTERFACE)
+#define DBUS_USAGE_ERROR_POLICY_UNKNOWN "org.freesmartphone.Usage.PolicyUnknown"
+#define DBUS_USAGE_ERROR_POLICY_DISABLED "org.freesmartphone.Usage.PolicyDisabled"
+#define DBUS_USAGE_ERROR_RESOURCE_UNKNOWN "org.freesmartphone.Usage.ResourceUnknown"
+#define DBUS_USAGE_ERROR_RESOURCE_EXISTS "org.freesmartphone.Usage.ResourceExists"
+#define DBUS_USAGE_ERROR_RESOURCE_IN_USE "org.freesmartphone.Usage.ResourceInUse"
+#define DBUS_USAGE_ERROR_USER_EXISTS "org.freesmartphone.Usage.UserExists"
+#define DBUS_USAGE_ERROR_USER_UNKNOWN "org.freesmartphone.Usage.UserUnknown"
+
+
+typedef enum {
+    USAGE_ERROR_POLICY_UNKNOWN = -1,
+    USAGE_ERROR_POLICY_DISABLED = -2,
+    USAGE_ERROR_RESOURCE_UNKNOWN = -3,
+    USAGE_ERROR_RESOURCE_EXISTS = -4,
+    USAGE_ERROR_RESOURCE_IN_USE = -5,
+    USAGE_ERROR_USER_EXISTS = -6,
+    USAGE_ERROR_USER_UNKNOWN = -7
+} UsageErrors;
+
 GError* ousaged_handle_errors(GError *dbus_error);
 
 void ousaged_list_resources(void (*callback)(GError *, char**, gpointer), gpointer userdata);

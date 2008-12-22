@@ -118,6 +118,7 @@ extern DBusGProxy *networkBus;
 
 void ogsmd_network_status_handler (DBusGProxy *proxy, const  GHashTable * status, gpointer user_data);
 void ogsmd_network_signal_strength_handler (DBusGProxy *proxy, const int signal_strength, gpointer user_data);
+void ogsmd_network_incoming_ussd_handler (DBusGProxy *proxy, const char *mode, const char *message, gpointer user_data);
 
 void ogsmd_network_register(void (*callback)(GError *, gpointer), gpointer userdata);
 
@@ -131,9 +132,9 @@ void ogsmd_network_get_signal_strength(void (*callback)(GError *, int strength, 
 
 void ogsmd_network_list_providers(void (*callback)(GError *, GPtrArray* providers, gpointer), gpointer userdata);
 
-void ogsmd_network_get_country_code(void (*callback)(GError *, char* country_code, gpointer), gpointer userdata);
+void ogsmd_network_get_network_country_code(void (*callback)(GError *, char* dial_code, char* country_name, gpointer), gpointer userdata);
 
-void ogsmd_network_get_call_forwarding(void (*callback)(GError *, GHashTable* forwards, gpointer), gpointer userdata);
+void ogsmd_network_get_call_forwarding(int reason, void (*callback)(GError *, GHashTable* forwards, gpointer), gpointer userdata);
 
 void ogsmd_network_enable_call_forwarding(int reason, int forward_class, char *number, int timeout, void (*callback)(GError *, gpointer), gpointer userdata);
 
@@ -155,6 +156,8 @@ char * ogsmd_network_get_forward_class_for_dbus(int forward_class);
 int ogsmd_network_get_forward_class_from_dbus(char *forward_class);
 char * ogsmd_network_get_visible_for_dbus(int visible);
 int ogsmd_network_get_visible_from_dbus(char *);
+
+void ogsmd_network_send_request(char *request, void (*callback)(GError *, gpointer), gpointer userdata);
 
 GError* ogsmd_network_handle_errors(GError *dbus_error);
 

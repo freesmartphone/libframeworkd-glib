@@ -31,6 +31,8 @@
 #include "odeviced/frameworkd-glib-odeviced-dbus.h"
 #include "odeviced/frameworkd-glib-odeviced-idlenotifier.h"
 #include "odeviced/frameworkd-glib-odeviced-powersupply.h"
+#include "ousaged/frameworkd-glib-ousaged-dbus.h"
+#include "ousaged/frameworkd-glib-ousaged.h"
 #include "dialer-marshal.h"
 
 DBusGConnection* bus;
@@ -70,6 +72,8 @@ GError* dbus_handle_errors(GError *dbus_error) {
                 error =  ogsmd_network_handle_errors(dbus_error);
             } else if(!strncmp(error_name, DEVICE_INTERFACE, strlen(DEVICE_INTERFACE))) {
                 error = ogsmd_device_handle_errors(dbus_error);
+            } else if(!strncmp(error_name, USAGE_INTERFACE, strlen(USAGE_INTERFACE))) {
+                error = ousaged_handle_errors(dbus_error);
             } else {
                 lose_gerror ("Failed to handle dbus error", dbus_error);
             }
@@ -123,6 +127,7 @@ void dbus_connect_to_bus(FrameworkdHandlers* frameworkdHandler ) {
     dbus_g_object_register_marshaller (g_cclosure_user_marshal_VOID__INT_STRING_BOXED, G_TYPE_NONE, G_TYPE_INT, G_TYPE_STRING, dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
     dbus_g_object_register_marshaller (g_cclosure_user_marshal_VOID__UINT_BOOLEAN_STRING, G_TYPE_NONE, G_TYPE_UINT, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_INVALID);
     dbus_g_object_register_marshaller (g_cclosure_marshal_VOID__INT, G_TYPE_NONE, G_TYPE_INT, G_TYPE_INVALID);
+    dbus_g_object_register_marshaller (g_cclosure_user_marshal_VOID__STRING_STRING, G_TYPE_NONE, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INVALID);
 
     if(frameworkdHandler != NULL) {
         g_debug("Adding signals.");
@@ -170,6 +175,14 @@ void dbus_connect_to_bus(FrameworkdHandlers* frameworkdHandler ) {
             dbus_g_proxy_connect_signal (odevicedIdleNotifierBus, "State", G_CALLBACK (odeviced_idle_notifier_state_handler),
                     frameworkdHandler->deviceIdleNotifierState, NULL);
             g_debug("Added device Idle Notifier State.");
+        }
+
+        if(frameworkdHandler->incomingUssd != NULL) {
+            dbus_connect_to_ogsmd_network();
+            dbus_g_proxy_add_signal (networkBus, "IncomingUssd", G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INVALID);
+            dbus_g_proxy_connect_signal (networkBus, "IncomingUssd", G_CALLBACK (ogsmd_network_incoming_ussd_handler),
+                    frameworkdHandler->incomingUssd, NULL);
+            g_debug("Added network IncomingUssd.");
         }
 
     }

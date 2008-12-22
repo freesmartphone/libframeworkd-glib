@@ -29,12 +29,29 @@
 DBusGProxy *ousagedBus = NULL;
 
 GError* ousaged_handle_errors(GError *dbus_error) {
-    // TODO: Add error handling when frameword code is ready
-    lose_gerror ("Unknown ousaged error", dbus_error);
-    // Fix warning
-    return NULL;
-}
+    const char *error_name = dbus_g_error_get_name(dbus_error);
+    int usageError = 0;
 
+    if(!strcmp(error_name, DBUS_USAGE_ERROR_POLICY_UNKNOWN)) {
+        usageError = USAGE_ERROR_POLICY_UNKNOWN;
+    } else if(!strcmp(error_name, DBUS_USAGE_ERROR_POLICY_DISABLED)) {
+        usageError = USAGE_ERROR_POLICY_DISABLED;
+    } else if(!strcmp(error_name, DBUS_USAGE_ERROR_RESOURCE_UNKNOWN)) {
+        usageError = USAGE_ERROR_RESOURCE_UNKNOWN;
+    } else if(!strcmp(error_name, DBUS_USAGE_ERROR_RESOURCE_EXISTS)) {
+        usageError = USAGE_ERROR_RESOURCE_EXISTS;
+    } else if(!strcmp(error_name, DBUS_USAGE_ERROR_RESOURCE_IN_USE)) {
+        usageError = USAGE_ERROR_RESOURCE_IN_USE;
+    } else if(!strcmp(error_name, DBUS_USAGE_ERROR_USER_EXISTS)) {
+        usageError = USAGE_ERROR_USER_EXISTS;
+    } else if(!strcmp(error_name, DBUS_USAGE_ERROR_USER_UNKNOWN)) {
+        usageError = USAGE_ERROR_USER_UNKNOWN;
+    } else {
+        lose_gerror ("Unknown ousaged error", dbus_error);
+    }
+
+    return g_error_new (USAGE_ERROR, usageError, "TODO %s", error_name);
+}
 
 
 

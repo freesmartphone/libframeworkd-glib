@@ -47,6 +47,16 @@ void ogsmd_network_signal_strength_handler (DBusGProxy *proxy, const int signal_
         (*callback)(signal_strength);
 }
 
+void ogsmd_network_incoming_ussd_handler (DBusGProxy *proxy, const char *mode, const char *message, gpointer user_data)
+{
+    void (*callback)(const char*, const char*) = NULL;
+
+    callback = user_data;
+
+    if(callback != NULL)
+        (*callback)(mode, message);
+}
+
 GError* ogsmd_network_handle_errors(GError *dbus_error) {
     const char *error_name = dbus_g_error_get_name(dbus_error);
     int networkError = 0;
@@ -255,35 +265,36 @@ void ogsmd_network_list_providers(void (*callback)(GError *, GPtrArray* provider
 
 typedef struct
 {
-    void (*callback)(GError *, char* country_code, gpointer);
+    void (*callback)(GError *, char* dial_code, char* country_name, gpointer);
     gpointer userdata;
-} ogsmd_network_get_country_code_data_t;
+} ogsmd_network_get_network_country_code_data_t;
 
-void ogsmd_network_get_country_code_callback(DBusGProxy *bus, char * country_code, GError *dbus_error, gpointer userdata) {
-    ogsmd_network_get_country_code_data_t *data = userdata;
+void ogsmd_network_get_network_country_code_callback(DBusGProxy *bus, char* dial_code, char* country_name, GError *dbus_error, gpointer userdata) {
+    ogsmd_network_get_network_country_code_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
         if(dbus_error != NULL)
             error = dbus_handle_errors(dbus_error);
 
-        data->callback (error, country_code, data->userdata);
+        data->callback (error, dial_code, country_name, data->userdata);
         if(error != NULL) g_error_free(error);
     }
 
     if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
-    free(country_code);
+    free(dial_code);
+    free(country_name);
 }
 
-void ogsmd_network_get_country_code(void (*callback)(GError *, char* country_code, gpointer), gpointer userdata) {
+void ogsmd_network_get_network_country_code(void (*callback)(GError *, char* dial_code, char* country_name, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_network();
 
-    ogsmd_network_get_country_code_data_t *data = g_malloc (sizeof (ogsmd_network_get_country_code_data_t));
+    ogsmd_network_get_network_country_code_data_t *data = g_malloc (sizeof (ogsmd_network_get_network_country_code_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Network_get_country_code_async(networkBus, ogsmd_network_get_country_code_callback, data);
+    org_freesmartphone_GSM_Network_get_network_country_code_async(networkBus, ogsmd_network_get_network_country_code_callback, data);
 }
 
 typedef struct
@@ -309,14 +320,14 @@ void ogsmd_network_get_call_forwarding_callback(DBusGProxy *bus, GHashTable* for
     g_hash_table_destroy(forwards);
 }
 
-void ogsmd_network_get_call_forwarding(void (*callback)(GError *, GHashTable* forwards, gpointer), gpointer userdata) {
+void ogsmd_network_get_call_forwarding(int reason, void (*callback)(GError *, GHashTable* forwards, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_network();
 
     ogsmd_network_get_call_forwarding_data_t *data = g_malloc (sizeof (ogsmd_network_get_call_forwarding_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Network_get_call_forwarding_async(networkBus, ogsmd_network_get_call_forwarding_callback, data);
+    org_freesmartphone_GSM_Network_get_call_forwarding_async(networkBus, ogsmd_network_get_reason_for_dbus(reason), ogsmd_network_get_call_forwarding_callback, data);
 }
 
 typedef struct
@@ -626,3 +637,37 @@ int ogsmd_network_get_visible_from_dbus(char *visible) {
         return NETWORK_IDENTIFICATION_STATUS_NETWORK;
     return -1;
 }
+
+
+typedef struct
+{
+    void (*callback)(GError *, gpointer);
+    gpointer userdata;
+} ogsmd_network_send_request_data_t;
+
+void ogsmd_network_send_request_callback(DBusGProxy *bus, GError *dbus_error, gpointer userdata) {
+    ogsmd_network_send_request_data_t *data = userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors(dbus_error);
+
+        data->callback (error, data->userdata);
+        if(error != NULL) g_error_free(error);
+    }
+
+    if(dbus_error != NULL) g_error_free(dbus_error);
+    g_free(data);
+}
+
+void ogsmd_network_send_request(char *request, void (*callback)(GError *, gpointer), gpointer userdata) {
+    dbus_connect_to_ogsmd_network();
+
+    ogsmd_network_send_request_data_t *data = g_malloc(sizeof(ogsmd_network_send_request_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_GSM_Network_get_calling_identification_async(networkBus, ogsmd_network_send_request_callback, data);
+}
+

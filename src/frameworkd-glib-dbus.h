@@ -37,6 +37,7 @@ typedef struct {
     void (*simIncomingStoredMessage)(const int);
     void (*callCallStatus)(const int, const int, GHashTable *);
     void (*deviceIdleNotifierState)(const int);
+    void (*incomingUssd)(const char*, const char*);
 } FrameworkdHandlers;
 
 void lose (const char *str, ...);
