@@ -247,6 +247,7 @@ FrameworkdHandlers *new_frameworkd_handler() {
         frameworkdHandler->simIncomingStoredMessage = NULL;
         frameworkdHandler->callCallStatus = NULL;
         frameworkdHandler->deviceIdleNotifierState = NULL;
+        frameworkdHandler->incomingUssd = NULL;
 
         return frameworkdHandler;
 }
