@@ -49,12 +49,29 @@ void ogsmd_network_signal_strength_handler (DBusGProxy *proxy, const int signal_
 
 void ogsmd_network_incoming_ussd_handler (DBusGProxy *proxy, const char *mode, const char *message, gpointer user_data)
 {
-    void (*callback)(const char*, const char*) = NULL;
+    void (*callback)(int, const char*) = NULL;
+
+    int m;
+    if(!strcmp(mode, DBUS_NETWORK_USSD_MODE_COMPLETED)) {
+        m = NETWORK_USSD_MODE_COMPLETED;
+    } else if(!strcmp(mode, DBUS_NETWORK_USSD_MODE_USERACTION)) {
+        m = NETWORK_USSD_MODE_USERACTION;
+    } else if(!strcmp(mode, DBUS_NETWORK_USSD_MODE_TERMINATED)) {
+        m = NETWORK_USSD_MODE_TERMINATED;
+    } else if(!strcmp(mode, DBUS_NETWORK_USSD_MODE_LOCALCLIENT)) {
+        m = NETWORK_USSD_MODE_LOCALCLIENT;
+    } else if(!strcmp(mode, DBUS_NETWORK_USSD_MODE_UNSUPPORTED)) {
+        m = NETWORK_USSD_MODE_UNSUPPORTED;
+    } else if(!strcmp(mode, DBUS_NETWORK_USSD_MODE_TIMEOUT)) {
+        m = NETWORK_USSD_MODE_TIMEOUT;
+    } else {
+        g_error("Unknown USSD mode: %s", mode);
+    }
 
     callback = user_data;
 
     if(callback != NULL)
-        (*callback)(mode, message);
+        (*callback)(m, message);
 }
 
 GError* ogsmd_network_handle_errors(GError *dbus_error) {
