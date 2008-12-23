@@ -38,11 +38,10 @@ typedef struct {
     void (*callCallStatus)(const int, const int, GHashTable *);
     void (*deviceIdleNotifierState)(const int);
     void (*incomingUssd)(int, const char*);
-} FrameworkdHandlers;
+} FrameworkdHandler;
 
 void lose (const char *str, ...);
 void lose_gerror (const char *prefix, GError *error);
-void dbus_connect_to_bus(FrameworkdHandlers* fwHandler);
 DBusGProxy *dbus_connect_to_interface(char *bus_name, char *path, char *interface, char *interface_name);
 GType dbus_get_type_g_string_variant_hashtable();
 GType dbus_get_type_g_string_int_int_int_array();
@@ -51,7 +50,9 @@ GType dbus_get_type_int_g_string_g_string_g_string_array();
 void dbus_free_data(GType type, gpointer data);
 GError* dbus_handle_errors(GError *dbus_error);
 GError* dbus_handle_internal_errors(GError *error);
-FrameworkdHandlers *new_frameworkd_handler();
-FrameworkdHandlers *fwdHandlers;
+
+FrameworkdHandler *frameworkd_handler_new();
+void frameworkd_handler_connect(FrameworkdHandler* frameworkdHandler);
+FrameworkdHandler *fwdHandlers;
 
 #endif

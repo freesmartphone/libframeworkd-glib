@@ -102,7 +102,73 @@ GError* dbus_handle_internal_errors(GError *error) {
     return g_error_new (FRAMEWORKD_GLIB_DBUS_ERROR, dbusError, error->message);
 }
 
-void dbus_connect_to_bus(FrameworkdHandlers* frameworkdHandler ) {
+DBusGProxy *dbus_connect_to_interface(char *bus_name, char *path, char *interface, char *interface_name) {
+    DBusGProxy *itf = NULL;
+    if(bus != NULL) {
+        itf = dbus_g_proxy_new_for_name (bus, bus_name, path, interface);
+        if(itf == NULL) {
+            printf("Couln't connect to the %s Interface", interface_name);
+        }
+    }
+    return itf;
+}
+
+void dbus_free_data(GType type, gpointer data) {
+    GValue foo;
+    g_value_init(&foo, type);
+    g_value_take_boxed(&foo, data);
+    g_value_unset(&foo);
+}
+
+GType dbus_get_type_g_string_variant_hashtable() {
+    static GType foo = 0; 
+    if (G_UNLIKELY (foo ==0)) 
+        foo = dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE);
+    return foo;
+}
+GType dbus_get_type_g_string_int_int_int_array() {
+    static GType foo = 0;
+    if (G_UNLIKELY (foo ==0))
+        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID)); 
+    return foo;
+}
+GType dbus_get_type_int_g_string_g_string_variant_hashtable_array() {
+    static GType foo = 0;
+    if (G_UNLIKELY (foo ==0))
+        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_STRING, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), G_TYPE_INVALID)); 
+    return foo;
+}
+
+GType dbus_get_type_int_g_string_g_string_g_string_array() {
+    static GType foo = 0;
+    if (G_UNLIKELY (foo ==0))
+        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INVALID));
+    return foo;
+}
+
+
+FrameworkdHandler *frameworkd_handler_new() {
+        FrameworkdHandler *h = NULL;
+        h = malloc(sizeof(FrameworkdHandler));
+        if(h == NULL) {
+                g_debug("Couldn't alloc frameworkdHandler.");
+                return NULL;
+        }
+        
+        h->networkStatus = NULL;
+        h->networkSignalStrength = NULL;
+        h->simAuthStatus = NULL;
+        h->simIncomingStoredMessage = NULL;
+        h->callCallStatus = NULL;
+        h->deviceIdleNotifierState = NULL;
+        h->incomingUssd = NULL;
+
+        return h;
+}
+
+
+
+void frameworkd_handler_connect(FrameworkdHandler* frameworkdHandler ) {
     if(frameworkdHandler != NULL)
         fwdHandlers = frameworkdHandler;
 
@@ -186,69 +252,5 @@ void dbus_connect_to_bus(FrameworkdHandlers* frameworkdHandler ) {
         }
 
     }
-}
-
-
-DBusGProxy *dbus_connect_to_interface(char *bus_name, char *path, char *interface, char *interface_name) {
-    DBusGProxy *itf = NULL;
-    if(bus != NULL) {
-        itf = dbus_g_proxy_new_for_name (bus, bus_name, path, interface);
-        if(itf == NULL) {
-            printf("Couln't connect to the %s Interface", interface_name);
-        }
-    }
-    return itf;
-}
-
-void dbus_free_data(GType type, gpointer data) {
-    GValue foo;
-    g_value_init(&foo, type);
-    g_value_take_boxed(&foo, data);
-    g_value_unset(&foo);
-}
-
-GType dbus_get_type_g_string_variant_hashtable() {
-    static GType foo = 0; 
-    if (G_UNLIKELY (foo ==0)) 
-        foo = dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE);
-    return foo;
-}
-GType dbus_get_type_g_string_int_int_int_array() {
-    static GType foo = 0;
-    if (G_UNLIKELY (foo ==0))
-        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID)); 
-    return foo;
-}
-GType dbus_get_type_int_g_string_g_string_variant_hashtable_array() {
-    static GType foo = 0;
-    if (G_UNLIKELY (foo ==0))
-        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_STRING, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), G_TYPE_INVALID)); 
-    return foo;
-}
-
-GType dbus_get_type_int_g_string_g_string_g_string_array() {
-    static GType foo = 0;
-    if (G_UNLIKELY (foo ==0))
-        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INVALID));
-    return foo;
-}
-
-FrameworkdHandlers *new_frameworkd_handler() {
-        FrameworkdHandlers *frameworkdHandler= NULL;
-        frameworkdHandler = malloc(sizeof(FrameworkdHandlers));
-        if(frameworkdHandler == NULL) {
-                g_debug("Couldn't alloc frameworkdHandler.");
-                return NULL;
-        }
-        
-        frameworkdHandler->networkStatus = NULL;
-        frameworkdHandler->networkSignalStrength = NULL;
-        frameworkdHandler->simAuthStatus = NULL;
-        frameworkdHandler->simIncomingStoredMessage = NULL;
-        frameworkdHandler->callCallStatus = NULL;
-        frameworkdHandler->deviceIdleNotifierState = NULL;
-        frameworkdHandler->incomingUssd = NULL;
-
-        return frameworkdHandler;
 }
 
