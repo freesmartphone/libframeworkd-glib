@@ -174,7 +174,7 @@ int ogsmd_network_get_forward_class_from_dbus(char *forward_class);
 char * ogsmd_network_get_visible_for_dbus(int visible);
 int ogsmd_network_get_visible_from_dbus(char *);
 
-void ogsmd_network_send_request(char *request, void (*callback)(GError *, gpointer), gpointer userdata);
+void ogsmd_network_send_ussd_request(char *request, void (*callback)(GError *, gpointer), gpointer userdata);
 
 GError* ogsmd_network_handle_errors(GError *dbus_error);
 

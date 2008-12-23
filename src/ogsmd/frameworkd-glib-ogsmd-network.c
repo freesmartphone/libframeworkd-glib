@@ -660,10 +660,10 @@ typedef struct
 {
     void (*callback)(GError *, gpointer);
     gpointer userdata;
-} ogsmd_network_send_request_data_t;
+} ogsmd_network_send_ussd_request_data_t;
 
-void ogsmd_network_send_request_callback(DBusGProxy *bus, GError *dbus_error, gpointer userdata) {
-    ogsmd_network_send_request_data_t *data = userdata;
+void ogsmd_network_send_ussd_request_callback(DBusGProxy *bus, GError *dbus_error, gpointer userdata) {
+    ogsmd_network_send_ussd_request_data_t *data = userdata;
     GError *error = NULL;
 
     if(data->callback != NULL) {
@@ -678,13 +678,13 @@ void ogsmd_network_send_request_callback(DBusGProxy *bus, GError *dbus_error, gp
     g_free(data);
 }
 
-void ogsmd_network_send_request(char *request, void (*callback)(GError *, gpointer), gpointer userdata) {
+void ogsmd_network_send_ussd_request(char *request, void (*callback)(GError *, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_network();
 
-    ogsmd_network_send_request_data_t *data = g_malloc(sizeof(ogsmd_network_send_request_data_t));
+    ogsmd_network_send_ussd_request_data_t *data = g_malloc(sizeof(ogsmd_network_send_ussd_request_data_t));
     data->callback = callback;
     data->userdata = userdata;
 
-    org_freesmartphone_GSM_Network_get_calling_identification_async(networkBus, ogsmd_network_send_request_callback, data);
+    org_freesmartphone_GSM_Network_send_ussd_request_async (networkBus, request, ogsmd_network_send_ussd_request_callback, data);
 }
 
