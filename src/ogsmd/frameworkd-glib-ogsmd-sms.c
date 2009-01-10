@@ -40,11 +40,11 @@ void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboo
 
 typedef struct
 {
-    void (*callback)(GError *, int, gpointer);
+    void (*callback)(GError *, int, const char *, gpointer);
     gpointer userdata;
 } ogsmd_sms_send_message_data_t;
 
-void ogsmd_sms_send_message_callback(DBusGProxy* bus, int transaction_index, GError *dbus_error, gpointer userdata) {
+void ogsmd_sms_send_message_callback(DBusGProxy* bus, int transaction_index, const char *timestamp, GError *dbus_error, gpointer userdata) {
     ogsmd_sms_send_message_data_t *data = userdata;
     GError *error = NULL;
 
@@ -52,7 +52,7 @@ void ogsmd_sms_send_message_callback(DBusGProxy* bus, int transaction_index, GEr
         if(dbus_error != NULL)
             error = dbus_handle_errors(dbus_error);
 
-        data->callback (error, transaction_index, data->userdata);
+        data->callback (error, transaction_index, timestamp, data->userdata);
         if(error != NULL) g_error_free(error);
     }
 
@@ -60,7 +60,7 @@ void ogsmd_sms_send_message_callback(DBusGProxy* bus, int transaction_index, GEr
     g_free(data);
 }
 
-void ogsmd_sms_send_message(const char*number, const char* content, const GHashTable *properties, void (*callback)(GError*, int transaction_index, gpointer), gpointer userdata) {
+void ogsmd_sms_send_message(const char*number, const char* content, const GHashTable *properties, void (*callback)(GError*, int transaction_index, const char *timestamp, gpointer), gpointer userdata) {
     dbus_connect_to_ogsmd_sms();
 
     ogsmd_sms_send_message_data_t *data = g_malloc (sizeof (ogsmd_sms_send_message_data_t));

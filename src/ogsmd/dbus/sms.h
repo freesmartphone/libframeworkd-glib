@@ -26,13 +26,13 @@ static
 inline
 #endif
 gboolean
-org_freesmartphone_GSM_SMS_send_message (DBusGProxy *proxy, const char * IN_recipient_number, const char * IN_contents, const GHashTable* IN_properties, gint* OUT_transaction_index, GError **error)
+org_freesmartphone_GSM_SMS_send_message (DBusGProxy *proxy, const char * IN_recipient_number, const char * IN_contents, const GHashTable* IN_properties, gint* OUT_transaction_index, const char * OUT_timestamp, GError **error)
 
 {
-  return dbus_g_proxy_call (proxy, "SendMessage", error, G_TYPE_STRING, IN_recipient_number, G_TYPE_STRING, IN_contents, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), IN_properties, G_TYPE_INVALID, G_TYPE_INT, OUT_transaction_index, G_TYPE_INVALID);
+  return dbus_g_proxy_call (proxy, "SendMessage", error, G_TYPE_STRING, IN_recipient_number, G_TYPE_STRING, IN_contents, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), IN_properties, G_TYPE_INVALID, G_TYPE_INT, OUT_transaction_index, G_TYPE_STRING, OUT_timestamp, G_TYPE_INVALID);
 }
 
-typedef void (*org_freesmartphone_GSM_SMS_send_message_reply) (DBusGProxy *proxy, gint OUT_transaction_index, GError *error, gpointer userdata);
+typedef void (*org_freesmartphone_GSM_SMS_send_message_reply) (DBusGProxy *proxy, gint OUT_transaction_index, const char * OUT_timestamp, GError *error, gpointer userdata);
 
 static void
 org_freesmartphone_GSM_SMS_send_message_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
@@ -40,8 +40,9 @@ org_freesmartphone_GSM_SMS_send_message_async_callback (DBusGProxy *proxy, DBusG
   DBusGAsyncData *data = (DBusGAsyncData*) user_data;
   GError *error = NULL;
   gint OUT_transaction_index;
-  dbus_g_proxy_end_call (proxy, call, &error, G_TYPE_INT, &OUT_transaction_index, G_TYPE_INVALID);
-  (*(org_freesmartphone_GSM_SMS_send_message_reply)data->cb) (proxy, OUT_transaction_index, error, data->userdata);
+  char *OUT_timestamp;
+  dbus_g_proxy_end_call (proxy, call, &error, G_TYPE_INT, &OUT_transaction_index, G_TYPE_STRING, &OUT_timestamp, G_TYPE_INVALID);
+  (*(org_freesmartphone_GSM_SMS_send_message_reply)data->cb) (proxy, OUT_transaction_index, OUT_timestamp, error, data->userdata);
   return;
 }
 
