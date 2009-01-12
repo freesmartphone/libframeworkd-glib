@@ -24,7 +24,7 @@
 #define ODEVICED_BUS         "org.freesmartphone.odeviced"
 #define DEVICE_IDLE_NOTIFIER_BUS_PATH           "/org/freesmartphone/Device/IdleNotifier/0"
 #define DEVICE_IDLE_NOTIFIER_INTERFACE		"org.freesmartphone.Device.IdleNotifier"
-#define DEVICE_POWER_SUPPLY_BUS_PATH            "/org/freesmartphone/Device/PowerSupply/bat"
+#define DEVICE_POWER_SUPPLY_BUS_PATH            "/org/freesmartphone/Device/PowerSupply/battery"
 #define DEVICE_POWER_SUPPLY_INTERFACE		"org.freesmartphone.Device.PowerSupply"
 #define DEVICE_AUDIO_BUS_PATH                   "/org/freesmartphone/Device/Audio"
 #define DEVICE_AUDIO_INTERFACE                  "org.freesmartphone.Device.Audio"
