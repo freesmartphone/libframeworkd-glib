@@ -26,6 +26,6 @@
 
 void dbus_connect_to_ousaged() {
     if(ousagedBus == NULL)
-        ousagedBus = dbus_connect_to_interface (OUSAGED_BUS, BUS_PATH, USAGE_INTERFACE, "Usage");
+        ousagedBus = dbus_connect_to_interface (OUSAGED_BUS, OUSAGED_BUS_PATH, USAGE_INTERFACE, "Usage");
 }
 
