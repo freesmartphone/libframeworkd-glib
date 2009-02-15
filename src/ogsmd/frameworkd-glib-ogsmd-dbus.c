@@ -32,26 +32,26 @@
 
 void dbus_connect_to_ogsmd_call() {
     if(callBus == NULL)
-        callBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, CALL_INTERFACE, "GSM.Call");
+        callBus = dbus_connect_to_interface (GSMD_BUS, GSMD_BUS_PATH, CALL_INTERFACE, "GSM.Call");
 }
 
 void dbus_connect_to_ogsmd_network() {
     if(networkBus == NULL)
-        networkBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, NETWORK_INTERFACE, "GSM.Network");
+        networkBus = dbus_connect_to_interface (GSMD_BUS, GSMD_BUS_PATH, NETWORK_INTERFACE, "GSM.Network");
 }
 
 void dbus_connect_to_ogsmd_sim() {
     if(simBus == NULL)
-        simBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, SIM_INTERFACE, "GSM.SIM");
+        simBus = dbus_connect_to_interface (GSMD_BUS, GSMD_BUS_PATH, SIM_INTERFACE, "GSM.SIM");
 }
 
 void dbus_connect_to_ogsmd_device() {
     if(deviceBus == NULL)
-        deviceBus = dbus_connect_to_interface (GSMD_BUS, BUS_PATH, DEVICE_INTERFACE, "GSM.Device"); 
+        deviceBus = dbus_connect_to_interface (GSMD_BUS, GSMD_BUS_PATH, DEVICE_INTERFACE, "GSM.Device");
 }
 
 void dbus_connect_to_ogsmd_sms() {
     if(smsBus == NULL)
-        smsBus = dbus_connect_to_interface(GSMD_BUS, BUS_PATH, SMS_INTERFACE, "GSM.SMS");
+        smsBus = dbus_connect_to_interface(GSMD_BUS, GSMD_BUS_PATH, SMS_INTERFACE, "GSM.SMS");
 }
 

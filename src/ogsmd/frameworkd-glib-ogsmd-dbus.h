@@ -23,7 +23,7 @@
 #define DEBUG
 #define NETWORKD_BUS        "org.freesmartphone.onetworkd"
 #define GSMD_BUS            "org.freesmartphone.ogsmd"
-#define BUS_PATH            "/org/freesmartphone/GSM/Device"
+#define GSMD_BUS_PATH       "/org/freesmartphone/GSM/Device"
 #define CALL_INTERFACE		"org.freesmartphone.GSM.Call"
 #define SIM_INTERFACE		"org.freesmartphone.GSM.SIM"
 #define NETWORK_INTERFACE 	"org.freesmartphone.GSM.Network"
