@@ -3,6 +3,7 @@
  *      Authors (alphabetical) :
  *              Marc-Olivier Barre <marco@marcochapeau.org>
  *              Julien Cassignol <ainulindale@gmail.com>
+ *              Klaus 'mrmoku' Kurzmann <mok@fluxnetz.de>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Public License as published by
@@ -19,11 +20,11 @@
 
 #include <dbus/dbus-glib.h>
 
-#define DBUS_SIM_READY "READY"
-#define DBUS_SIM_PIN_REQUIRED "SIM PIN"
-#define DBUS_SIM_PUK_REQUIRED "SIM PUK"
-#define DBUS_SIM_PIN2_REQUIRED "SIM PIN2"
-#define DBUS_SIM_PUK2_REQUIRED "SIM PUK2"
+#define DBUS_SIM_AUTH_STATUS_READY "READY"
+#define DBUS_SIM_AUTH_STATUS_PIN_REQUIRED "SIM PIN"
+#define DBUS_SIM_AUTH_STATUS_PUK_REQUIRED "SIM PUK"
+#define DBUS_SIM_AUTH_STATUS_PIN2_REQUIRED "SIM PIN2"
+#define DBUS_SIM_AUTH_STATUS_PUK2_REQUIRED "SIM PUK2"
 
 #define DBUS_SIM_ERROR_NOT_PRESENT "org.freesmartphone.GSM.SIM.NotPresent"
 #define DBUS_SIM_ERROR_AUTH_FAILED "org.freesmartphone.GSM.SIM.AuthFailed"
@@ -53,13 +54,17 @@ typedef enum {
 
 void ogsmd_sim_incoming_stored_message_handler (DBusGProxy *proxy, const int id, gpointer userdata);
 
-void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, const char *status, gpointer user_data);
+void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, char *status, gpointer user_data);
 
-int ogsmd_sim_handle_authentication_state(const char*status);
+int ogsmd_sim_handle_authentication_state(char *status);
+
+void ogsmd_sim_ready_status_handler (DBusGProxy *proxy, gboolean status, gpointer user_data);
 
 void ogsmd_sim_get_auth_status(void (*callback)(GError*, int status, gpointer), gpointer userdata);
 
 void ogsmd_sim_send_auth_code(const char* pin, void (*callback)(GError*, gpointer), gpointer userdata);
+
+void ogsmd_sim_get_ready_status(void (*callback)(GError *, gboolean status, gpointer), gpointer userdata);
 
 void ogsmd_sim_unlock(const char* puk, const char* pin, void (*callback)(GError*, gpointer), gpointer userdata);
 

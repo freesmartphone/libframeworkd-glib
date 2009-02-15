@@ -3,6 +3,7 @@
  *      Authors (alphabetical) :
  *              Marc-Olivier Barre <marco@marcochapeau.org>
  *              Julien Cassignol <ainulindale@gmail.com>
+ *              Klaus 'mrmoku' Kurzamnn <mok@fluxnetz.de>
  *              quickdev
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -158,6 +159,7 @@ FrameworkdHandler *frameworkd_handler_new() {
         h->networkStatus = NULL;
         h->networkSignalStrength = NULL;
         h->simAuthStatus = NULL;
+        h->simReadyStatus = NULL;
         h->simIncomingStoredMessage = NULL;
         h->callCallStatus = NULL;
         h->deviceIdleNotifierState = NULL;
@@ -218,6 +220,13 @@ void frameworkd_handler_connect(FrameworkdHandler* frameworkdHandler ) {
             dbus_g_proxy_connect_signal (simBus, "AuthStatus", G_CALLBACK (ogsmd_sim_auth_status_handler),
                     frameworkdHandler->simAuthStatus, NULL);
             g_debug("Added sim AuthStatus.");
+        }
+        if(frameworkdHandler->simReadyStatus != NULL) {
+            dbus_connect_to_ogsmd_sim();
+            dbus_g_proxy_add_signal (simBus, "ReadyStatus", G_TYPE_BOOLEAN, G_TYPE_INVALID);
+            dbus_g_proxy_connect_signal (simBus, "ReadyStatus", G_CALLBACK (ogsmd_sim_ready_status_handler),
+                    frameworkdHandler->simReadyStatus, NULL);
+            g_debug("Added sim ReadyStatus.");
         }
         if(frameworkdHandler->simIncomingStoredMessage != NULL) {
             dbus_connect_to_ogsmd_sim();

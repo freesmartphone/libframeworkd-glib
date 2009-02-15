@@ -3,6 +3,7 @@
  *      Authors (alphabetical) :
  *              Marc-Olivier Barre <marco@marcochapeau.org>
  *              Julien Cassignol <ainulindale@gmail.com>
+ *              Klaus 'mrmoku' Kurzmann <mok@fluxnetz.de>
  *              quickdev
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -34,6 +35,7 @@ typedef struct {
     void (*networkStatus)(GHashTable *);
     void (*networkSignalStrength)(const int);
     void (*simAuthStatus)(const int);
+    void (*simReadyStatus)(gboolean);
     void (*simIncomingStoredMessage)(const int);
     void (*callCallStatus)(const int, const int, GHashTable *);
     void (*deviceIdleNotifierState)(const int);

@@ -1,8 +1,9 @@
 /*
- *  Copyright (C) 2008 
- *	Authors (alphabetical) : 
+ *  Copyright (C) 2008
+ *	Authors (alphabetical) :
  *		Marc-Olivier Barre <marco@marcochapeau.org>
  *		Julien Cassignol <ainulindale@gmail.com>
+ *		Klaus 'mrmoku' Kurzmann <mok@fluxnetz.de>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Public License as published by
@@ -38,8 +39,7 @@ void ogsmd_sim_incoming_stored_message_handler (DBusGProxy *proxy, const int id,
 
 }
 
-void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, const char *status, gpointer user_data)
-{ 
+void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, char *status, gpointer user_data) {
     int st;
     void (*callback)(const int) = NULL;
 
@@ -48,27 +48,38 @@ void ogsmd_sim_auth_status_handler (DBusGProxy *proxy, const char *status, gpoin
 
     if(callback != NULL)
         (*callback)(st);
-
 }
 
-int ogsmd_sim_handle_authentication_state(const char*status) {
-    if(!strcmp(status,DBUS_SIM_READY)) {
+
+int ogsmd_sim_handle_authentication_state(char *status) {
+    if(!strcmp(status,DBUS_SIM_AUTH_STATUS_READY)) {
         return SIM_READY;
     }
-    else if(!strcmp(status,DBUS_SIM_PIN_REQUIRED)) {
+    else if(!strcmp(status,DBUS_SIM_AUTH_STATUS_PIN_REQUIRED)) {
         return SIM_PIN_REQUIRED;
     }
-    else if(!strcmp(status,DBUS_SIM_PUK_REQUIRED)) {
+    else if(!strcmp(status,DBUS_SIM_AUTH_STATUS_PUK_REQUIRED)) {
         return SIM_PUK_REQUIRED;
     }
-    else if(!strcmp(status,DBUS_SIM_PIN2_REQUIRED)) {
+    else if(!strcmp(status,DBUS_SIM_AUTH_STATUS_PIN2_REQUIRED)) {
         return SIM_PIN2_REQUIRED;
     }
     else {
         return SIM_PUK2_REQUIRED;
     }
-
 }
+
+
+
+void ogsmd_sim_ready_status_handler (DBusGProxy *proxy, gboolean status, gpointer user_data) {
+	void (*callback)(gboolean) = NULL;
+
+	callback = user_data;
+	if(callback != NULL)
+		(*callback)(status);
+}
+
+
 
 typedef struct
 {
@@ -81,7 +92,6 @@ void ogsmd_sim_get_auth_status_callback(DBusGProxy *bus, char* status, GError* d
     GError *error = NULL;
     int st = 0;
 
-
     if(data->callback != NULL) {
         if(dbus_error == NULL) {
             st = ogsmd_sim_handle_authentication_state(status);
@@ -92,7 +102,7 @@ void ogsmd_sim_get_auth_status_callback(DBusGProxy *bus, char* status, GError* d
 
         data->callback (error, st, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
     g_free(data);
     if(dbus_error != NULL) g_error_free(dbus_error);
@@ -107,6 +117,37 @@ void ogsmd_sim_get_auth_status(void (*callback)(GError*, int status, gpointer), 
 
     org_freesmartphone_GSM_SIM_get_auth_status_async(simBus, ogsmd_sim_get_auth_status_callback, data);
 }
+
+typedef struct
+{
+    void (*callback)(GError *, gboolean, gpointer);
+    gpointer userdata;
+} ogsmd_sim_get_sim_ready_data_t;
+
+void ogsmd_sim_get_sim_ready_callback(DBusGProxy *proxy, gboolean status, GError *dbus_error, gpointer userdata) {
+	ogsmd_sim_get_sim_ready_data_t *data = userdata;
+	GError *error = NULL;
+
+	if(data->callback != NULL) {
+		if(dbus_error != NULL)
+			error = dbus_handle_errors(dbus_error);
+		data->callback(error, status, data->userdata);
+		if(error != NULL) g_error_free(error);
+	}
+	if(dbus_error != NULL) g_error_free(dbus_error);
+	g_free(data);
+}
+
+void ogsmd_sim_get_sim_ready(void (*callback)(GError *, gboolean status, gpointer), gpointer userdata) {
+    dbus_connect_to_ogsmd_sim();
+
+    ogsmd_sim_get_sim_ready_data_t *data = g_malloc (sizeof (ogsmd_sim_get_sim_ready_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+
+    org_freesmartphone_GSM_SIM_get_sim_ready_async(simBus, ogsmd_sim_get_sim_ready_callback, data);
+}
+
 
 typedef struct
 {
@@ -125,9 +166,9 @@ void ogsmd_sim_send_auth_code_callback(DBusGProxy* bus, GError *dbus_error, gpoi
 
         data->callback (error, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -233,7 +274,7 @@ void ogsmd_sim_retrieve_entry_callback(DBusGProxy* bus, char*name, char* number,
         free(name);
         free(number);
     }
-    
+
     g_free(data);
 }
 
@@ -271,7 +312,7 @@ void ogsmd_sim_retrieve_message_callback(DBusGProxy* bus, char*status, char*numb
         free(number);
         free(content);
     }
-    
+
     g_free(data);
 }
 
@@ -302,9 +343,9 @@ void ogsmd_sim_set_auth_code_required_callback(DBusGProxy* bus, GError *dbus_err
 
         data->callback (error, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -336,9 +377,9 @@ void ogsmd_sim_get_auth_code_required_callback(DBusGProxy* bus, gboolean check, 
 
         data->callback (error, check, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -369,9 +410,9 @@ void ogsmd_sim_get_sim_info_callback(DBusGProxy* bus, GHashTable* ogsmd_sim_info
 
         data->callback (error, ogsmd_sim_info, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     g_hash_table_destroy(ogsmd_sim_info);
 }
@@ -403,9 +444,9 @@ void ogsmd_sim_send_generic_sim_command_callback(DBusGProxy* bus, char* result, 
 
         data->callback (error, result, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     free(result);
 }
@@ -437,9 +478,9 @@ void ogsmd_sim_send_restricted_sim_command_callback(DBusGProxy* bus, char* resul
 
         data->callback (error, result, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     free(result);
 }
@@ -472,9 +513,9 @@ void ogsmd_sim_get_home_zones_callback(DBusGProxy* bus, GPtrArray* home_zones, G
 
         data->callback (error, home_zones, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     dbus_free_data(dbus_get_type_g_string_int_int_int_array(), home_zones);
 }
@@ -506,9 +547,9 @@ void ogsmd_sim_get_phonebook_info_callback(DBusGProxy* bus, GHashTable* phoneboo
 
         data->callback (error, phonebook_info, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     g_hash_table_destroy(phonebook_info);
 }
@@ -545,9 +586,9 @@ void ogsmd_sim_retrieve_phonebook_callback(DBusGProxy* bus, GPtrArray*messages, 
 
         data->callback (error, messages, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     // TODO: Free the messages?
 }
@@ -581,9 +622,9 @@ void ogsmd_sim_delete_entry_callback(DBusGProxy* bus, GError *dbus_error, gpoint
 
         data->callback (error, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -614,9 +655,9 @@ void ogsmd_sim_store_entry_callback(DBusGProxy* bus, GError *dbus_error, gpointe
 
         data->callback (error, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -647,9 +688,9 @@ void ogsmd_sim_get_messagebook_info_callback(DBusGProxy* bus, GHashTable* messag
 
         data->callback (error, messagebook_info, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     if(dbus_error == NULL && messagebook_info != NULL)
 	g_hash_table_destroy(messagebook_info);
@@ -685,9 +726,9 @@ void ogsmd_sim_retrieve_messagebook_callback(DBusGProxy* bus, GPtrArray*messages
 
         data->callback (error, messages, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     // TODO: Free the messages?
 }
@@ -720,9 +761,9 @@ void ogsmd_sim_get_service_center_number_callback(DBusGProxy* bus, char* number,
 
         data->callback (error, number, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
     free(number);
 }
@@ -754,9 +795,9 @@ void ogsmd_sim_set_service_center_number_callback(DBusGProxy* bus, GError *dbus_
 
         data->callback (error, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -787,9 +828,9 @@ void ogsmd_sim_delete_message_callback(DBusGProxy* bus, GError *dbus_error, gpoi
 
         data->callback (error, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -820,9 +861,9 @@ void ogsmd_sim_store_message_callback(DBusGProxy* bus, int index, GError *dbus_e
 
         data->callback (error, index, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 
@@ -853,9 +894,9 @@ void ogsmd_sim_send_stored_message_callback(DBusGProxy* bus, int transaction_ind
 
         data->callback (error, transaction_index, data->userdata);
         if(error != NULL) g_error_free(error);
-    } 
+    }
 
-    if(dbus_error != NULL) g_error_free(dbus_error);        
+    if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
 }
 

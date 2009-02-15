@@ -9,6 +9,9 @@
     <signal name="AuthStatus">
       <arg type="s" name="status"/>
     </signal>
+	 <signal name="ReadyStatus">
+	   <arg type="b" name="status"/>
+	 </signal>
     <method name="SendAuthCode">
       <annotation name="org.freedesktop.DBus.GLib.Async" value="fso_gsm_sim"/>
       <arg type="s" name="pin" direction="in"/>
@@ -36,6 +39,10 @@
       <annotation name="org.freedesktop.DBus.GLib.Async" value="fso_gsm_sim"/>
       <arg type="a{sv}" name="info" direction="out"/>
     </method>
+	 <method name="GetSimReady">
+	    <annotation name="org.freedesktop.DBus.GLib.Async" value="fso_gsm_sim"/>
+		 <arg type="b" name="status" direction="out"/>
+	 </method>
     <method name="SendGenericSimCommand">
       <annotation name="org.freedesktop.DBus.GLib.Async" value="fso_gsm_sim"/>
       <arg type="s" name="command" direction="in"/>
