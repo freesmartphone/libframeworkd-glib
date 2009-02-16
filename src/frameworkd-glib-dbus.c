@@ -49,7 +49,8 @@ void lose (const char *str, ...)
 
     va_end (args);
 
-    exit (1);
+    // calling exit in a lib is nasty... not?
+    //exit (1);
 }
 
 void lose_gerror (const char *prefix, GError *error)
