@@ -145,15 +145,19 @@ typedef struct
 void odeviced_power_supply_get_power_status_callback(DBusGProxy* bus, char* status, GError *dbus_error, gpointer userdata) {
     odeviced_power_supply_get_power_status_data_t *data = userdata;
     GError *error = NULL;
+    int st = -1;
 
     if(data->callback != NULL) {
-        if(dbus_error != NULL)
+        if(dbus_error == NULL) {
+            st = odeviced_power_supply_get_status_from_dbus(status);
+            free(status);
+        }
+        else
             error = dbus_handle_errors(dbus_error);
 
-        data->callback (error, odeviced_power_supply_get_status_from_dbus(status), data->userdata);
+        data->callback (error, st, data->userdata);
         if(error != NULL) g_error_free(error);
-        else free(status);
-    } 
+    }
 
     if(dbus_error != NULL) g_error_free(dbus_error);
     g_free(data);
