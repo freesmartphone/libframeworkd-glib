@@ -37,7 +37,20 @@ typedef enum {
     USAGE_ERROR_USER_UNKNOWN = -7
 } UsageErrors;
 
+typedef enum {
+	OUSAGED_RESOURCE_UNKNOWN = 0,
+	OUSAGED_RESOURCE_GSM = 1,
+	OUSAGED_RESOURCE_GPS = 2,
+	OUSAGED_RESOURCE_WIFI = 3,
+	OUSAGED_RESOURCE_BLUETOOTH = 4,
+	OUSAGED_RESOURCE_DISPLAY = 5,
+	OUSAGED_RESOURCE_CPU = 6
+} OUsagedResources;
+
+#define OUSAGED_RESOURCE_COUNT 7
+
 GError* ousaged_handle_errors(GError *dbus_error);
+int ousaged_resource_name_to_int(const char *resource);
 
 void ousaged_list_resources(void (*callback)(GError *, char**, gpointer), gpointer userdata);
 

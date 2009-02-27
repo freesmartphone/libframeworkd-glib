@@ -54,6 +54,23 @@ GError* ousaged_handle_errors(GError *dbus_error) {
 }
 
 
+int ousaged_resource_name_to_int(const char *resource)
+{
+	if(!strcmp(resource, "GSM"))
+		return (OUSAGED_RESOURCE_GSM);
+	if(!strcmp(resource, "GPS"))
+		return (OUSAGED_RESOURCE_GPS);
+	if(!strcmp(resource, "WiFi"))
+		return (OUSAGED_RESOURCE_WIFI);
+	if(!strcmp(resource, "Bluetooth"))
+		return (OUSAGED_RESOURCE_BLUETOOTH);
+	if(!strcmp(resource, "Display"))
+		return (OUSAGED_RESOURCE_DISPLAY);
+	if(!strcmp(resource, "CPU"))
+		return (OUSAGED_RESOURCE_CPU);
+   return (OUSAGED_RESOURCE_UNKNOWN);
+}
+
 
 typedef struct
 {
