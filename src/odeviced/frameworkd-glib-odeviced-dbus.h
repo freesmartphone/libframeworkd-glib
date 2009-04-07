@@ -20,6 +20,8 @@
 
 #include "../frameworkd-glib-dbus.h"
 
+G_BEGIN_DECLS
+
 #define DEBUG
 #define ODEVICED_BUS         "org.freesmartphone.odeviced"
 #define DEVICE_IDLE_NOTIFIER_BUS_PATH           "/org/freesmartphone/Device/IdleNotifier/0"
@@ -34,5 +36,7 @@ void dbus_connect_to_odeviced_idle_notifier();
 void dbus_connect_to_odeviced_power_supply();
 
 void dbus_connect_to_odeviced_audio();
+
+G_END_DECLS
 
 #endif

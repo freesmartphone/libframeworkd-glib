@@ -20,6 +20,8 @@
 
 #include "../frameworkd-glib-dbus.h"
 
+G_BEGIN_DECLS
+
 #define DEBUG
 #define NETWORKD_BUS        "org.freesmartphone.onetworkd"
 #define GSMD_BUS            "org.freesmartphone.ogsmd"
@@ -35,5 +37,7 @@ void dbus_connect_to_ogsmd_network();
 void dbus_connect_to_ogsmd_sim();
 void dbus_connect_to_ogsmd_device();
 void dbus_connect_to_ogsmd_sms();
+
+G_END_DECLS
 
 #endif

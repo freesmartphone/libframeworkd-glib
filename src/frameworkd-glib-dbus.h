@@ -21,6 +21,8 @@
 
 #include <dbus/dbus-glib.h>
 
+G_BEGIN_DECLS
+
 #define DEBUG
 
 #define FRAMEWORKD_GLIB_DBUS_ERROR g_quark_from_static_string("dbus")
@@ -56,5 +58,7 @@ GError* dbus_handle_internal_errors(GError *error);
 FrameworkdHandler *frameworkd_handler_new();
 void frameworkd_handler_connect(FrameworkdHandler* frameworkdHandler);
 FrameworkdHandler *fwdHandlers;
+
+G_END_DECLS
 
 #endif

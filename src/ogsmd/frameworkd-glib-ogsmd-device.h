@@ -17,6 +17,8 @@
 #ifndef FRAMEWORKD_GLIB_OGSMD_DEVICE_H
 #define FRAMEWORKD_GLIB_OGSMD_DEVICE_H
 
+G_BEGIN_DECLS
+
 #define DBUS_DEVICE_ERROR_NOT_PRESENT "org.freesmartphone.GSM.Device.NotPresent"
 #define DBUS_DEVICE_ERROR_TIMEOUT "org.freesmartphone.GSM.Device.Timeout"
 #define DBUS_DEVICE_ERROR_FAILED "org.freesmartphone.GSM.Device.Failed"
@@ -43,5 +45,7 @@ void ogsmd_device_prepare_to_suspend(void (*callback)(GError *, gpointer), gpoin
 void ogsmd_device_recover_from_suspend(void (*callback)(GError *, gpointer), gpointer userdata);
 
 extern DBusGProxy *deviceBus ;
+
+G_END_DECLS
 
 #endif

@@ -20,11 +20,15 @@
 
 #include "../frameworkd-glib-dbus.h"
 
+G_BEGIN_DECLS
+
 #define DEBUG
 #define OUSAGED_BUS         "org.freesmartphone.ousaged"
 #define OUSAGED_BUS_PATH    "/org/freesmartphone/Usage"
 #define USAGE_INTERFACE		"org.freesmartphone.Usage"
 
 void dbus_connect_to_ousaged();
+
+G_END_DECLS
 
 #endif

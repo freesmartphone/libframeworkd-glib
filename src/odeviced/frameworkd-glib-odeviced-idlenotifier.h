@@ -16,6 +16,8 @@
 #ifndef FRAMEWORKD_GLIB_ODEVICED_IDLE_NOTIFIER_H
 #define FRAMEWORKD_GLIB_ODEVICED_IDLE_NOTIFIER_H
 
+G_BEGIN_DECLS
+
 #define DBUS_DEVICE_IDLE_STATE_BUSY "busy"
 #define DBUS_DEVICE_IDLE_STATE_IDLE "idle"
 #define DBUS_DEVICE_IDLE_STATE_IDLE_DIM "idle_dim"
@@ -44,5 +46,7 @@ void odeviced_idle_notifier_set_state(int state, void (*callback)(GError *, gpoi
 void odeviced_idle_notifier_state_handler(DBusGProxy *proxy, const char *state, gpointer user_data);
 
 extern DBusGProxy *odevicedIdleNotifierBus ;
+
+G_END_DECLS
 
 #endif

@@ -17,6 +17,8 @@
 #ifndef FRAMEWORKD_GLIB_OGSMD_SMS_H
 #define FRAMEWORKD_GLIB_OGSMD_SMS_H
 
+G_BEGIN_DECLS
+
 //#define SMS_ERROR g_quark_from_static_string(CALL_INTERFACE
 
 void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboolean success, const char* reason, gpointer userdata);
@@ -24,5 +26,7 @@ void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboo
 void ogsmd_sms_send_message(const char* number, const char* content, const GHashTable *properties, void (*callback)(GError*, int transaction_index, const char *timestamp, gpointer), gpointer userdata);
 
 extern DBusGProxy *smsBus;
+
+G_END_DECLS
 
 #endif

@@ -16,6 +16,8 @@
 #ifndef FRAMEWORKD_GLIB_ODEVICED_POWER_SUPPLY_H
 #define FRAMEWORKD_GLIB_ODEVICED_POWER_SUPPLY_H
 
+G_BEGIN_DECLS
+
 #define DBUS_DEVICE_POWER_STATE_CHARGING "charging"
 #define DBUS_DEVICE_POWER_STATE_DISCHARGING "discharging"
 #define DBUS_DEVICE_POWER_STATE_FULL "full"
@@ -44,5 +46,7 @@ void odeviced_power_supply_status_handler(DBusGProxy *proxy, const char *status,
 void odeviced_power_supply_capacity_handler(DBusGProxy *proxy, const char *status, gpointer user_data);
 
 extern DBusGProxy *odevicedPowerSupplyBus ;
+
+G_END_DECLS
 
 #endif

@@ -20,6 +20,8 @@
 
 #include <dbus/dbus-glib.h>
 
+G_BEGIN_DECLS
+
 #define DBUS_SIM_AUTH_STATUS_READY "READY"
 #define DBUS_SIM_AUTH_STATUS_PIN_REQUIRED "SIM PIN"
 #define DBUS_SIM_AUTH_STATUS_PUK_REQUIRED "SIM PUK"
@@ -109,5 +111,7 @@ void ogsmd_sim_send_stored_message(const int index, void (*callback)(GError*, in
 GError* ogsmd_sim_handle_errors(GError *dbus_error);
 
 extern DBusGProxy *simBus;
+
+G_END_DECLS
 
 #endif

@@ -16,6 +16,8 @@
 #ifndef FRAMEWORKD_GLIB_ODEVICED_AUDIO_H
 #define FRAMEWORKD_GLIB_ODEVICED_AUDIO_H
 
+G_BEGIN_DECLS
+
 /*As for now, didn't see a use for that one*/
 GError* odeviced_audio_handle_errors(GError *dbus_error);
 
@@ -31,5 +33,7 @@ void odeviced_audio_sound_status_handler(DBusGProxy *proxy, const char *id, cons
 
 extern DBusGProxy *odevicedAudioBus ;
 /* TODO : Other methods */
+
+G_END_DECLS
 
 #endif

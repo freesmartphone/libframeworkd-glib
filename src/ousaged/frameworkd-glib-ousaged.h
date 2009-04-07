@@ -16,6 +16,7 @@
 #ifndef FRAMEWORKD_GLIB_OUSAGED_H
 #define FRAMEWORKD_GLIB_OUSAGED_H
 
+G_BEGIN_DECLS
 
 #define USAGE_ERROR g_quark_from_static_string(USAGE_INTERFACE)
 #define DBUS_USAGE_ERROR_POLICY_UNKNOWN "org.freesmartphone.Usage.PolicyUnknown"
@@ -69,5 +70,7 @@ void ousaged_release_resource(const char *name, void (*callback)(GError *, gpoin
 void ousaged_suspend(void (*callback)(GError *, gpointer), gpointer userdata);
 
 extern DBusGProxy *ousagedBus ;
+
+G_END_DECLS
 
 #endif

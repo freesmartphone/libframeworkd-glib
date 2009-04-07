@@ -17,6 +17,8 @@
 #ifndef FRAMEWORKD_GLIB_OGSMD_NETWORK_H
 #define FRAMEWORKD_GLIB_OGSMD_NETWORK_H
 
+G_BEGIN_DECLS
+
 #define NETWORK_ERROR g_quark_from_static_string(NETWORK_INTERFACE)
 #define DBUS_NETWORK_ERROR_NOT_PRESENT "org.freesmartphone.GSM.Network.NotPresent"
 #define DBUS_NETWORK_ERROR_UNAUTHORIZED "org.freesmartphone.GSM.Network.Unauthorized"
@@ -177,5 +179,7 @@ int ogsmd_network_get_visible_from_dbus(char *);
 void ogsmd_network_send_ussd_request(char *request, void (*callback)(GError *, gpointer), gpointer userdata);
 
 GError* ogsmd_network_handle_errors(GError *dbus_error);
+
+G_END_DECLS
 
 #endif

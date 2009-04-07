@@ -19,6 +19,8 @@
 
 #include <dbus/dbus-glib.h>
 
+G_BEGIN_DECLS
+
 #define CALL_ERROR g_quark_from_static_string(CALL_INTERFACE)
 #define DBUS_CALL_ERROR_NO_CARRIER "org.freesmartphone.GSM.Call.NoCarrier"
 #define DBUS_CALL_ERROR_NOT_FOUND "org.freesmartphone.GSM.Call.NotFound"
@@ -86,5 +88,7 @@ void ogsmd_call_send_dtmf(const char *tones, void (*callback)(GError *, gpointer
 GError* ogsmd_call_handle_errors(GError *dbus_error);
 
 extern DBusGProxy *callBus;
+
+G_END_DECLS
 
 #endif
