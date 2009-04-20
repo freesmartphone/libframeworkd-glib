@@ -53,7 +53,7 @@ void opimd_contacts_add_callback(DBusGProxy *proxy, char *contact_path, GError *
 }
 
 void opimd_contacts_add(const GHashTable *contact_data, void (*callback)(GError *, char *, gpointer), gpointer userdata) {
-	 dbus_connect_to_opimd_messages();
+	 dbus_connect_to_opimd_contacts();
 	 opimd_contacts_add_data_t *data = g_malloc (sizeof (opimd_contacts_add_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
@@ -70,9 +70,10 @@ typedef struct
 } opimd_contacts_get_single_contact_single_field_data_t;
 
 void opimd_contacts_get_single_contact_single_field_callback(DBusGProxy *proxy, char *value, GError *dbus_error, gpointer userdata) {
-	 opimd_contacts_get_single_contact_single_field_data_t *data = userdata;
+	 opimd_contacts_get_single_contact_single_field_data_t *data = (opimd_contacts_get_single_contact_single_field_data_t *)userdata;
 	 GError *error = NULL;
 
+	 g_debug("launched async query for a single contact (callback) ...");
 	 if(data->callback != NULL) {
 		  if(dbus_error != NULL)
 				error = dbus_handle_errors (dbus_error);
