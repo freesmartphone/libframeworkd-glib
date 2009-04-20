@@ -38,6 +38,7 @@ libframeworkd_glib_la_SOURCES = \
 	opimd/frameworkd-glib-opimd-dbus.c opimd/frameworkd-glib-opimd-dbus.h \
 	opimd/frameworkd-glib-opimd-contacts.c opimd/frameworkd-glib-opimd-contacts.h \
 	opimd/frameworkd-glib-opimd-messages.c opimd/frameworkd-glib-opimd-messages.h \
+	opimd/frameworkd-glib-opimd-sources.c opimd/frameworkd-glib-opimd-sources.h \
 	$(BUILT_SOURCES)
 
 libframeworkd_glib_HEADERS = \

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/">
+	<interface name="org.freesmartphone.PIM.Sources">
+		<method name="InitAllEntries">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_sources"/>
+		</method>
+		<method name="GetEntryCount">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_sources"/>
+			<arg direction="out" type="i"  name="entry_count"/>
+		</method>
+	</interface>
+	<interface name="org.freesmartphone.PIM.Source">
+		<method name="GetName">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_source"/>
+			<arg direction="out" type="s" name="source_name"/>
+		</method>
+		<method name="GetStatus">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_source"/>
+			<arg direction="out" type="s" name="source_status"/>
+		</method>
+		<method name="GetSupportedPIMDomains">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_source"/>
+			<arg direction="out" type="a{sv}" name="domains"/>
+		</method>
+	</interface>
+</node>
+
