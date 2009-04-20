@@ -205,6 +205,87 @@ org_freesmartphone_PIM_Contact_get_multiple_fields_async (DBusGProxy *proxy, con
 }
 #endif /* defined DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_Contact */
 
+#ifndef DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_Contact
+#define DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_Contact
+
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+gboolean
+org_freesmartphone_PIM_Contact_get_content (DBusGProxy *proxy, GHashTable** OUT_contact_data, GError **error)
+
+{
+  return dbus_g_proxy_call (proxy, "GetContent", error, G_TYPE_INVALID, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), OUT_contact_data, G_TYPE_INVALID);
+}
+
+typedef void (*org_freesmartphone_PIM_Contact_get_content_reply) (DBusGProxy *proxy, GHashTable *OUT_contact_data, GError *error, gpointer userdata);
+
+static void
+org_freesmartphone_PIM_Contact_get_content_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
+{
+  DBusGAsyncData *data = (DBusGAsyncData*) user_data;
+  GError *error = NULL;
+  GHashTable* OUT_contact_data;
+  dbus_g_proxy_end_call (proxy, call, &error, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), &OUT_contact_data, G_TYPE_INVALID);
+  (*(org_freesmartphone_PIM_Contact_get_content_reply)data->cb) (proxy, OUT_contact_data, error, data->userdata);
+  return;
+}
+
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+DBusGProxyCall*
+org_freesmartphone_PIM_Contact_get_content_async (DBusGProxy *proxy, org_freesmartphone_PIM_Contact_get_content_reply callback, gpointer userdata)
+
+{
+  DBusGAsyncData *stuff;
+  stuff = g_new (DBusGAsyncData, 1);
+  stuff->cb = G_CALLBACK (callback);
+  stuff->userdata = userdata;
+  return dbus_g_proxy_begin_call (proxy, "GetContent", org_freesmartphone_PIM_Contact_get_content_async_callback, stuff, g_free, G_TYPE_INVALID);
+}
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+gboolean
+org_freesmartphone_PIM_Contact_get_multiple_fields (DBusGProxy *proxy, const char * IN_field_list, GHashTable** OUT_field_data, GError **error)
+
+{
+  return dbus_g_proxy_call (proxy, "GetMultipleFields", error, G_TYPE_STRING, IN_field_list, G_TYPE_INVALID, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), OUT_field_data, G_TYPE_INVALID);
+}
+
+typedef void (*org_freesmartphone_PIM_Contact_get_multiple_fields_reply) (DBusGProxy *proxy, GHashTable *OUT_field_data, GError *error, gpointer userdata);
+
+static void
+org_freesmartphone_PIM_Contact_get_multiple_fields_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
+{
+  DBusGAsyncData *data = (DBusGAsyncData*) user_data;
+  GError *error = NULL;
+  GHashTable* OUT_field_data;
+  dbus_g_proxy_end_call (proxy, call, &error, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), &OUT_field_data, G_TYPE_INVALID);
+  (*(org_freesmartphone_PIM_Contact_get_multiple_fields_reply)data->cb) (proxy, OUT_field_data, error, data->userdata);
+  return;
+}
+
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+DBusGProxyCall*
+org_freesmartphone_PIM_Contact_get_multiple_fields_async (DBusGProxy *proxy, const char * IN_field_list, org_freesmartphone_PIM_Contact_get_multiple_fields_reply callback, gpointer userdata)
+
+{
+  DBusGAsyncData *stuff;
+  stuff = g_new (DBusGAsyncData, 1);
+  stuff->cb = G_CALLBACK (callback);
+  stuff->userdata = userdata;
+  return dbus_g_proxy_begin_call (proxy, "GetMultipleFields", org_freesmartphone_PIM_Contact_get_multiple_fields_async_callback, stuff, g_free, G_TYPE_STRING, IN_field_list, G_TYPE_INVALID);
+}
+#endif /* defined DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_Contact */
+
 #ifndef DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_ContactQuery
 #define DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_ContactQuery
 
@@ -395,6 +476,44 @@ org_freesmartphone_PIM_ContactQuery_get_result_async (DBusGProxy *proxy, org_fre
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
   return dbus_g_proxy_begin_call (proxy, "GetResult", org_freesmartphone_PIM_ContactQuery_get_result_async_callback, stuff, g_free, G_TYPE_INVALID);
+}
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+gboolean
+org_freesmartphone_PIM_ContactQuery_get_multiple_results (DBusGProxy *proxy, const gint IN_count, GPtrArray** OUT_resultset, GError **error)
+
+{
+  return dbus_g_proxy_call (proxy, "GetMultipleResults", error, G_TYPE_INT, IN_count, G_TYPE_INVALID, dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE)), OUT_resultset, G_TYPE_INVALID);
+}
+
+typedef void (*org_freesmartphone_PIM_ContactQuery_get_multiple_results_reply) (DBusGProxy *proxy, GPtrArray *OUT_resultset, GError *error, gpointer userdata);
+
+static void
+org_freesmartphone_PIM_ContactQuery_get_multiple_results_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
+{
+  DBusGAsyncData *data = (DBusGAsyncData*) user_data;
+  GError *error = NULL;
+  GPtrArray* OUT_resultset;
+  dbus_g_proxy_end_call (proxy, call, &error, dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE)), &OUT_resultset, G_TYPE_INVALID);
+  (*(org_freesmartphone_PIM_ContactQuery_get_multiple_results_reply)data->cb) (proxy, OUT_resultset, error, data->userdata);
+  return;
+}
+
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+DBusGProxyCall*
+org_freesmartphone_PIM_ContactQuery_get_multiple_results_async (DBusGProxy *proxy, const gint IN_count, org_freesmartphone_PIM_ContactQuery_get_multiple_results_reply callback, gpointer userdata)
+
+{
+  DBusGAsyncData *stuff;
+  stuff = g_new (DBusGAsyncData, 1);
+  stuff->cb = G_CALLBACK (callback);
+  stuff->userdata = userdata;
+  return dbus_g_proxy_begin_call (proxy, "GetMultipleResults", org_freesmartphone_PIM_ContactQuery_get_multiple_results_async_callback, stuff, g_free, G_TYPE_INT, IN_count, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE

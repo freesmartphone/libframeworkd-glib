@@ -26,6 +26,15 @@
 			<arg direction="out" type="a{sv}" name="field_data"/>
 		</method>
 	</interface>
+	<interface name="org.freesmartphone.PIM.Contact">
+		<method name="GetContent">
+			<arg direction="out" type="a{sv}" name="contact_data"/>
+		</method>
+		<method name="GetMultipleFields">
+			<arg direction="in" type="s" name="field_list"/>
+			<arg direction="out" type="a{sv}" name="field_data"/>
+		</method>
+	</interface>
 	<interface name="org.freesmartphone.PIM.ContactQuery">
 		<method name="GetResultCount">
 			<arg direction="out" type="i" name="count"/>
@@ -40,6 +49,10 @@
 		</method>
 		<method name="GetResult">
 			<arg direction="out" type="a{sv}" name="result"/>
+		</method>
+		<method name="GetMultipleResults">
+			<arg direction="in" type="i" name="count"/>
+			<arg direction="out" type="aa{sv}" name="resultset"/>
 		</method>
 		<method name="Dispose">
 		</method>
