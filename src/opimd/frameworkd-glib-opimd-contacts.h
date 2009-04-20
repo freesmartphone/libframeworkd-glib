@@ -26,12 +26,13 @@ void opimd_contact_get_content(const char *contact_path, void (*callback)(GError
 void opimd_contact_get_multiple_fields(const char *contact_path, const char *field_list, void (*callback)(GError *, GHashTable *, gpointer), gpointer userdata);
 
 /* PIM.ContactQuery interface */
-void opimd_contact_query_get_result_count(const char *query_path, void (*callback)(GError *, int, gpointer), gpointer userdata);
-void opimd_contact_query_rewind(const char *query_path, void (*callback)(GError *, gpointer), gpointer userdata);
-void opimd_contact_query_skip(const char *query_path, const gint count, void (*callback)(GError *, gpointer), gpointer userdata);
-void opimd_contact_query_get_contact_path(const char *query_path, void (*callback)(GError *, char *, gpointer), gpointer userdata);
-void opimd_contact_query_get_result(const char *query_path, void (*callback)(GError *, GHashTable *, gpointer), gpointer userdata);
-void opimd_contact_query_dispose(const char *query_path, void (*callback)(GError *, gpointer), gpointer userdata);
+void opimd_contact_query_get_result_count(DBusGProxy *query, void (*callback)(GError *, int, gpointer), gpointer userdata);
+void opimd_contact_query_rewind(DBusGProxy *query, void (*callback)(GError *, gpointer), gpointer userdata);
+void opimd_contact_query_skip(DBusGProxy *query, const gint count, void (*callback)(GError *, gpointer), gpointer userdata);
+void opimd_contact_query_get_contact_path(DBusGProxy *query, void (*callback)(GError *, char *, gpointer), gpointer userdata);
+void opimd_contact_query_get_result(DBusGProxy *query, void (*callback)(GError *, GHashTable *, gpointer), gpointer userdata);
+void opimd_contact_query_get_multiple_results(DBusGProxy *query, int count, void (*callback)(GError *, GPtrArray *, gpointer), gpointer userdata);
+void opimd_contact_query_dispose(DBusGProxy *query, void (*callback)(GError *, gpointer), gpointer userdata);
 
 extern DBusGProxy *opimdContactsBus;
 
