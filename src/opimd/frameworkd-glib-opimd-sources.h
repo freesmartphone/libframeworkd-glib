@@ -16,6 +16,10 @@
 #ifndef FRAMWORKD_GLIB_OPIMD_SOURCES_H
 #define FRAMWORKD_GLIB_OPIMD_SOURCES_H
 
+
+G_BEGIN_DECLS
+
+
 /* PIM.Sources interfaces */
 void opimd_sources_init_all_entries(void (*callback)(GError *, gpointer), gpointer userdata);
 void opimd_sources_get_entry_count(void (*callback)(GError *, int, gpointer), gpointer userdata);
@@ -27,6 +31,9 @@ void opimd_source_get_supported_pim_domains(const char *source_path, void (*call
 
 
 extern DBusGProxy *opimdSourcesBus;
+
+G_END_DECLS
+
 
 #endif
 

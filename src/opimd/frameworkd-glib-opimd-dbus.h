@@ -19,6 +19,8 @@
 
 #include "../frameworkd-glib-dbus.h"
 
+G_BEGIN_DECLS
+
 #define DEBUG
 
 #define OPIMD_BUS                   "org.freesmartphone.opimd"
@@ -52,6 +54,7 @@ DBusGProxy *dbus_connect_to_opimd_message_folder(const char *folder_path);
 void dbus_connect_to_opimd_sources(void);
 DBusGProxy *dbus_connect_to_opimd_source(const char *source_path);
 
+G_END_DECLS
 
 #endif
 

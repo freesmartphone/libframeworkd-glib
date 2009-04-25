@@ -16,6 +16,8 @@
 #ifndef FRAMWORKD_GLIB_OPIMD_CONTACTS_H
 #define FRAMWORKD_GLIB_OPIMD_CONTACTS_H
 
+G_BEGIN_DECLS
+
 /* PIM.Contacts interface */
 void opimd_contacts_add(const GHashTable *contact_data, void (*callback)(GError*, char *, gpointer), gpointer userdata);
 void opimd_contacts_get_single_contact_single_field(const GHashTable *query, const char *field, void (*callback)(GError*, char *, gpointer), gpointer userdata);
@@ -35,6 +37,9 @@ void opimd_contact_query_get_multiple_results(DBusGProxy *query, int count, void
 void opimd_contact_query_dispose(DBusGProxy *query, void (*callback)(GError *, gpointer), gpointer userdata);
 
 extern DBusGProxy *opimdContactsBus;
+
+
+G_END_DECLS
 
 #endif
 

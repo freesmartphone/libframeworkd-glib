@@ -16,6 +16,10 @@
 #ifndef FRAMEWORKD_GLIB_OPIMD_MESSAGES_H
 #define FRAMEWORKD_GLIB_OPIMD_MESSAGES_H
 
+
+G_BEGIN_DECLS
+
+
 /* PIM.Messages Interface */
 void opimd_messages_add(const GHashTable *message_data, void (*callback)(GError *, char *, gpointer), gpointer userdata);
 void opimd_messages_get_single_message_single_field(const GHashTable *query, const char *field, void (*callback)(GError *, char *, gpointer), gpointer userdata);
@@ -45,6 +49,8 @@ void opimd_message_folder_get_message_paths(const char *folder_path, const gint 
 void opimd_message_folder_message_moved_handler(DBusGProxy *proxy, char *message_path, char *new_folder, gpointer userdata);
 
 extern DBusGProxy *opimdMessagesBus;
+
+G_END_DECLS
 
 #endif
 
