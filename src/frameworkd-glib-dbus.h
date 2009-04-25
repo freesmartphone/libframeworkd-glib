@@ -46,7 +46,7 @@ typedef struct {
 
 void lose (const char *str, ...);
 void lose_gerror (const char *prefix, GError *error);
-DBusGProxy *dbus_connect_to_interface(char *bus_name, char *path, char *interface, char *interface_name);
+DBusGProxy *dbus_connect_to_interface(const char *bus_name, const char *path, const char *interface, const char *interface_name);
 GType dbus_get_type_g_string_variant_hashtable();
 GType dbus_get_type_g_string_int_int_int_array();
 GType dbus_get_type_int_g_string_g_string_variant_hashtable_array();

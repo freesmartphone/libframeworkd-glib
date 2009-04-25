@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/">
+  <interface name="org.freesmartphone.PIM.Contacts">
+    <method name="Add">
+		<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_contacts"/>
+		<arg direction="in" type="a{sv}" name="contact_data"/>
+		<arg direction="out" type="s" name="contact_path"/>
+	 </method>
+	 <method name="GetSingleContactSingleField">
+		<arg direction="in" type="a{sv}" name="query"/>
+		<arg direction="in" type="s" name="field"/>
+		<arg direction="out" type="s" name="value"/>
+	 </method>
+	 <method name="Query">
+	 	<arg direction="in" type="a{sv}" name="query"/>
+		<arg direction="out" type="s" name="query_path"/>
+	 </method>
+  </interface>
+	<interface name="org.freesmartphone.PIM.Contact">
+		<method name="GetContent">
+			<arg direction="out" type="a{sv}" name="contact_data"/>
+		</method>
+		<method name="GetMultipleFields">
+			<arg direction="in" type="s" name="field_list"/>
+			<arg direction="out" type="a{sv}" name="field_data"/>
+		</method>
+	</interface>
+	<interface name="org.freesmartphone.PIM.Contact">
+		<method name="GetContent">
+			<arg direction="out" type="a{sv}" name="contact_data"/>
+		</method>
+		<method name="GetMultipleFields">
+			<arg direction="in" type="s" name="field_list"/>
+			<arg direction="out" type="a{sv}" name="field_data"/>
+		</method>
+	</interface>
+	<interface name="org.freesmartphone.PIM.ContactQuery">
+		<method name="GetResultCount">
+			<arg direction="out" type="i" name="count"/>
+		</method>
+		<method name="Rewind">
+		</method>
+		<method name="Skip">
+			<arg direction="in" type="i" name="count"/>
+		</method>
+		<method name="GetContactPath">
+			<arg direction="out" type="s" name="contact_path"/>
+		</method>
+		<method name="GetResult">
+			<arg direction="out" type="a{sv}" name="result"/>
+		</method>
+		<method name="GetMultipleResults">
+			<arg direction="in" type="i" name="count"/>
+			<arg direction="out" type="aa{sv}" name="resultset"/>
+		</method>
+		<method name="Dispose">
+		</method>
+	</interface>
+</node>
+

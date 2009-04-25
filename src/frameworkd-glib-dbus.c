@@ -104,7 +104,7 @@ GError* dbus_handle_internal_errors(GError *error) {
     return g_error_new (FRAMEWORKD_GLIB_DBUS_ERROR, dbusError, error->message);
 }
 
-DBusGProxy *dbus_connect_to_interface(char *bus_name, char *path, char *interface, char *interface_name) {
+DBusGProxy *dbus_connect_to_interface(const char *bus_name, const char *path, const char *interface, const char *interface_name) {
     DBusGProxy *itf = NULL;
     if(bus != NULL) {
         itf = dbus_g_proxy_new_for_name (bus, bus_name, path, interface);
@@ -123,21 +123,21 @@ void dbus_free_data(GType type, gpointer data) {
 }
 
 GType dbus_get_type_g_string_variant_hashtable() {
-    static GType foo = 0; 
-    if (G_UNLIKELY (foo ==0)) 
+    static GType foo = 0;
+    if (G_UNLIKELY (foo ==0))
         foo = dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE);
     return foo;
 }
 GType dbus_get_type_g_string_int_int_int_array() {
     static GType foo = 0;
     if (G_UNLIKELY (foo ==0))
-        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID)); 
+        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID));
     return foo;
 }
 GType dbus_get_type_int_g_string_g_string_variant_hashtable_array() {
     static GType foo = 0;
     if (G_UNLIKELY (foo ==0))
-        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_STRING, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), G_TYPE_INVALID)); 
+        foo = dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_STRING, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), G_TYPE_INVALID));
     return foo;
 }
 
@@ -156,7 +156,7 @@ FrameworkdHandler *frameworkd_handler_new() {
                 g_debug("Couldn't alloc frameworkdHandler.");
                 return NULL;
         }
-        
+
         h->networkStatus = NULL;
         h->networkSignalStrength = NULL;
         h->simAuthStatus = NULL;

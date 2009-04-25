@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/">
+  <interface name="org.freesmartphone.PIM.Messages">
+    <method name="Add">
+		<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_messages"/>
+		<arg direction="in" type="a{sv}" name="message_data"/>
+		<arg direction="out" type="s" name="message_path"/>
+	 </method>
+	 <method name="GetSingleMessageSingleField">
+		<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_messages"/>
+		<arg direction="in" type="a{sv}" name="query"/>
+		<arg direction="in" type="s" name="field"/>
+		<arg direction="out" type="s" name="value"/>
+	 </method>
+	 <method name="Query">
+	   <annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_messages"/>
+		<arg direction="in" type="a{sv}" name="query"/>
+		<arg direction="out" type="s" name="query_path"/>
+	 </method>
+	 <method name="GetFolderNames">
+	   <annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_messages"/>
+		<arg direction="out" type="as" name="result"/>
+	 </method>
+	 <method name="GetFolderPathFromName">
+	   <annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_messages"/>
+		<arg direction="in" type="s" name="name"/>
+		<arg direction="out" type="s" name="folder_path"/>
+	 </method>
+	 <signal name="NewMessage">
+		<arg type="s" name="message_path"/>
+	 </signal>
+  </interface>
+	<interface name="org.freesmartphone.PIM.Message">
+		<method name="GetContent">
+			<arg direction="out" type="a{sv}" name="content"/>
+		</method>
+		<method name="GetMultipleFields">
+			<arg direction="in" type="s" name="fields"/>
+			<arg direction="out" type="a{sv}" name="field_data"/>
+		</method>
+		<method name="MoveToFolder">
+			<arg direction="in" type="s" name="folder"/>
+		</method>
+	</interface>
+	<interface name="org.freesmartphone.PIM.MessageQuery">
+		<method name="GetResultCount">
+			<arg direction="out" type="i" name="count"/>
+		</method>
+		<method name="Rewind">
+		</method>
+		<method name="Skip">
+			<arg direction="in" type="i" name="count"/>
+		</method>
+		<method name="GetMessagePath">
+			<arg direction="out" type="s" name="message_path"/>
+		</method>
+		<method name="GetResult">
+			  <arg direction="out" type="a{sv}" name="result"/>
+		</method>
+		<method name="GetMultipleResults">
+			  <arg direction="in" type="i" name="count"/>
+			  <arg direction="out" type="a{ia{sv}}" name="results"/>
+		</method>
+		<method name="Dispose">
+		</method>
+	</interface>
+	<interface name="org.freesmartphone.PIM.MessageFolder">
+		<method name="GetMessageCount">
+			  <arg direction="out" type="i" name="count"/>
+		</method>
+		<method name="GetMessagePaths">
+			  <arg direction="in" type="i" name="first"/>
+			  <arg direction="in" type="i" name="count"/>
+			  <arg direction="out" type="as" name="paths"/>
+		</method>
+		<signal name="MessageMoved">
+			  <arg type="s" name="message_path"/>
+			  <arg type="s" name="new_folder"/>
+		</signal>
+	</interface>
+</node>
+
