@@ -185,13 +185,46 @@ void opimd_contact_get_multiple_fields_callback(DBusGProxy *proxy, GHashTable *f
 }
 
 void opimd_contact_get_multiple_fields(const char *contact_path, const char *field_list, void (*callback)(GError *, GHashTable *, gpointer), gpointer userdata) {
-	 DBusGProxy *proxy = dbus_connect_to_opimd_contact (contact_path);
-	 opimd_contact_get_multiple_fields_data_t *data = g_malloc (sizeof (opimd_contact_get_multiple_fields_data_t));
-	 data->callback = callback;
-	 data->userdata = userdata;
-	 org_freesmartphone_PIM_Contact_get_multiple_fields_async (proxy, field_list, opimd_contact_get_multiple_fields_callback, data);
+    DBusGProxy *proxy = dbus_connect_to_opimd_contact (contact_path);
+    opimd_contact_get_multiple_fields_data_t *data = g_malloc (sizeof (opimd_contact_get_multiple_fields_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+    org_freesmartphone_PIM_Contact_get_multiple_fields_async (proxy, field_list, opimd_contact_get_multiple_fields_callback, data);
 }
 
+
+/* --- Delete ---------------------------------------------------------------------- */
+
+typedef struct
+{
+    void (*callback)(GError *, gpointer);
+    gpointer userdata;
+} opimd_contact_delete_data_t;
+
+void opimd_contact_delete_callback(DBusGProxy *proxy, GError *dbus_error, gpointer userdata) {
+    opimd_contact_delete_data_t *data = (opimd_contact_delete_data_t *)userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors (dbus_error);
+        data->callback (error, data->userdata);
+        if(error != NULL) g_error_free (error);
+    }
+    if(dbus_error != NULL) g_error_free (dbus_error);
+    g_free (data);
+    g_free (proxy);
+}
+
+void opimd_contact_delete(const char *contact_path, void (*callback)(GError *, gpointer), gpointer userdata){
+    DBusGProxy *proxy = dbus_connect_to_opimd_contact (contact_path);
+    opimd_contact_delete_data_t *data = g_malloc (sizeof (opimd_contact_delete_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+    org_freesmartphone_PIM_Contact_delete (proxy, opimd_contact_delete_callback, data);
+}
+
+	
 
 /* === PIM.ContactQuery Interface ================================================== */
 

@@ -26,6 +26,7 @@ void opimd_contacts_query(const GHashTable *query, void (*callback)(GError*, cha
 /* PIM.Contact interface */
 void opimd_contact_get_content(const char *contact_path, void (*callback)(GError *, GHashTable *, gpointer), gpointer userdata);
 void opimd_contact_get_multiple_fields(const char *contact_path, const char *field_list, void (*callback)(GError *, GHashTable *, gpointer), gpointer userdata);
+void opimd_contact_delete(const char *contact_path, void (*callback)(GError *, gpointer), gpointer userdata);
 
 /* PIM.ContactQuery interface */
 void opimd_contact_query_get_result_count(DBusGProxy *query, void (*callback)(GError *, int, gpointer), gpointer userdata);
