@@ -221,7 +221,7 @@ void opimd_contact_delete(const char *contact_path, void (*callback)(GError *, g
     opimd_contact_delete_data_t *data = g_malloc (sizeof (opimd_contact_delete_data_t));
     data->callback = callback;
     data->userdata = userdata;
-    org_freesmartphone_PIM_Contact_delete (proxy, opimd_contact_delete_callback, data);
+    org_freesmartphone_PIM_Contact_delete_async (proxy, opimd_contact_delete_callback, data);
 }
 
 	
