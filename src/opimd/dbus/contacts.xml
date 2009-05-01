@@ -36,6 +36,9 @@
 		</method>
 		<method name="Delete">
 		</method>
+		<method name="Update">
+			<arg direction="in" type="a{sv}" name="contact_data"/>
+		</method>
 	</interface>
 	<interface name="org.freesmartphone.PIM.ContactQuery">
 		<method name="GetResultCount">

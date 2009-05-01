@@ -224,6 +224,37 @@ void opimd_contact_delete(const char *contact_path, void (*callback)(GError *, g
     org_freesmartphone_PIM_Contact_delete_async (proxy, opimd_contact_delete_callback, data);
 }
 
+
+/* --- Update ---------------------------------------------------------------------- */
+
+typedef struct
+{
+    void (*callback)(GError *, gpointer);
+    gpointer userdata;
+} opimd_contact_update_data_t;
+
+void opimd_contact_update_callback(DBusGProxy *proxy, GError *dbus_error, gpointer userdata) {
+    opimd_contact_update_data_t *data = (opimd_contact_update_data_t *)userdata;
+    GError *error = NULL;
+
+    if(data->callback != NULL) {
+        if(dbus_error != NULL)
+            error = dbus_handle_errors (dbus_error);
+        data->callback (error, data->userdata);
+        if(error != NULL) g_error_free (error);
+    }
+    if(dbus_error != NULL) g_error_free (dbus_error);
+    g_free (data);
+    g_free (proxy);
+}
+
+void opimd_contact_update(const char *contact_path, GHashTable *contact_data, void (*callback)(GError *, gpointer), gpointer userdata) {
+    DBusGProxy *proxy = dbus_connect_to_opimd_contact (contact_path);
+    opimd_contact_update_data_t *data = g_malloc (sizeof (opimd_contact_update_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+    org_freesmartphone_PIM_Contact_update_async (proxy, contact_data, opimd_contact_update_callback, data);
+}
 	
 
 /* === PIM.ContactQuery Interface ================================================== */

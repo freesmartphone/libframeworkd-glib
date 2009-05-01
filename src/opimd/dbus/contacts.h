@@ -321,6 +321,43 @@ org_freesmartphone_PIM_Contact_delete_async (DBusGProxy *proxy, org_freesmartpho
   stuff->userdata = userdata;
   return dbus_g_proxy_begin_call (proxy, "Delete", org_freesmartphone_PIM_Contact_delete_async_callback, stuff, g_free, G_TYPE_INVALID);
 }
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+gboolean
+org_freesmartphone_PIM_Contact_update (DBusGProxy *proxy, const GHashTable* IN_contact_data, GError **error)
+
+{
+  return dbus_g_proxy_call (proxy, "Update", error, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), IN_contact_data, G_TYPE_INVALID, G_TYPE_INVALID);
+}
+
+typedef void (*org_freesmartphone_PIM_Contact_update_reply) (DBusGProxy *proxy, GError *error, gpointer userdata);
+
+static void
+org_freesmartphone_PIM_Contact_update_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
+{
+  DBusGAsyncData *data = (DBusGAsyncData*) user_data;
+  GError *error = NULL;
+  dbus_g_proxy_end_call (proxy, call, &error, G_TYPE_INVALID);
+  (*(org_freesmartphone_PIM_Contact_update_reply)data->cb) (proxy, error, data->userdata);
+  return;
+}
+
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+DBusGProxyCall*
+org_freesmartphone_PIM_Contact_update_async (DBusGProxy *proxy, const GHashTable* IN_contact_data, org_freesmartphone_PIM_Contact_update_reply callback, gpointer userdata)
+
+{
+  DBusGAsyncData *stuff;
+  stuff = g_new (DBusGAsyncData, 1);
+  stuff->cb = G_CALLBACK (callback);
+  stuff->userdata = userdata;
+  return dbus_g_proxy_begin_call (proxy, "Update", org_freesmartphone_PIM_Contact_update_async_callback, stuff, g_free, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE), IN_contact_data, G_TYPE_INVALID);
+}
 #endif /* defined DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_Contact */
 
 #ifndef DBUS_GLIB_CLIENT_WRAPPERS_org_freesmartphone_PIM_ContactQuery
