@@ -8,24 +8,17 @@
 		<arg direction="out" type="s" name="contact_path"/>
 	 </method>
 	 <method name="GetSingleContactSingleField">
+		<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_contacts"/>
 		<arg direction="in" type="a{sv}" name="query"/>
 		<arg direction="in" type="s" name="field"/>
 		<arg direction="out" type="s" name="value"/>
 	 </method>
 	 <method name="Query">
+		<annotation name="org.freedesktop.DBus.GLib.Async" value="fso_pim_contacts"/>
 	 	<arg direction="in" type="a{sv}" name="query"/>
 		<arg direction="out" type="s" name="query_path"/>
 	 </method>
   </interface>
-	<interface name="org.freesmartphone.PIM.Contact">
-		<method name="GetContent">
-			<arg direction="out" type="a{sv}" name="contact_data"/>
-		</method>
-		<method name="GetMultipleFields">
-			<arg direction="in" type="s" name="field_list"/>
-			<arg direction="out" type="a{sv}" name="field_data"/>
-		</method>
-	</interface>
 	<interface name="org.freesmartphone.PIM.Contact">
 		<method name="GetContent">
 			<arg direction="out" type="a{sv}" name="contact_data"/>
