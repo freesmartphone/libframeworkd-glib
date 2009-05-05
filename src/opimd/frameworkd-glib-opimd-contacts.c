@@ -420,12 +420,11 @@ void opimd_contact_query_get_result(DBusGProxy *query, void (*callback)(GError *
 typedef struct {
 	void (*callback)(GError *, GPtrArray *, gpointer);
 	gpointer userdata;
-} opimd_contact_query_get_multiple_results_t;
-
+} opimd_contact_query_get_multiple_results_data_t;
 
 void opimd_contact_query_get_multiple_results_callback(DBusGProxy *proxy, GPtrArray *resultset, GError *dbus_error, gpointer userdata)
 {
-	 opimd_contact_query_get_multiple_results_t *data = userdata;
+	 opimd_contact_query_get_multiple_results_data_t *data = userdata;
 	 GError *error = NULL;
 
 	 if(data->callback != NULL) {
@@ -439,13 +438,13 @@ void opimd_contact_query_get_multiple_results_callback(DBusGProxy *proxy, GPtrAr
 	 g_free (data);
 }
 
-void opimd_contact_query_get_multiple_results(DBusGProxy *query, int count, void (*callback)(GError *, GPtrArray *, gpointer), gpointer userdata) {
-	 opimd_contact_query_get_multiple_results_t *data = g_malloc (sizeof (opimd_contact_query_get_multiple_results_t));
+void opimd_contact_query_get_multiple_results(DBusGProxy *query, int count, void (*callback)(GError *, GPtrArray *, gpointer), gpointer userdata)
+{
+	 opimd_contact_query_get_multiple_results_data_t *data = g_malloc (sizeof (opimd_contact_query_get_multiple_results_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
-	 org_freesmartphone_PIM_ContactQuery_get_multiple_results_async (query, count, opimd_contact_query_get_result_callback, data);
+	 org_freesmartphone_PIM_ContactQuery_get_multiple_results_async (query, count, opimd_contact_query_get_multiple_results_callback, data);
 }
-
 
 
 /* --- Dispose --------------------------------------------------------------------- */
