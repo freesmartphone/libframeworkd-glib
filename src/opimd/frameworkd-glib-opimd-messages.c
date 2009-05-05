@@ -470,8 +470,36 @@ void opimd_message_query_get_result(const char *query_path, void (*callback)(GEr
 
 
 /* --- GetMultipleResults ---------------------------------------------------------- */
-/* TODO: as what type to pass back the multiple results... ??? */
-//void opimd_message_query_get_multiple_results(const char *query_path, int count, void (*callback)(GError *, foo results), gpointer userdata);
+
+typedef struct {
+    void (*callback)(GError *, GPtrArray *, gpointer);
+    gpointer userdata;
+} opimd_message_query_get_multiple_results_data_t;
+
+void opimd_message_query_get_multiple_results_callback(DBusGProxy *proxy, GPtrArray *resultset, GError *dbus_error, gpointer userdata)
+{
+	 opimd_message_query_get_multiple_results_data_t *data = userdata;
+	 GError *error = NULL;
+
+	 if(data->callback != NULL) {
+		  if(dbus_error != NULL)
+				error = dbus_handle_errors (dbus_error);
+		  data->callback (error, resultset, data->userdata);
+		  if(error != NULL) g_error_free (error);
+	 }
+	 if(dbus_error != NULL) g_error_free (dbus_error);
+
+	 g_free (data);
+}
+	
+void opimd_message_query_get_multiple_results(DBusGProxy *query, int count, void (*callback)(GError *, GPtrArray *, gpointer), gpointer userdata)
+{
+    opimd_message_query_get_multiple_results_data_t *data = g_malloc (sizeof (opimd_message_query_get_multiple_results_data_t));
+    data->callback = callback;
+    data->userdata = userdata;
+    org_freesmartphone_PIM_MessageQuery_get_multiple_results_async (query, count, opimd_message_query_get_multiple_results_callback, data);
+}
+
 
 
 /* --- Dispose --------------------------------------------------------------------- */

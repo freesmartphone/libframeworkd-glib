@@ -39,8 +39,7 @@ void opimd_message_query_rewind(const char *query_path, void (*callback)(GError 
 void opimd_message_query_skip(const char *query_path, const gint count, void (*callback)(GError *, gpointer), gpointer userdata);
 void opimd_message_query_get_message_path(const char *query_path, void (*callback)(GError *, char *, gpointer), gpointer userdata);
 void opimd_message_query_get_result(const char *query_path, void (*callback)(GError *, GHashTable *result, gpointer), gpointer userdata);
-/* TODO: as what type to pass back the multiple results... ??? */
-//void opimd_message_query_get_multiple_results(const char *query_path, int count, void (*callback)(GError *, foo results), gpointer userdata);
+void opimd_message_query_get_multiple_results(const char *query_path, int count, void (*callback)(GError *, GPtrArray *, gpointer), gpointer userdata);
 void opimd_message_query_dispose(const char *query_path, void (*callback)(GError *, gpointer), gpointer userdata);
 
 /* PIM.MessageFolder Interface */
