@@ -514,21 +514,21 @@ static
 inline
 #endif
 gboolean
-org_freesmartphone_PIM_MessageQuery_get_multiple_results (DBusGProxy *proxy, const gint IN_count, GHashTable** OUT_results, GError **error)
+org_freesmartphone_PIM_MessageQuery_get_multiple_results (DBusGProxy *proxy, const gint IN_count, GPtrArray** OUT_results, GError **error)
 
 {
-  return dbus_g_proxy_call (proxy, "GetMultipleResults", error, G_TYPE_INT, IN_count, G_TYPE_INVALID, dbus_g_type_get_map ("GHashTable", G_TYPE_INT, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE)), OUT_results, G_TYPE_INVALID);
+  return dbus_g_proxy_call (proxy, "GetMultipleResults", error, G_TYPE_INT, IN_count, G_TYPE_INVALID, dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE)), OUT_results, G_TYPE_INVALID);
 }
 
-typedef void (*org_freesmartphone_PIM_MessageQuery_get_multiple_results_reply) (DBusGProxy *proxy, GHashTable *OUT_results, GError *error, gpointer userdata);
+typedef void (*org_freesmartphone_PIM_MessageQuery_get_multiple_results_reply) (DBusGProxy *proxy, GPtrArray *OUT_results, GError *error, gpointer userdata);
 
 static void
 org_freesmartphone_PIM_MessageQuery_get_multiple_results_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
 {
   DBusGAsyncData *data = (DBusGAsyncData*) user_data;
   GError *error = NULL;
-  GHashTable* OUT_results;
-  dbus_g_proxy_end_call (proxy, call, &error, dbus_g_type_get_map ("GHashTable", G_TYPE_INT, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE)), &OUT_results, G_TYPE_INVALID);
+  GPtrArray* OUT_results;
+  dbus_g_proxy_end_call (proxy, call, &error, dbus_g_type_get_collection ("GPtrArray", dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE)), &OUT_results, G_TYPE_INVALID);
   (*(org_freesmartphone_PIM_MessageQuery_get_multiple_results_reply)data->cb) (proxy, OUT_results, error, data->userdata);
   return;
 }

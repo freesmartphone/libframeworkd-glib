@@ -60,7 +60,7 @@
 		</method>
 		<method name="GetMultipleResults">
 			  <arg direction="in" type="i" name="count"/>
-			  <arg direction="out" type="a{ia{sv}}" name="results"/>
+			  <arg direction="out" type="aa{sv}" name="results"/>
 		</method>
 		<method name="Dispose">
 		</method>

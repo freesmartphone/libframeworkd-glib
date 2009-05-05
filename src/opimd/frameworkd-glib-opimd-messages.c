@@ -325,15 +325,13 @@ void opimd_message_query_get_result_count_callback(DBusGProxy *proxy, int count,
 	 if(dbus_error != NULL) g_error_free (dbus_error);
 
 	 g_free (data);
-	 g_free (proxy);
 }
 
-void opimd_message_query_get_result_count(const char *query_path, void (*callback)(GError *, gint, gpointer), gpointer userdata) {
-	 DBusGProxy *proxy = dbus_connect_to_opimd_message_query (query_path);
+void opimd_message_query_get_result_count(DBusGProxy *query, void (*callback)(GError *, gint, gpointer), gpointer userdata) {
 	 opimd_message_query_get_result_count_data_t *data = g_malloc (sizeof (opimd_message_query_get_result_count_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
-	 org_freesmartphone_PIM_MessageQuery_get_result_count_async (proxy, opimd_message_query_get_result_count_callback, data);
+	 org_freesmartphone_PIM_MessageQuery_get_result_count_async (query, opimd_message_query_get_result_count_callback, data);
 }
 
 
@@ -358,15 +356,13 @@ void opimd_message_query_rewind_callback(DBusGProxy *proxy, GError *dbus_error, 
 	 if(dbus_error != NULL) g_error_free (dbus_error);
 
 	 g_free (data);
-	 g_free (proxy);
 }
 
-void opimd_message_query_rewind(const char *query_path, void (*callback)(GError *, gpointer), gpointer userdata) {
-	 DBusGProxy *proxy = dbus_connect_to_opimd_message_query (query_path);
+void opimd_message_query_rewind(DBusGProxy *query, void (*callback)(GError *, gpointer), gpointer userdata) {
 	 opimd_message_query_rewind_data_t *data = g_malloc (sizeof (opimd_message_query_rewind_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
-	 org_freesmartphone_PIM_MessageQuery_rewind_async (proxy, opimd_message_query_rewind_callback, data);
+	 org_freesmartphone_PIM_MessageQuery_rewind_async (query, opimd_message_query_rewind_callback, data);
 }
 
 
@@ -391,15 +387,13 @@ void opimd_message_query_skip_callback(DBusGProxy *proxy, GError *dbus_error, gp
 	 if(dbus_error != NULL) g_error_free (dbus_error);
 
 	 g_free (data);
-	 g_free (proxy);
 }
 
-void opimd_message_query_skip(const char *query_path, const gint count, void (*callback)(GError *, gpointer), gpointer userdata) {
-	 DBusGProxy *proxy = dbus_connect_to_opimd_message_query (query_path);
+void opimd_message_query_skip(DBusGProxy *query, const gint count, void (*callback)(GError *, gpointer), gpointer userdata) {
 	 opimd_message_query_skip_data_t *data = g_malloc (sizeof (opimd_message_query_skip_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
-	 org_freesmartphone_PIM_MessageQuery_skip_async (proxy, count, opimd_message_query_skip_callback, data);
+	 org_freesmartphone_PIM_MessageQuery_skip_async (query, count, opimd_message_query_skip_callback, data);
 }
 
 
@@ -424,15 +418,13 @@ void opimd_message_query_get_message_path_callback(DBusGProxy *proxy, char *mess
 	 if(dbus_error != NULL) g_error_free (dbus_error);
 
 	 g_free (data);
-	 g_free (proxy);
 }
 
-void opimd_message_query_get_message_path(const char *query_path, void (*callback)(GError *, char *, gpointer), gpointer userdata) {
-	 DBusGProxy *proxy = dbus_connect_to_opimd_message_query (query_path);
+void opimd_message_query_get_message_path(DBusGProxy *query, void (*callback)(GError *, char *, gpointer), gpointer userdata) {
 	 opimd_message_query_get_message_path_data_t *data = g_malloc (sizeof (opimd_message_query_get_message_path_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
-	 org_freesmartphone_PIM_MessageQuery_get_message_path_async (proxy, opimd_message_query_get_message_path_callback, data);
+	 org_freesmartphone_PIM_MessageQuery_get_message_path_async (query, opimd_message_query_get_message_path_callback, data);
 }
 
 
@@ -457,15 +449,13 @@ void opimd_message_query_get_result_callback(DBusGProxy *proxy, GHashTable *resu
 	 if(dbus_error != NULL) g_error_free (dbus_error);
 
 	 g_free (data);
-	 g_free (proxy);
 }
 
-void opimd_message_query_get_result(const char *query_path, void (*callback)(GError *, GHashTable *result, gpointer), gpointer userdata) {
-	 DBusGProxy *proxy = dbus_connect_to_opimd_message_query (query_path);
+void opimd_message_query_get_result(DBusGProxy *query, void (*callback)(GError *, GHashTable *result, gpointer), gpointer userdata) {
 	 opimd_message_query_get_result_data_t *data = g_malloc (sizeof (opimd_message_query_get_result_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
-	 org_freesmartphone_PIM_MessageQuery_get_result_async (proxy, opimd_message_query_get_result_callback, data);
+	 org_freesmartphone_PIM_MessageQuery_get_result_async (query, opimd_message_query_get_result_callback, data);
 }
 
 
@@ -526,12 +516,11 @@ void opimd_message_query_dispose_callback(DBusGProxy *proxy, GError *dbus_error,
 	 g_free (proxy);
 }
 
-void opimd_message_query_dispose(const char *query_path, void (*callback)(GError *, gpointer), gpointer userdata) {
-	 DBusGProxy *proxy = dbus_connect_to_opimd_message_query (query_path);
+void opimd_message_query_dispose(DBusGProxy *query, void (*callback)(GError *, gpointer), gpointer userdata) {
 	 opimd_message_query_dispose_data_t *data = g_malloc (sizeof (opimd_message_query_dispose_data_t));
 	 data->callback = callback;
 	 data->userdata = userdata;
-	 org_freesmartphone_PIM_MessageQuery_dispose_async (proxy, opimd_message_query_dispose_callback, data);
+	 org_freesmartphone_PIM_MessageQuery_dispose_async (query, opimd_message_query_dispose_callback, data);
 }
 
 

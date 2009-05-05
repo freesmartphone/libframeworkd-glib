@@ -34,13 +34,13 @@ void opimd_message_get_multiple_fields(const char *message_path, const char *fie
 void opimd_message_move_to_folder(const char *message_path, const char *folder, void (*callback)(GError *, gpointer), gpointer userdata);
 
 /* PIM.MessageQuery Interface */
-void opimd_message_query_get_result_count(const char *query_path, void (*callback)(GError *, int, gpointer), gpointer userdata);
-void opimd_message_query_rewind(const char *query_path, void (*callback)(GError *, gpointer), gpointer userdata);
-void opimd_message_query_skip(const char *query_path, const gint count, void (*callback)(GError *, gpointer), gpointer userdata);
-void opimd_message_query_get_message_path(const char *query_path, void (*callback)(GError *, char *, gpointer), gpointer userdata);
-void opimd_message_query_get_result(const char *query_path, void (*callback)(GError *, GHashTable *result, gpointer), gpointer userdata);
-void opimd_message_query_get_multiple_results(const char *query_path, int count, void (*callback)(GError *, GPtrArray *, gpointer), gpointer userdata);
-void opimd_message_query_dispose(const char *query_path, void (*callback)(GError *, gpointer), gpointer userdata);
+void opimd_message_query_get_result_count(DBusGProxy *query, void (*callback)(GError *, int, gpointer), gpointer userdata);
+void opimd_message_query_rewind(DBusGProxy *query, void (*callback)(GError *, gpointer), gpointer userdata);
+void opimd_message_query_skip(DBusGProxy *query, const gint count, void (*callback)(GError *, gpointer), gpointer userdata);
+void opimd_message_query_get_message_path(DBusGProxy *query, void (*callback)(GError *, char *, gpointer), gpointer userdata);
+void opimd_message_query_get_result(DBusGProxy *query, void (*callback)(GError *, GHashTable *result, gpointer), gpointer userdata);
+void opimd_message_query_get_multiple_results(DBusGProxy *query, int count, void (*callback)(GError *, GPtrArray *, gpointer), gpointer userdata);
+void opimd_message_query_dispose(DBusGProxy *query, void (*callback)(GError *, gpointer), gpointer userdata);
 
 /* PIM.MessageFolder Interface */
 void opimd_message_folder_get_message_count(const char *folder_path, void (*callback)(GError *, int, gpointer), gpointer userdata);
