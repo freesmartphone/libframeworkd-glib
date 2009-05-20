@@ -25,6 +25,8 @@ void ogsmd_sms_message_sent_handler (DBusGProxy *proxy, const int id, const gboo
 
 void ogsmd_sms_send_message(const char* number, const char* content, const GHashTable *properties, void (*callback)(GError*, int transaction_index, const char *timestamp, gpointer), gpointer userdata);
 
+void ogsmd_sms_incoming_message_receipt_handler(DBusGProxy *proxy, const char *sender_number, const char *contents, GHashTable *properties, gpointer userdata);
+
 extern DBusGProxy *smsBus;
 
 G_END_DECLS

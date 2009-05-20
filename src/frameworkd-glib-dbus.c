@@ -165,6 +165,7 @@ FrameworkdHandler *frameworkd_handler_new() {
         h->callCallStatus = NULL;
         h->deviceIdleNotifierState = NULL;
         h->incomingUssd = NULL;
+        h->incomingMessageReceipt = NULL;
 
         return h;
 }
@@ -261,6 +262,13 @@ void frameworkd_handler_connect(FrameworkdHandler* frameworkdHandler ) {
             g_debug("Added network IncomingUssd.");
         }
 
+        if(frameworkdHandler->incomingMessageReceipt != NULL) {
+            dbus_connect_to_ogsmd_sms();
+            dbus_g_proxy_add_signal (smsBus, "IncomingMessageReceipt", G_TYPE_STRING, G_TYPE_STRING, dbus_get_type_g_string_variant_hashtable(), G_TYPE_INVALID);
+            dbus_g_proxy_connect_signal (networkBus, "IncomingMessageReceipt", G_CALLBACK (ogsmd_sms_incoming_message_receipt_handler),
+                    frameworkdHandler->incomingMessageReceipt, NULL);
+            g_debug("Added sms IncomingMessageReceipt.");
+        }
     }
 }
 

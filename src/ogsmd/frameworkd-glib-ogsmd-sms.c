@@ -71,3 +71,17 @@ void ogsmd_sms_send_message(const char*number, const char* content, const GHashT
         org_freesmartphone_GSM_SMS_send_message_async(smsBus, number, content, properties, ogsmd_sms_send_message_callback, data);
 }
 
+
+
+void ogsmd_sms_incoming_message_receipt_handler(DBusGProxy *proxy, const char *sender_number, const char *contents, GHashTable *properties, gpointer userdata)
+{
+    void (*callback)(const char *, const char *, GHashTable *) = NULL;
+
+    callback = userdata;
+
+    if (callback != NULL) {
+        (*callback)(sender_number, contents, properties);
+    }
+}
+
+
